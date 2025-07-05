@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #2C9AB7;
+  --color-secondary: #B74660;
+  --color-accent: #F3D07B;
+  --color-background: #F3F7FA;
+  --color-text-primary: #1E2A32;
+  --color-heading: #2C9AB7;
+  --color-text-secondary: #4C5B67;
+  --color-primary-alt: #43A36D;
+  --color-hov-blue: #26798F;
+}
+
 @font-face {
   font-family: "Plus Jakarta Sans";
   src: url("/fonts/PlusJakartaSans-VariableFont_wght.ttf");
