@@ -1,0 +1,38 @@
+<fieldset class="flex w-full flex-col justify-between" [ngClass]="{ 'space-y-4': !info }">
+  <label [for]="name" class="font-medium text-sm text-[var(--primary-text)]">
+    <ng-container *ngIf="required; else label">
+      {{ label }} <span class="text-red-500">*</span>
+    </ng-container>
+    <ng-template #label>
+      <ng-container *ngIf="type === 'file'">
+        {{ label }}
+      </ng-container>
+    </ng-template>
+  </label>
+  <h6 *ngIf="info" class="cursor-default mt-1 mb-3 text-xs text-red-500">
+    {{ info }}
+  </h6>
+  <div class="relative">
+    <span *ngIf="icon && type !== 'file'" class="absolute inset-y-0 left-0 flex items-center pl-5 text-[var(--stroke)]">
+      <i [class]="icon"></i>
+    </span>
+    <input
+      [name]="name"
+      [type]="type || 'text'"
+      [value]="type !== 'file' ? value : ''"
+      class="appearance-none w-full rounded-lg border-1 text-sm transition-all duration-200 border-[var(--stroke)] text-[var(--primary-text)] lg:focus:outline-none lg:focus:border-[var(--primary)]"
+      [ngClass]="{
+        'pl-12 py-2.5': type !== 'file',
+        'pr-12': type === 'password',
+        'pr-4': type !== 'password',
+        'file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded file:bg-[var(--green-tertiary)] file:text-white file:cursor-pointer':
+          type === 'file'
+      }"
+      [required]="!!required"
+      (input)="handleInput($event)"
+      [attr.step]="type === 'number' ? 'any' : null"
+      [attr.onwheel]="type === 'number' ? 'this.blur()' : null"
+    />
+    <i *ngIf="type === 'password'" class="fa-solid fa-eye cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 pr-4 text-gray-500"></i>
+  </div>
+</fieldset>
