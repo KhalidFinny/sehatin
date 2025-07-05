@@ -1,1 +1,1 @@
-# Sehatin
+<h1 align="center">SEHATIN</h1>
