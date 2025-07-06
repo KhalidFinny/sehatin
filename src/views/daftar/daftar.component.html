@@ -7,22 +7,40 @@
 
 <div class="min-h-screen flex flex-col lg:flex-row items-center justify-center px-60 py-25 gap-8 bg-gradient-to-br from-[#f4f8fb] to-[#e0f2fe]">
   <div class="flex-1 flex flex-col justify-center max-w-lg w-full">
-    <h2 class="text-4xl font-bold text-text-primary mb-3">
-      Masuk ke <span class="text-primary text-5xl font-bold">Sehatin</span>
+    <h2 class="text-3xl font-bold text-gray-800 mb-3">
+      Daftar agar ikut dalam<br>menjaga kesehatan!
     </h2>
-    <p class="text-text-secondary mb-8">Sistem Edukasi dan Pemantauan Kesehatan Terintegrasi Nasional</p>
+    <p class="text-gray-600 mb-8">Lengkapi data untuk membuat akun baru</p>
     <div *ngIf="showAlert" class="mb-6 p-4 rounded-lg text-center" [ngClass]="alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
       {{ alertMessage }}
     </div>
 
-    <form (ngSubmit)="onLogin()" class="space-y-6">
+    <form class="space-y-6" (ngSubmit)="onRegister()">
       <form-input
         name="email"
-        label="Email"
+        label="Alamat Email"
         type="email"
         [(ngModel)]="email"
         [required]="true"
         placeholder="Masukkan email Anda">
+      </form-input>
+
+      <form-input
+        name="name"
+        label="Nama Lengkap"
+        type="text"
+        [(ngModel)]="name"
+        [required]="true"
+        placeholder="Masukkan nama lengkap Anda">
+      </form-input>
+
+      <form-input
+        name="nik"
+        label="NIK"
+        type="text"
+        [(ngModel)]="nik"
+        [required]="true"
+        placeholder="Masukkan NIK Anda">
       </form-input>
 
       <form-input
@@ -34,30 +52,21 @@
         placeholder="Masukkan password">
       </form-input>
 
-      <button
-        type="submit"
-        class="w-full bg-primary text-white py-4 rounded-xl font-semibold hover:bg-primary-dark transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-        [disabled]="isLoading"
-      >
-        <span *ngIf="!isLoading">Masuk</span>
-        <span *ngIf="isLoading">Memproses...</span>
-      </button>
+      <form-input
+        name="confirmPassword"
+        label="Konfirmasi Password"
+        type="password"
+        [(ngModel)]="confirmPassword"
+        [required]="true"
+        placeholder="Ulangi password Anda">
+      </form-input>
+
+      <p class="text-sm text-text-secondary mt-8 text-center">
+        Sudah punya akun?
+        <a href="#" (click)="onLogin()" class="text-primary font-semibold hover:text-primary-dark transition-colors">Masuk</a>
+      </p>
+      <button type="submit" [disabled]="isLoading" class="w-full bg-primary text-white py-4 rounded-xl font-semibold hover:bg-primary-dark transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed">Daftar</button>
     </form>
-
-    <div class="register-link mt-8 text-center">
-      <p>Belum punya akun? <a (click)="onRegister()" class="text-primary font-semibold hover:text-primary-dark transition-colors cursor-pointer">Daftar di sini</a></p>
-    </div>
-
-    <!-- Demo Credentials -->
-    <div class="demo-credentials mt-10 p-5 rounded-xl bg-white/80 border-l-4 border-primary shadow-sm">
-      <h3 class="font-semibold mb-2 text-gray-700">Demo Credentials:</h3>
-      <div class="credential-item text-sm mb-1">
-        <strong>Admin:</strong> admin&#64;sehatin.com / admin123
-      </div>
-      <div class="credential-item text-sm">
-        <strong>User:</strong> user&#64;sehatin.com / user123
-      </div>
-    </div>
   </div>
   <!-- Gambar Kanan: 3 gambar numpuk -->
   <div class="hidden lg:flex flex-1 items-center justify-center relative">
