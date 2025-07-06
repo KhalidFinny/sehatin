@@ -78,10 +78,7 @@ fieldset input[required]:not([type='file'])::after {
   transform: translateY(-50%);
   font-size: 1.2rem;
   pointer-events: none;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
+}
 
 /* Hilangkan border merah pada input required yang belum valid */
 input[required]:invalid {
@@ -110,10 +107,7 @@ input[required]:valid {
   opacity: 0;
   transition: opacity 0.2s;
   z-index: 2;
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  -o-transform: translateY(-50%);
+
   -webkit-transition: opacity 0.2s;
   -moz-transition: opacity 0.2s;
   -ms-transition: opacity 0.2s;
@@ -151,5 +145,4 @@ input[type="password"]:focus {
 input[required]:invalid ~ .required-star + .fa-eye,
 input[required]:valid ~ .required-star + .fa-eye {
   right: 2.2rem !important;
-}
 }
