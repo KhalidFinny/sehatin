@@ -1,11 +1,21 @@
 <fieldset class="flex w-full flex-col justify-between" [ngClass]="{ 'space-y-4': !info }">
-  <label [for]="name" class="font-medium text-sm text-[var(--primary-text)]">
+  <label [for]="name" class="form-label font-medium text-sm text-[var(--primary-text)]">
+    <!--
     <ng-container *ngIf="required; else label">
       {{ label }} <span class="text-red-500">*</span>
     </ng-container>
     <ng-template #label>
       <ng-container *ngIf="type === 'file'">
         {{ label }}
+      </ng-container>
+    </ng-template>
+    -->
+    <ng-container *ngIf="required; else labelTemplate">
+      {{ labelString }} <span class="text-red-500">*</span>
+    </ng-container>
+    <ng-template #labelTemplate>
+      <ng-container *ngIf="type === 'file'">
+        {{ labelString }}
       </ng-container>
     </ng-template>
   </label>
@@ -18,8 +28,9 @@
     </span>
     <input
       [name]="name"
-      [type]="type || 'text'"
+      [type]="type === 'password' ? (showPassword ? 'text' : 'password') : (type || 'text')"
       [value]="type !== 'file' ? value : ''"
+      [placeholder]="placeholder"
       class="appearance-none w-full rounded-lg border-1 text-sm transition-all duration-200 border-[var(--stroke)] text-[var(--primary-text)] lg:focus:outline-none lg:focus:border-[var(--primary)]"
       [ngClass]="{
         'pl-12 py-2.5': type !== 'file',
@@ -31,8 +42,9 @@
       [required]="!!required"
       (input)="handleInput($event)"
       [attr.step]="type === 'number' ? 'any' : null"
-      [attr.onwheel]="type === 'number' ? 'this.blur()' : null"
+      (wheel)="type === 'number' ? onWheel($event) : null"
     />
-    <i *ngIf="type === 'password'" class="fa-solid fa-eye cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 pr-4 text-gray-500"></i>
+    <span *ngIf="required && type !== 'password'" class="required-star">*</span>
+    <i *ngIf="type === 'password'" (click)="toggleShowPassword()" [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="fa-solid fa-eye cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 pr-4 text-gray-500"></i>
   </div>
 </fieldset>
