@@ -23,7 +23,12 @@
     "strict": true,
     "target": "ES2022",
     "paths": {
-      "@shared/*": ["shared/*"]
+      "@app/*": ["app/*"],
+      "@errors/*": ["errors/*"],
+      "@guards/*": ["guards/*"],
+      "@services/*": ["services/*"],
+      "@shared/*": ["shared/*"],
+      "@views/*": ["views/*"],
     }
   }
 }

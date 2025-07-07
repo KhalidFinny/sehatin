@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
-  selector: "app-tentang-kami",
+  selector: "pages-tentang-kami",
   imports: [],
   templateUrl: "./tentang-kami.component.html",
   styleUrl: "./tentang-kami.component.css",

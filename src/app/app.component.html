@@ -1,9 +1,7 @@
 <ng-container *ngIf="!isAuthPage(); else authLayout">
-  <div class="bg-background min-h-screen">
-    <app-header />
-    <router-outlet />
-    <app-footer />
-  </div>
+  <shared-header />
+  <router-outlet />
+  <shared-footer />
 </ng-container>
 <ng-template #authLayout>
   <router-outlet />

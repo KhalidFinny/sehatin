@@ -1,33 +1,28 @@
-<header class="pt-8 fixed top-0 left-0 right-0 z-50">
-  <nav class="bg-white/95 backdrop-blur-lg border border-primary/20 rounded-lg px-8 py-4 w-[92%] max-w-7xl mx-auto transition-all duration-300">
-    <div class="flex justify-between items-center w-full">
-      <div class="flex items-center gap-3 group">
-        <div class="relative">
-          <img src="/images/sehatin.svg" alt="Logo" class="w-auto h-12 transition-transform duration-300 group-hover:scale-105" />
-          <div class="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10"></div>
-        </div>
-      </div>
-      <div class="flex items-center gap-8 text-base">
-        <a href="#beranda" class="relative text-text-primary font-medium hover:text-primary transition-colors duration-200 group">
-          Home
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-        </a>
-        <a href="#tentang-kami" class="relative text-text-primary font-medium hover:text-primary transition-colors duration-200 group">
+<header class="fixed top-0 right-0 left-0 z-50 pt-8">
+  <div class="mx-auto w-[92%] max-w-7xl">
+    <section class="border-primary/20 flex w-full items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
+      <a href="/" class="group relative flex items-center gap-3">
+        <img src="/images/sehatin.svg" alt="Logo" class="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
+        <div class="bg-primary/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
+      </a>
+      <nav class="flex items-center gap-8 text-base">
+        <a href="/tentang-kami" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
           Tentang Kami
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a href="#kontak-kami" class="relative text-text-primary font-medium hover:text-primary transition-colors duration-200 group">
-          Kontak Kami
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+        <a href="/kontak" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+          Kontak
+          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a href="/masuk" class="relative text-text-primary font-medium hover:text-primary transition-colors duration-200 group">
+        <a href="/masuk" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
           Masuk
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a href="/daftar" class="bg-primary border-2 border-primary text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-white hover:text-primary transition-all duration-300 ml-4">
+        <a href="/daftar" class="bg-primary border-primary hover:text-primary rounded-lg border-2 px-6 py-2.5 font-semibold text-white transition-all duration-300 hover:bg-white">
           Daftar
         </a>
-      </div>
-    </div>
-  </nav>
+      </nav>
+    </section>
+    <shared-hamburger-menu />
+  </div>
 </header>

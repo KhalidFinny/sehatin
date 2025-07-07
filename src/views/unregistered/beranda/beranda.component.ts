@@ -1,17 +1,17 @@
 import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
-import { TentangKami } from "../tentang-kami/tentang-kami.component";
-import { KontakKami } from "../kontak-kami/kontak-kami.component";
 
 @Component({
   selector: "pages-beranda",
   standalone: true,
-  imports: [TentangKami,KontakKami],
   templateUrl: "./beranda.component.html",
   styleUrl: "./beranda.component.css",
 })
 export class Beranda {
-  constructor(private title: Title, private meta: Meta) {
+  constructor(
+    private title: Title,
+    private meta: Meta,
+  ) {
     this.title.setTitle("Beranda");
     this.meta.addTags([
       {
