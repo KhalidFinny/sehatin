@@ -1,6 +1,7 @@
 import { Injectable, Inject, PLATFORM_ID } from "@angular/core";
 import { Router } from "@angular/router";
 import { isPlatformBrowser } from "@angular/common";
+import { Subject } from "rxjs";
 
 export interface User {
   id: number;
@@ -32,6 +33,7 @@ export class AuthService {
   ];
 
   private currentUser: User | null = null;
+  public authStateChanged = new Subject<void>();
 
   constructor(
     private router: Router,
@@ -47,17 +49,40 @@ export class AuthService {
   }
 
   login(email: string, password: string): boolean {
+    console.log('Login attempt:', { email, password });
+
     const user = this.users.find(
       (u) => u.email === email && u.password === password,
     );
+
+    console.log('Found user:', user);
+
     if (user) {
       this.currentUser = user;
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem("currentUser", JSON.stringify(user));
       }
+
+      console.log('Login successful, user set:', this.currentUser);
+      this.authStateChanged.next(); // Emit auth state change
       return true;
     }
+
+    console.log('Login failed: user not found');
     return false;
+  }
+
+  redirectToDashboard(): void {
+    if (this.currentUser) {
+      console.log('Redirecting user:', this.currentUser.role);
+      if (this.currentUser.role === 'admin') {
+        console.log('Navigating to admin dashboard');
+        this.router.navigate(['/admin/dasbor']);
+      } else {
+        console.log('Navigating to user dashboard');
+        this.router.navigate(['/pengguna/dasbor']);
+      }
+    }
   }
 
   register(email: string, password: string, name: string): boolean {
@@ -85,6 +110,7 @@ export class AuthService {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem("currentUser");
     }
+    this.authStateChanged.next(); // Emit auth state change
     this.router.navigate(["/masuk"]);
   }
 

@@ -1,8 +1,8 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectorRef } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { AuthService } from "@services/auth.service";
+import { AuthService } from "../../../services/auth.service";
 import { CommonModule } from "@angular/common";
 import { InputComponent } from "@shared/input/input.component";
 
@@ -20,7 +20,13 @@ export class Masuk {
   alertType: "success" | "error" = "error";
   isLoading: boolean = false;
 
-  constructor(private title: Title, private meta: Meta, private authService: AuthService, private router: Router) {
+  constructor(
+    private title: Title,
+    private meta: Meta,
+    private authService: AuthService,
+    private router: Router,
+    private cdr: ChangeDetectorRef
+  ) {
     this.title.setTitle("Masuk - SEHATIN");
     this.meta.addTags([
       {
@@ -61,30 +67,32 @@ export class Masuk {
     }
 
     this.isLoading = true;
+    this.cdr.detectChanges(); 
     setTimeout(() => {
       const success = this.authService.login(this.email, this.password);
 
       if (!success) {
         this.showAlertMessage("Email atau password salah!", "error");
         this.isLoading = false;
+        this.cdr.detectChanges();
         return;
       }
 
       this.showAlertMessage("Login berhasil!", "success");
+      this.isLoading = false;
+      this.cdr.detectChanges();
 
+      // Redirect manual dengan delay untuk memastikan state ter-update
       setTimeout(() => {
         const user = this.authService.getCurrentUser();
-        if (user == null) return;
-
-        const routeMap: Record<string, string> = {
-          admin: "/admin/dasbor",
-          user: "/pengguna/dasbor",
-        };
-
-        this.router.navigate([routeMap[user.role] || "/"]);
+        if (user) {
+          if (user.role === 'admin') {
+            window.location.href = '/admin/dasbor';
+          } else {
+            window.location.href = '/pengguna/dasbor';
+          }
+        }
       }, 1000);
-
-      this.isLoading = false;
     }, 1000);
   }
 
@@ -104,6 +112,10 @@ export class Masuk {
     this.alertMessage = message;
     this.alertType = type;
     this.showAlert = true;
-    setTimeout(() => (this.showAlert = false), 3000);
+    this.cdr.detectChanges(); // Force change detection
+    setTimeout(() => {
+      this.showAlert = false;
+      this.cdr.detectChanges();
+    }, 3000);
   }
 }
