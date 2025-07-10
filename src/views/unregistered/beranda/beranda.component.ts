@@ -1,11 +1,14 @@
 import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
+import { TentangKami } from "../tentang-kami/tentang-kami.component";
+import { Kontak } from "../kontak/kontak.component";
 
 @Component({
   selector: "pages-beranda",
   standalone: true,
   templateUrl: "./beranda.component.html",
   styleUrl: "./beranda.component.css",
+  imports: [TentangKami, Kontak],
 })
 export class Beranda {
   constructor(
