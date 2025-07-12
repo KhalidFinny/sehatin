@@ -1,14 +1,14 @@
-import { Component, ChangeDetectorRef } from "@angular/core";
-import { Meta, Title } from "@angular/platform-browser";
-import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
-import { AuthService } from "../../../services/auth.service";
 import { CommonModule } from "@angular/common";
+import { Component, ChangeDetectorRef } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { Meta, Title } from "@angular/platform-browser";
+import { Router } from "@angular/router";
+import { AuthService } from "@services/auth.service";
 import { InputComponent } from "@shared/input/input.component";
 
 @Component({
   selector: "pages-masuk",
-  imports: [FormsModule, CommonModule, InputComponent],
+  imports: [CommonModule, FormsModule, InputComponent],
   templateUrl: "./masuk.component.html",
   styleUrl: "./masuk.component.css",
 })
@@ -25,7 +25,7 @@ export class Masuk {
     private meta: Meta,
     private authService: AuthService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     this.title.setTitle("Masuk - SEHATIN");
     this.meta.addTags([
@@ -67,7 +67,7 @@ export class Masuk {
     }
 
     this.isLoading = true;
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
     setTimeout(() => {
       const success = this.authService.login(this.email, this.password);
 
@@ -85,12 +85,13 @@ export class Masuk {
       // Redirect manual dengan delay untuk memastikan state ter-update
       setTimeout(() => {
         const user = this.authService.getCurrentUser();
-        if (user) {
-          if (user.role === 'admin') {
-            window.location.href = '/admin/dasbor';
-          } else {
-            window.location.href = '/pengguna/dasbor';
-          }
+        if (user === null) {
+          this.showAlertMessage("Pengguna tidak ditemukan!", "error");
+          return;
+        } else if (user.role === "admin") {
+          window.location.href = "/admin/dasbor";
+        } else {
+          window.location.href = "/pengguna/dasbor";
         }
       }, 1000);
     }, 1000);
@@ -102,10 +103,6 @@ export class Masuk {
 
   onRegister(): void {
     this.router.navigate(["/daftar"]);
-  }
-
-  onBack(): void {
-    this.router.navigate(["/"]);
   }
 
   private showAlertMessage(message: string, type: "success" | "error"): void {

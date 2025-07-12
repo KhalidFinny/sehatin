@@ -1,6 +1,7 @@
+<!-- Hero -->
 <!-- prettier-ignore -->
 <section class="bg-background pt-40 pb-20">
-  <article class="relative mx-auto flex w-[92%] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white px-8 transition-transform duration-800 ease-out hover:scale-[1.01] md:px-12">
+  <article class="relative mx-auto flex w-[92%] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white px-8 transition-transform duration-800 ease-out hover:scale-[1.01] lg:px-12">
     <div class="bg-primary/10 absolute top-[-60px] left-[-60px] z-0 h-[180px] w-[180px] rounded-full"></div>
     <div class="bg-accent/20 absolute right-[-80px] bottom-[-80px] z-0 h-[220px] w-[220px] rounded-full blur-sm"></div>
     <div class="absolute top-8 right-8 z-0 grid grid-cols-3 gap-2">
@@ -24,7 +25,7 @@
           <br />
           Kesehatan Terintegrasi Nasional
         </h2>
-        <p class="text-text-secondary z-10 max-w-md text-base leading-relaxed md:text-lg">
+        <p class="text-text-secondary z-10 max-w-md text-base leading-relaxed lg:text-lg">
           SEHATIN merupakan sistem pintar untuk memantau kesehatan warga Malang
           dengan teknologi terdepan.
         </p>
@@ -61,19 +62,20 @@
   Angular itu agak tricky, jadi perlu dipahami dulu struktur kode dari file yang diimpor.
  -->
 
- <!-- prettier-ignore -->
-<section class="mx-auto flex w-[92%] flex-col items-center justify-center pb-28">
+<!-- Statistik -->
+<!-- prettier-ignore -->
+<section class="mx-auto flex w-[92%] flex-col items-center justify-center pb-22">
   <h2 class="cursor-default text-center text-[32px] font-bold text-slate-800">
     Dipercaya oleh
     <span class="from-primary to-secondary bg-gradient-to-r bg-clip-text text-transparent">
       Ribuan Pengguna
     </span>
   </h2>
-  <h5 class="mt-2 w-3/5 text-center text-base font-normal text-slate-800 md:text-lg">
+  <h5 class="mt-2 w-3/5 cursor-default text-center text-base font-normal text-slate-800 lg:text-lg">
     Bergabung Bersama Kami Sebagai Bagian dari Masyarakat Kabupaten Malang yang
     Sehat dan Terbebas dari Penyakit.
   </h5>
-  <div class="mt-8 grid w-full grid-cols-1 gap-10 md:grid-cols-4">
+  <div class="mt-8 grid w-full grid-cols-1 gap-10 lg:grid-cols-4">
     @for (stat of statistics; track $index) {
       <figure :key="$index" class="group flex flex-col items-center rounded-lg border border-slate-500/15 bg-[linear-gradient(145deg,_hsl(0_0%_100%),_hsl(210_40%_98%))] px-6 pt-10 pb-6 text-center transition-all duration-300 hover:scale-105 hover:[box-shadow:0_0_50px_hsl(193_100%_50%_/_0.2)]">
         <i [class]="stat.icon + ' text-' + stat.color + '-500 h-16 w-16 text-4xl'"></i>
@@ -92,4 +94,60 @@
       </figure>
     }
   </div>
+  <div class="mt-12 flex cursor-default items-center gap-4 self-center rounded-full bg-gradient-to-br from-[#E5FBFF] to-[#E5FFF9] px-6 py-2 text-white">
+    <span class="h-2 w-2 rounded-full bg-[#00E673]"></span>
+    <h5 class="text-slate-600 text-sm font-semibold">
+      Platform terus berkembang dengan pengguna baru setiap hari
+    </h5>
+  </div>
+</section>
+
+<!-- Any Trouble? Contact Us! -->
+<section class="mx-auto flex w-[92%] flex-col items-center justify-center pb-28">
+  <h2 class="cursor-default text-center text-[32px] font-bold text-slate-800">
+    Any Trouble? Contact Us!
+  </h2>
+  <h5 class="mt-2 w-3/5 cursor-default text-center text-base font-normal text-slate-800 lg:text-lg">
+    Jika Anda memiliki pertanyaan atau masalah, jangan ragu untuk menghubungi
+    kami.
+  </h5>
+  <article class="mt-8 grid w-full grid-cols-1 gap-10 lg:grid-cols-3">
+    @for (doctor of doctors; track $index) {
+      <figure class="group overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
+        <div class="h-64 bg-cover bg-center transition-transform duration-300 group-hover:scale-105 lg:h-96" [ngStyle]="{ 'background-image': 'url(' + doctor.image + ')' }"></div>
+        <figcaption class="space-y-2 p-4">
+          <h4 class="text-foreground text-lg font-bold">
+            {{ doctor.name }}
+          </h4>
+          <h5 class="text-primary text-sm font-medium">
+            {{ doctor.specialist }}
+          </h5>
+          <div class="flex gap-4 text-sm font-semibold">
+            <span class="flex items-center space-x-1 text-yellow-500">
+              <i class="fas fa-star text-yellow-400"></i>
+              <h6>{{ doctor.star }}</h6>
+            </span>
+            <h6 class="text-slate-600">({{ doctor.feedback }} ulasan)</h6>
+          </div>
+          <div class="text-muted-foreground mt-3 flex flex-col gap-2 text-sm">
+            <span class="flex items-center gap-2">
+              <i class="fas fa-briefcase text-gray-400"></i>
+              {{ doctor.experience }}
+            </span>
+            <span class="flex items-center gap-2">
+              <i class="fas fa-map-marker-alt text-gray-400"></i>
+              {{ doctor.place }}
+            </span>
+          </div>
+          <a
+            class="border-primary bg-primary hover:bg-primary/90 mt-4 inline-flex w-full items-center justify-center rounded-md border py-3 text-sm font-medium text-white transition"
+            [href]="doctor.link"
+            target="_blank"
+          >
+            <i class="fab fa-whatsapp mr-2"></i> Konsultasi
+          </a>
+        </figcaption>
+      </figure>
+    }
+  </article>
 </section>

@@ -2,6 +2,17 @@ import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 
+type Doctors = {
+  image: string;
+  name: string;
+  specialist: string;
+  star: number;
+  feedback: number;
+  experience: string;
+  place: string;
+  link: string | URL;
+}
+
 type Statistics = {
   color: string;
   icon: string;
@@ -83,6 +94,39 @@ export class Beranda {
       value: 98,
       title: "Tingkat Kepuasan",
       description: "Penilaian kepuasan pengguna",
+    },
+  ];
+
+  doctors: Doctors[] = [
+    {
+      image: "/images/rafi.svg",
+      name: "Dr. Rafi Abiyyu Airlangga",
+      specialist: "Spesialis Gigi",
+      star: 5,
+      feedback: 127,
+      experience: "8+ tahun pengalaman",
+      place: "RSIA Dr. Munir",
+      link: "https://wa.me/+6282143494259",
+    },
+    {
+      image: "/images/khalid.svg",
+      name: "Dr. Muhammad Khalid Atthoriq",
+      specialist: "Spesialis Penyakit Dalam",
+      star: 5,
+      feedback: 203,
+      experience: "12+ tahun pengalaman",
+      place: "RSIA Dr. Munir",
+      link: "https://wa.me/+6281230400332",
+    },
+    {
+      image: "/images/yonanda.svg",
+      name: "Dr. Yonanda Mayla Rusdiaty",
+      specialist: "Dokter Ibu dan Anak",
+      star: 5,
+      feedback: 156,
+      experience: "10+ tahun pengalaman",
+      place: "RSIA Dr. Munir",
+      link: "https://wa.me/+6282139631334",
     },
   ];
 }

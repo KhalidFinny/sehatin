@@ -1,9 +1,7 @@
-<section class="absolute top-6 left-6 z-30 flex items-center gap-2">
-  <button (click)="onBack()" class="rounded-full p-2 transition hover:bg-gray-100" aria-label="Kembali ke halaman sebelumnya">
-    <i class="fa-solid fa-arrow-left text-primary text-xl"></i>
-  </button>
-  <img src="/images/sehatin.svg" alt="Logo Sehatin" class="h-auto w-32" />
-</section>
+<a href="/" class="bg-primary lg:hover:bg-primary/90 absolute top-6 left-6 z-30 flex cursor-pointer items-center gap-2 rounded-lg px-5 py-3 text-slate-50 transition-all duration-300 ease-in-out">
+  <i class="fa-solid fa-arrow-left mr-2" aria-label="Kembali ke halaman sebelumnya"></i>
+  <h5 class="text-sm font-bold">Kembali</h5>
+</a>
 <main class="flex min-h-screen flex-col items-center justify-center gap-8 bg-gradient-to-br from-[#f4f8fb] to-[#e0f2fe] px-60 py-25 lg:flex-row">
   <section class="flex w-full max-w-lg flex-1 flex-col justify-center">
     <h1 class="text-text-primary mb-3 text-4xl font-bold">
@@ -33,22 +31,26 @@
         type="password"
         [(ngModel)]="password"
         [required]="true"
-        placeholder="Masukkan password"
+        placeholder="Masukkan kata sandi"
       />
-      <button type="submit" class="bg-primary hover:bg-primary-dark mt-2 w-full rounded-xl py-4 font-semibold text-white transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60" [disabled]="isLoading">
+      <button
+        type="submit"
+        class="bg-primary hover:bg-primary/90 mt-2 w-full cursor-pointer rounded-xl py-4 font-semibold text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-60"
+        [disabled]="isLoading"
+      >
         <span *ngIf="!isLoading">Masuk</span>
         <span *ngIf="isLoading">Memproses...</span>
       </button>
     </form>
-    <nav class="mt-8 text-center" aria-label="Navigasi ke halaman daftar">
+    <div class="mt-8 text-center" aria-label="Navigasi ke halaman daftar">
       <p>
         Belum punya akun?
         <a (click)="onRegister()" class="text-primary hover:text-primary-dark cursor-pointer font-semibold transition-colors">
           Daftar di sini
         </a>
       </p>
-    </nav>
-    <aside class="border-primary mt-10 rounded-xl border-l-4 bg-white/80 p-5 shadow-sm" aria-label="Demo credentials">
+    </div>
+    <figure class="border-primary mt-10 rounded-xl border-l-4 bg-white/80 p-5 shadow-sm" aria-label="Demo credentials">
       <h2 class="mb-2 text-lg font-semibold text-gray-700">
         Demo Credentials:
       </h2>
@@ -58,7 +60,7 @@
       <p class="text-sm">
         <strong>User:</strong> user&#64;sehatin.com / user123
       </p>
-    </aside>
+    </figure>
   </section>
   <aside class="relative hidden flex-1 items-center justify-center lg:flex" aria-hidden="true">
     <figure class="relative h-80 w-80">
