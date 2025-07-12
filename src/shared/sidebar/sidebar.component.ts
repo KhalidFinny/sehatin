@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { AuthService } from "../../services/auth.service";
 
@@ -8,6 +8,7 @@ export interface SidebarMenuItem {
   icon: string;
   link?: string;
   action?: () => void;
+  subMenu?: SidebarMenuItem[]; // Tambahan untuk sub menu
 }
 
 export interface SidebarConfig {
@@ -23,7 +24,7 @@ export interface SidebarConfig {
   templateUrl: "./sidebar.component.html",
   styleUrl: "./sidebar.component.css",
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnDestroy {
   @Input() config: SidebarConfig = {
     userType: "user",
     userName: "User Name",
@@ -34,63 +35,161 @@ export class SidebarComponent {
   // Input sederhana untuk user type saja
   @Input() userType: "admin" | "user" = "user";
 
+  // Property untuk mengelola sub menu yang terbuka
+  openSubMenuId: string | null = null;
+
+  // Timeout untuk delay closing sub-menu
+  private closeTimeout: any = null;
+
   constructor(private authService: AuthService) {}
 
   // Menu templates untuk admin dan user dengan Font Awesome icons
   private adminMenuItems: SidebarMenuItem[] = [
     {
-      id: "menu-1",
-      label: "Menu Admin 1",
+      id: "dashboard",
+      label: "Dasbor",
+      icon: "fas fa-tachometer-alt",
+    },
+    {
+      id: "user-management",
+      label: "Manajemen User",
       icon: "fas fa-users",
+      subMenu: [
+        {
+          id: "user-list",
+          label: "Daftar User",
+          icon: "fas fa-list",
+        },
+        {
+          id: "add-user",
+          label: "Tambah User",
+          icon: "fas fa-user-plus",
+        },
+        {
+          id: "user-roles",
+          label: "Role User",
+          icon: "fas fa-user-shield",
+        },
+      ],
     },
     {
-      id: "menu-2",
-      label: "Menu Admin 2",
+      id: "content-management",
+      label: "Manajemen Konten",
+      icon: "fas fa-file-alt",
+      subMenu: [
+        {
+          id: "articles",
+          label: "Artikel",
+          icon: "fas fa-newspaper",
+        },
+        {
+          id: "categories",
+          label: "Kategori",
+          icon: "fas fa-tags",
+        },
+        {
+          id: "media",
+          label: "Media",
+          icon: "fas fa-images",
+        },
+      ],
+    },
+    {
+      id: "analytics",
+      label: "Analitik",
       icon: "fas fa-chart-bar",
+      subMenu: [
+        {
+          id: "user-analytics",
+          label: "Analitik User",
+          icon: "fas fa-chart-line",
+        },
+        {
+          id: "content-analytics",
+          label: "Analitik Konten",
+          icon: "fas fa-chart-pie",
+        },
+        {
+          id: "reports",
+          label: "Laporan",
+          icon: "fas fa-file-chart",
+        },
+      ],
     },
     {
-      id: "menu-3",
-      label: "Menu Admin 3",
+      id: "settings",
+      label: "Pengaturan",
       icon: "fas fa-cog",
-    },
-    {
-      id: "menu-4",
-      label: "Menu Admin 4",
-      icon: "fas fa-database",
-    },
-    {
-      id: "menu-5",
-      label: "Menu Admin 5",
-      icon: "fas fa-shield-alt",
+      subMenu: [
+        {
+          id: "general-settings",
+          label: "Pengaturan Umum",
+          icon: "fas fa-sliders-h",
+        },
+        {
+          id: "security",
+          label: "Keamanan",
+          icon: "fas fa-shield-alt",
+        },
+        {
+          id: "backup",
+          label: "Backup & Restore",
+          icon: "fas fa-database",
+        },
+      ],
     },
   ];
 
   private userMenuItems: SidebarMenuItem[] = [
     {
-      id: "menu-1",
-      label: "Menu User 1",
-      icon: "fas fa-user",
+      id: "dashboard",
+      label: "Dasbor",
+      icon: "fas fa-tachometer-alt",
     },
     {
-      id: "menu-2",
-      label: "Menu User 2",
-      icon: "fas fa-heart",
+      id: "health",
+      label: "Kesehatan",
+      icon: "fas fa-heartbeat",
+      subMenu: [
+        {
+          id: "health-records",
+          label: "Rekam Medis",
+          icon: "fas fa-notes-medical",
+        },
+        {
+          id: "appointments",
+          label: "Janji Temu",
+          icon: "fas fa-calendar-check",
+        },
+        {
+          id: "medications",
+          label: "Obat-obatan",
+          icon: "fas fa-pills",
+        },
+      ],
     },
     {
-      id: "menu-3",
-      label: "Menu User 3",
+      id: "consultation",
+      label: "Konsultasi",
       icon: "fas fa-comments",
-    },
-    {
-      id: "menu-4",
-      label: "Menu User 4",
-      icon: "fas fa-book",
-    },
-    {
-      id: "menu-5",
-      label: "Menu User 5",
-      icon: "fas fa-bell",
-    },
+      subMenu: [
+        {
+          id: "chat-doctor",
+          label: "Chat Dokter",
+          icon: "fas fa-comment-medical",
+        },
+        {
+          id: "video-call",
+          label: "Video Call",
+          icon: "fas fa-video",
+        },
+        {
+          id: "consultation-history",
+          label: "Riwayat Konsultasi",
+          icon: "fas fa-history",
+        },
+      ],
+    }
   ];
 
   getCurrentConfig(): SidebarConfig {
@@ -115,6 +214,42 @@ export class SidebarComponent {
     return type === "admin" ? this.adminMenuItems : this.userMenuItems;
   }
 
+  // Method untuk toggle sub menu
+  toggleSubMenu(item: SidebarMenuItem) {
+    if (this.openSubMenuId === item.id) {
+      this.openSubMenuId = null;
+    } else {
+      this.openSubMenuId = item.id;
+    }
+  }
+
+  // Method untuk hover sub menu
+  onMenuHover(item: SidebarMenuItem) {
+    // Clear any existing timeout
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout);
+      this.closeTimeout = null;
+    }
+
+    if (item.subMenu && item.subMenu.length > 0) {
+      this.openSubMenuId = item.id;
+    }
+  }
+
+  // Method untuk leave sub menu
+  onMenuLeave() {
+    // Clear any existing timeout first
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout);
+    }
+
+    // Add delay before closing sub-menu
+    this.closeTimeout = setTimeout(() => {
+      this.openSubMenuId = null;
+      this.closeTimeout = null;
+    }, 300); // 300ms delay for smooth movement
+  }
+
   closeSidebar() {
     // Logic untuk menutup sidebar di mobile
     const overlay = document.querySelector(".sidebar-overlay");
@@ -128,12 +263,22 @@ export class SidebarComponent {
   }
 
   onMenuClick(item: SidebarMenuItem) {
+    if (item.subMenu && item.subMenu.length > 0) {
+      this.toggleSubMenu(item);
+      return;
+    }
+
     if (item.action) item.action();
-    // Tambahkan logic routing atau action lainnya di sini
     console.log("Menu clicked:", item.id);
   }
 
   onLogout() {
     this.authService.logout();
+  }
+
+  ngOnDestroy(): void {
+    if (this.closeTimeout) {
+      clearTimeout(this.closeTimeout);
+    }
   }
 }
