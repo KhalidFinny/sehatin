@@ -1,15 +1,5 @@
 <fieldset class="flex w-full flex-col justify-between" [ngClass]="{ 'space-y-4': !info }">
   <label [for]="name" class="form-label font-medium text-sm text-[var(--primary-text)]">
-    <!--
-    <ng-container *ngIf="required; else label">
-      {{ label }} <span class="text-red-500">*</span>
-    </ng-container>
-    <ng-template #label>
-      <ng-container *ngIf="type === 'file'">
-        {{ label }}
-      </ng-container>
-    </ng-template>
-    -->
     <ng-container *ngIf="required; else labelTemplate">
       {{ labelString }} <span class="text-red-500">*</span>
     </ng-container>
@@ -36,13 +26,13 @@
         'pl-12 py-2.5': type !== 'file',
         'pr-12': type === 'password',
         'pr-4': type !== 'password',
-        'file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded file:bg-[var(--green-tertiary)] file:text-white file:cursor-pointer':
-          type === 'file'
+        'file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded file:bg-[var(--green-tertiary)] file:text-white file:cursor-pointer': type === 'file'
       }"
       [required]="!!required"
       (input)="handleInput($event)"
       [attr.step]="type === 'number' ? 'any' : null"
       (wheel)="type === 'number' ? onWheel($event) : null"
+      autocomplete="off"
     />
     <span *ngIf="required && type !== 'password'" class="required-star">*</span>
     <i *ngIf="type === 'password'" (click)="toggleShowPassword()" [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="fa-solid fa-eye cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 pr-4 text-gray-500"></i>

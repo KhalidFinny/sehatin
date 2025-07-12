@@ -1,95 +1,101 @@
 <app-sidebar [userType]="userType"></app-sidebar>
-<div class="ml-64 p-8">
-  <!-- Swiss-style Header -->
-  <div class="mb-12">
-    <div class="flex items-end justify-between border-b border-gray-100 pb-6">
-      <div>
-        <h1 class="text-4xl font-light text-heading tracking-tight mb-1">Dashboard User</h1>
-        <p class="text-text-secondary text-base font-normal">Selamat datang kembali di dashboard kesehatanmu</p>
-      </div>
-      <div class="text-right">
-        <div class="text-sm text-gray-400 font-medium">{{ currentDate }}</div>
-        <div class="text-xs text-gray-400 mt-1">{{ currentTime }}</div>
-      </div>
+<main class="ml-64 cursor-default border-b border-gray-100 p-8">
+  <!-- Sambutan -->
+  <!-- prettier-ignore -->
+  <section class="flex items-end justify-between pb-6">
+    <div>
+      <h1 class="mb-1 text-4xl font-light tracking-tight">Dasbor Pengguna</h1>
+      <p class="text-text-secondary text-base font-normal">
+        Selamat datang kembali di dasbor kesehatanmu!
+      </p>
     </div>
-  </div>
+    <div class="text-right">
+      <h2 class="text-sm font-medium text-gray-400">{{ currentDate }}</h2>
+      <h3 class="mt-1 text-xs text-gray-400">{{ currentTime }}</h3>
+    </div>
+  </section>
 
-  <!-- Bento Grid Layout -->
-  <div class="grid grid-cols-12 gap-4 h-[calc(100vh-240px)]">
-    <!-- Health Score - Main Card -->
-    <div class="col-span-5 row-span-6 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-200 p-6 flex flex-col">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-medium text-heading">Skor Kesehatan</h2>
-        <div class="w-2 h-2 bg-primary rounded-full"></div>
-      </div>
-      <div class="flex-1 flex items-center justify-center">
-        <div class="text-center">
-          <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span class="text-gray-400 text-xs">Score</span>
-          </div>
-          <div class="text-gray-400 text-sm">Placeholder skor kesehatan user</div>
-        </div>
-      </div>
+  <!-- Bento Layout -->
+  <!-- prettier-ignore -->
+  <section class="grid h-[calc(100vh-240px)] grid-cols-12 gap-4">
+    <div class="col-span-5 flex flex-col">
+      <!-- Skor Kesehatan -->
+      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+        <figcaption class="mb-4 flex items-center justify-between">
+          <h2 class="text-heading text-lg font-medium">Skor Kesehatan</h2>
+          <div class="bg-primary h-2 w-2 rounded-full"></div>
+        </figcaption>
+        <span class="flex h-full flex-col items-center justify-center text-center">
+          <h6 class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100 text-xs text-gray-400">
+            Score
+          </h6>
+          <h6 class="text-sm text-gray-400">
+            Placeholder skor kesehatan pengguna
+          </h6>
+        </span>
+      </figure>
+      <!-- Akhir dari Figur Skor Kesehatan -->
     </div>
-    <!-- Achievements/Badges -->
-    <div class="col-span-7 row-span-2 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-medium text-heading">Achievements</h2>
-        <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
-      </div>
-      <div class="flex items-center justify-center h-16">
-        <div class="text-center">
-          <div class="text-gray-400 text-sm">Placeholder badge dan pencapaian user</div>
-        </div>
-      </div>
+    <div class="col-span-7 grid grid-cols-6 grid-rows-6 gap-4">
+      <!-- Achievements -->
+      <figure class="col-span-6 row-span-2 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+        <figcaption class="mb-4 flex items-center justify-between">
+          <h2 class="text-heading text-lg font-medium">Achievements</h2>
+          <div class="h-2 w-2 rounded-full bg-yellow-400"></div>
+        </figcaption>
+        <h5 class="flex h-16 items-center justify-center text-sm text-gray-400">
+          Placeholder badge dan pencapaian pengguna
+        </h5>
+      </figure>
+      <!-- Akhir dari Figur Achievements -->
+      <span class="col-span-6 row-span-2 grid grid-cols-4 gap-4">
+        <!-- Data Kekurangan -->
+        <figure class="col-span-2 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+          <figcaption class="mb-4 flex items-center justify-between">
+            <h2 class="text-heading text-lg font-medium">Data Kekurangan</h2>
+            <div class="h-2 w-2 rounded-full bg-red-400"></div>
+          </figcaption>
+          <h5 class="flex h-16 items-center justify-center text-sm text-gray-400">
+            Placeholder kekurangan nutrisi & aktivitas
+          </h5>
+        </figure>
+        <!-- Akhir dari Figur Data Kekurangan -->
+        <!-- Catatan -->
+        <figure class="col-span-2 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+          <figcaption class="mb-4 flex items-center justify-between">
+            <h2 class="text-heading text-base font-medium">Catatan</h2>
+            <div class="h-2 w-2 rounded-full bg-purple-400"></div>
+          </figcaption>
+          <h5 class="flex h-16 items-center justify-center text-xs text-gray-400">
+            Placeholder catatan kesehatan
+          </h5>
+        </figure>
+        <!-- Akhir dari Figur Catatan -->
+      </span>
+      <span class="col-span-6 row-span-2 grid grid-cols-4 gap-4">
+        <!-- Makanan -->
+        <figure class="col-span-2 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+          <figcaption class="mb-4 flex items-center justify-between">
+            <h2 class="text-heading text-base font-medium">Makanan</h2>
+            <div class="h-2 w-2 rounded-full bg-green-400"></div>
+          </figcaption>
+          <h5 class="flex h-16 items-center justify-center text-xs text-gray-400">
+            Placeholder makanan hari ini
+          </h5>
+        </figure>
+        <!-- Akhir dari Figur Makanan -->
+        <!-- Aktivitas -->
+        <figure class="col-span-2 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+          <figcaption class="mb-4 flex items-center justify-between">
+            <h2 class="text-heading text-base font-medium">Aktivitas</h2>
+            <div class="h-2 w-2 rounded-full bg-blue-400"></div>
+          </figcaption>
+          <h5 class="flex h-16 items-center justify-center text-xs text-gray-400">
+            Placeholder aktivitas
+          </h5>
+        </figure>
+        <!-- Akhir dari Figur Aktivitas -->
+      </span>
     </div>
-    <!-- Data Kekurangan -->
-    <div class="col-span-7 row-span-2 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-medium text-heading">Data Kekurangan</h2>
-        <div class="w-2 h-2 bg-red-400 rounded-full"></div>
-      </div>
-      <div class="flex items-center justify-center h-16">
-        <div class="text-center">
-          <div class="text-gray-400 text-sm">Placeholder kekurangan nutrisi & aktivitas</div>
-        </div>
-      </div>
-    </div>
-    <!-- Makanan Hari Ini -->
-    <div class="col-span-3 row-span-2 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-base font-medium text-heading">Makanan</h2>
-        <div class="w-2 h-2 bg-green-400 rounded-full"></div>
-      </div>
-      <div class="flex items-center justify-center h-16">
-        <div class="text-center">
-          <div class="text-gray-400 text-xs">Placeholder makanan hari ini</div>
-        </div>
-      </div>
-    </div>
-    <!-- Aktivitas -->
-    <div class="col-span-2 row-span-2 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-base font-medium text-heading">Aktivitas</h2>
-        <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
-      </div>
-      <div class="flex items-center justify-center h-16">
-        <div class="text-center">
-          <div class="text-gray-400 text-xs">Placeholder aktivitas</div>
-        </div>
-      </div>
-    </div>
-    <!-- Catatan Kesehatan -->
-    <div class="col-span-2 row-span-2 bg-white rounded-2xl border border-gray-100 hover:border-gray-200 transition-all duration-200 p-6">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-base font-medium text-heading">Catatan</h2>
-        <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
-      </div>
-      <div class="flex items-center justify-center h-16">
-        <div class="text-center">
-          <div class="text-gray-400 text-xs">Placeholder catatan kesehatan</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  </section>
+</main>

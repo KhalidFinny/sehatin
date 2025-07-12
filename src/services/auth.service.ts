@@ -11,9 +11,7 @@ export interface User {
   role: "admin" | "user";
 }
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: "root" })
 export class AuthService {
   private users: User[] = [
     {
@@ -35,70 +33,54 @@ export class AuthService {
   private currentUser: User | null = null;
   public authStateChanged = new Subject<void>();
 
-  constructor(
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object,
-  ) {
-    // Cek apakah ada user yang sudah login dari localStorage
-    if (isPlatformBrowser(this.platformId)) {
-      const savedUser = localStorage.getItem("currentUser");
-      if (savedUser) {
-        this.currentUser = JSON.parse(savedUser);
-      }
-    }
+  constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const savedUser = localStorage.getItem("currentUser");
+    if (!savedUser) return;
+    this.currentUser = JSON.parse(savedUser);
   }
 
   login(email: string, password: string): boolean {
-    console.log('Login attempt:', { email, password });
+    console.log("Login attempt:", { email, password });
 
-    const user = this.users.find(
-      (u) => u.email === email && u.password === password,
-    );
+    const user = this.users.find((u) => u.email === email && u.password === password);
 
-    console.log('Found user:', user);
-
-    if (user) {
-      this.currentUser = user;
-      if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem("currentUser", JSON.stringify(user));
-      }
-
-      console.log('Login successful, user set:', this.currentUser);
-      this.authStateChanged.next(); // Emit auth state change
-      return true;
+    if (!user) {
+      console.log("Login failed: user not found");
+      return false;
     }
 
-    console.log('Login failed: user not found');
-    return false;
+    this.currentUser = user;
+
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem("currentUser", JSON.stringify(user));
+    }
+
+    console.log("Login successful, user set:", this.currentUser);
+    this.authStateChanged.next();
+    return true;
   }
 
   redirectToDashboard(): void {
-    if (this.currentUser) {
-      console.log('Redirecting user:', this.currentUser.role);
-      if (this.currentUser.role === 'admin') {
-        console.log('Navigating to admin dashboard');
-        this.router.navigate(['/admin/dasbor']);
-      } else {
-        console.log('Navigating to user dashboard');
-        this.router.navigate(['/pengguna/dasbor']);
-      }
-    }
+    if (!this.currentUser) return;
+
+    const role = this.currentUser.role;
+    const route = role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
+
+    console.log("Redirecting user:", role);
+    this.router.navigate([route]);
   }
 
   register(email: string, password: string, name: string): boolean {
-    // Cek apakah email sudah ada
-    const existingUser = this.users.find((u) => u.email === email);
-    if (existingUser) {
-      return false; // Email sudah terdaftar
-    }
+    const userExists = this.users.some((u) => u.email === email);
+    if (userExists) return false;
 
-    // Buat user baru
     const newUser: User = {
       id: this.users.length + 1,
       email,
       password,
       name,
-      role: "user", // Default role adalah user
+      role: "user",
     };
 
     this.users.push(newUser);
@@ -107,10 +89,8 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem("currentUser");
-    }
-    this.authStateChanged.next(); // Emit auth state change
+    if (isPlatformBrowser(this.platformId)) localStorage.removeItem("currentUser");
+    this.authStateChanged.next();
     this.router.navigate(["/masuk"]);
   }
 
