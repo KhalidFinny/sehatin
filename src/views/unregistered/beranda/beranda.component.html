@@ -63,91 +63,152 @@
  -->
 
 <!-- Statistik -->
-<!-- prettier-ignore -->
-<section class="mx-auto flex w-[92%] flex-col items-center justify-center pb-22">
-  <h2 class="cursor-default text-center text-[32px] font-bold text-slate-800">
-    Dipercaya oleh
-    <span class="from-primary to-secondary bg-gradient-to-r bg-clip-text text-transparent">
-      Ribuan Pengguna
-    </span>
-  </h2>
-  <h5 class="mt-2 w-3/5 cursor-default text-center text-base font-normal text-slate-800 lg:text-lg">
-    Bergabung Bersama Kami Sebagai Bagian dari Masyarakat Kabupaten Malang yang
-    Sehat dan Terbebas dari Penyakit.
-  </h5>
-  <div class="mt-8 grid w-full grid-cols-1 gap-10 lg:grid-cols-4">
+<section class="mx-auto flex w-[92%] flex-col items-center justify-center py-30" id="tentang-kami">
+  <!-- Header Section -->
+  <div class="text-center mb-16">
+    <h2 class="text-4xl font-bold text-gray-900 mb-4">
+      Dipercaya oleh
+      <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+        Ribuan Pengguna
+      </span>
+    </h2>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+      Bergabung bersama kami sebagai bagian dari masyarakat Kabupaten Malang yang
+      sehat dan terbebas dari penyakit.
+    </p>
+  </div>
+
+  <!-- Statistics Grid -->
+  <div class="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
     @for (stat of statistics; track $index) {
-      <figure :key="$index" class="group flex flex-col items-center rounded-lg border border-slate-500/15 bg-[linear-gradient(145deg,_hsl(0_0%_100%),_hsl(210_40%_98%))] px-6 pt-10 pb-6 text-center transition-all duration-300 hover:scale-105 hover:[box-shadow:0_0_50px_hsl(193_100%_50%_/_0.2)]">
-        <i [class]="stat.icon + ' text-' + stat.color + '-500 h-16 w-16 text-4xl'"></i>
-        <figcaption class="space-y-2">
-          <h3 class="text-3xl font-bold lg:text-4xl">
-            {{ stat.value }}
-          </h3>
-          <h4 class="text-foreground text-lg font-semibold">
-            {{ stat.title }}
-          </h4>
-          <p class="text-muted-foreground text-sm">
-            {{ stat.description }}
-          </p>
-        </figcaption>
-        <div class="mt-4 h-1 w-full origin-left scale-x-0 rounded-full bg-[linear-gradient(135deg,_hsl(193_100%_50%),_hsl(159_100%_45%))] transition-transform duration-300 group-hover:scale-x-100"></div>
-      </figure>
+      <div class="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-80"></div>
+
+        <!-- Content -->
+        <div class="relative p-8 text-center">
+          <!-- Icon Container -->
+          <div class="mb-6 flex justify-center">
+            <div class="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg">
+              <i [class]="stat.icon + ' text-white text-2xl'"></i>
+            </div>
+          </div>
+
+          <!-- Statistics Info -->
+          <div class="space-y-3">
+            <h3 class="text-4xl font-bold text-gray-900">
+              {{ animatedStats[$index] }}{{ stat.title === 'Tingkat Kepuasan' ? '%' : '+' }}
+            </h3>
+            <h4 class="text-lg font-semibold text-gray-800">
+              {{ stat.title }}
+            </h4>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              {{ stat.description }}
+            </p>
+          </div>
+
+          <!-- Hover Effect Line -->
+          <div class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></div>
+        </div>
+      </div>
     }
   </div>
-  <div class="mt-12 flex cursor-default items-center gap-4 self-center rounded-full bg-gradient-to-br from-[#E5FBFF] to-[#E5FFF9] px-6 py-2 text-white">
-    <span class="h-2 w-2 rounded-full bg-[#00E673]"></span>
-    <h5 class="text-slate-600 text-sm font-semibold">
-      Platform terus berkembang dengan pengguna baru setiap hari
-    </h5>
+
+  <!-- Status Indicator -->
+  <div class="flex items-center gap-3 rounded-full bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-3 border border-blue-100">
+    <div class="flex items-center gap-2">
+      <span class="h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+      <span class="text-sm font-medium text-gray-700">
+        Platform terus berkembang dengan pengguna baru setiap hari
+      </span>
+    </div>
   </div>
 </section>
 
 <!-- Any Trouble? Contact Us! -->
-<section class="mx-auto flex w-[92%] flex-col items-center justify-center pb-28">
-  <h2 class="cursor-default text-center text-[32px] font-bold text-slate-800">
-    Any Trouble? Contact Us!
-  </h2>
-  <h5 class="mt-2 w-3/5 cursor-default text-center text-base font-normal text-slate-800 lg:text-lg">
-    Jika Anda memiliki pertanyaan atau masalah, jangan ragu untuk menghubungi
-    kami.
-  </h5>
-  <article class="mt-8 grid w-full grid-cols-1 gap-10 lg:grid-cols-3">
+<section class="mx-auto flex w-[92%] flex-col items-center justify-center py-30" id="kontak">
+  <!-- Header Section -->
+  <div class="text-center mb-16">
+    <h2 class="text-4xl font-bold text-gray-900 mb-4">
+      Butuh Bantuan?
+      <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+        Kontak Kami
+      </span>
+    </h2>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+      Jika Anda memiliki pertanyaan atau masalah, jangan ragu untuk menghubungi
+      tim dokter kami yang siap membantu.
+    </p>
+  </div>
+
+  <!-- Doctors Grid -->
+  <div class="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     @for (doctor of doctors; track $index) {
-      <figure class="group overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-md">
-        <div class="h-64 bg-cover bg-center transition-transform duration-300 group-hover:scale-105 lg:h-96" [ngStyle]="{ 'background-image': 'url(' + doctor.image + ')' }"></div>
-        <figcaption class="space-y-2 p-4">
-          <h4 class="text-foreground text-lg font-bold">
-            {{ doctor.name }}
-          </h4>
-          <h5 class="text-primary text-sm font-medium">
-            {{ doctor.specialist }}
-          </h5>
-          <div class="flex gap-4 text-sm font-semibold">
-            <span class="flex items-center space-x-1 text-yellow-500">
-              <i class="fas fa-star text-yellow-400"></i>
-              <h6>{{ doctor.star }}</h6>
-            </span>
-            <h6 class="text-slate-600">({{ doctor.feedback }} ulasan)</h6>
+      <div class="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-80"></div>
+
+        <!-- Content -->
+        <div class="relative">
+          <!-- Image Section -->
+          <div class="relative overflow-hidden rounded-t-2xl aspect-[4/3]">
+            <div
+              class="w-full h-96 lg:h-[500px] object-cover bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+              [ngStyle]="{ 'background-image': 'url(' + doctor.image + ')' }"
+            ></div>
+            <!-- Overlay on hover -->
+            <div class="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
           </div>
-          <div class="text-muted-foreground mt-3 flex flex-col gap-2 text-sm">
-            <span class="flex items-center gap-2">
-              <i class="fas fa-briefcase text-gray-400"></i>
-              {{ doctor.experience }}
-            </span>
-            <span class="flex items-center gap-2">
-              <i class="fas fa-map-marker-alt text-gray-400"></i>
-              {{ doctor.place }}
-            </span>
+
+          <!-- Info Section -->
+          <div class="p-4 space-y-4">
+            <!-- Doctor Info -->
+            <div class="space-y-2">
+              <h4 class="text-xl font-bold text-gray-900">
+                {{ doctor.name }}
+              </h4>
+              <h5 class="text-blue-600 text-sm font-semibold">
+                {{ doctor.specialist }}
+              </h5>
+            </div>
+
+            <!-- Rating -->
+            <div class="flex items-center gap-3">
+              <div class="flex items-center gap-1">
+                <i class="fas fa-star text-yellow-400 text-sm"></i>
+                <span class="text-sm font-semibold text-gray-900">{{ doctor.star }}.0</span>
+              </div>
+              <span class="text-sm text-gray-600">({{ doctor.feedback }} ulasan)</span>
+            </div>
+
+            <!-- Details -->
+            <div class="space-y-2 text-sm text-gray-600">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-briefcase text-gray-400 w-4"></i>
+                <span>{{ doctor.experience }}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="fas fa-map-marker-alt text-gray-400 w-4"></i>
+                <span>{{ doctor.place }}</span>
+              </div>
+            </div>
+
+            <!-- Contact Button -->
+            <a
+              class="group/btn flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
+              [href]="doctor.link"
+              target="_blank"
+            >
+              <i class="fab fa-whatsapp text-lg"></i>
+              <span>Konsultasi Sekarang</span>
+              <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover/btn:translate-x-1"></i>
+            </a>
           </div>
-          <a
-            class="border-primary bg-primary hover:bg-primary/90 mt-4 inline-flex w-full items-center justify-center rounded-md border py-3 text-sm font-medium text-white transition"
-            [href]="doctor.link"
-            target="_blank"
-          >
-            <i class="fab fa-whatsapp mr-2"></i> Konsultasi
-          </a>
-        </figcaption>
-      </figure>
+
+          <!-- Hover Effect Line -->
+          <div class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></div>
+        </div>
+      </div>
     }
-  </article>
+  </div>
 </section>

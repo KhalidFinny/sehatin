@@ -1,4 +1,4 @@
-<app-sidebar [userType]="userType"></app-sidebar>
+<app-sidebar [userType]="'admin'"></app-sidebar>
 <main class="ml-64 cursor-default border-b border-gray-100 p-8">
   <section class="flex items-end justify-between pb-6">
     <div>
@@ -10,6 +10,61 @@
     <div class="text-right">
       <h2 class="text-sm font-medium text-gray-400">{{ currentDate }}</h2>
       <h3 class="mt-1 text-xs text-gray-400">{{ currentTime }}</h3>
+    </div>
+  </section>
+  <!-- Bento Layout -->
+  <!-- prettier-ignore -->
+  <section class="grid h-[calc(100vh-240px)] grid-cols-12 gap-4">
+    <div class="col-span-12 flex flex-col">
+      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+        <figcaption class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-medium text-primary">Statistik Penyakit Tidak Menular per Kecamatan</h2>
+          <figure class="flex gap-2 items-center">
+            <select class="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition" [(ngModel)]="selectedPenyakit" (change)="onPenyakitChange()">
+              <option *ngFor="let p of penyakitList" [value]="p.value">{{ p.label }}</option>
+            </select>
+            <select class="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition" [(ngModel)]="selectedYear">
+              <option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
+            </select>
+          </figure>
+        </figcaption>
+        <div class="w-full h-80">
+          <canvas baseChart
+            [data]="barChartData"
+            [options]="barChartOptions"
+            [type]="barChartType">
+          </canvas>
+        </div>
+      </figure>
+    </div>
+    <!-- 2 Card Bawah: Pie Chart & Line Chart -->
+    <div class="col-span-4 flex flex-col">
+      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+        <figcaption class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-medium text-primary">Proporsi Kasus Penyakit Tidak Menular</h2>
+        </figcaption>
+        <div class="w-full h-64 flex items-center justify-center">
+          <canvas baseChart
+            [data]="pieChartData"
+            [options]="pieChartOptions"
+            [type]="'pie'">
+          </canvas>
+        </div>
+      </figure>
+    </div>
+    <div class="col-span-8 flex flex-col">
+      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+        <figcaption class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-medium text-primary">Tren Kasus Penyakit Tidak Menular per Tahun</h2>
+        </figcaption>
+        <div class="w-full h-64 flex items-center justify-center">
+          <canvas baseChart
+            [data]="lineChartData"
+            [options]="lineChartOptions"
+            [type]="'line'">
+          </canvas>
+        </div>
+      </figure>
     </div>
   </section>
 </main>

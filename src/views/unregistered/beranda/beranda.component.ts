@@ -1,6 +1,8 @@
-import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { CommonModule, isPlatformBrowser } from "@angular/common";
+import { Component, OnInit, Inject, PLATFORM_ID } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
+import { interval } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 
 type Doctors = {
   image: string;
@@ -28,10 +30,11 @@ type Statistics = {
   templateUrl: "./beranda.component.html",
   styleUrl: "./beranda.component.css",
 })
-export class Beranda {
+export class Beranda implements OnInit {
   constructor(
     private title: Title,
     private meta: Meta,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.title.setTitle("Beranda | SEHATIN");
     this.meta.addTags([
@@ -109,7 +112,7 @@ export class Beranda {
       link: "https://wa.me/+6282143494259",
     },
     {
-      image: "/images/khalid.svg",
+      image: "/images/khalid.png",
       name: "Dr. Muhammad Khalid Atthoriq",
       specialist: "Spesialis Penyakit Dalam",
       star: 5,
@@ -129,4 +132,40 @@ export class Beranda {
       link: "https://wa.me/+6282139631334",
     },
   ];
+
+  animatedStats: number[] = [];
+
+  ngOnInit() {
+    this.animatedStats = this.statistics.map(() => 0);
+    this.animateAllStats();
+  }
+
+  animateAllStats() {
+    this.statistics.forEach((stat, i) => {
+      this.animateCountUp(i, stat.value, 1500); // 1.5 detik
+    });
+  }
+
+  animateCountUp(index: number, endVal: number, duration: number) {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.animatedStats[index] = endVal;
+      return;
+    }
+    const frameRate = 60; // 60fps
+    const totalFrames = Math.round((duration / 1000) * frameRate);
+    let frame = 0;
+    const startVal = 0;
+    const sub = interval(1000 / frameRate)
+      .pipe(takeWhile(() => frame <= totalFrames))
+      .subscribe(() => {
+        frame++;
+        const progress = frame / totalFrames;
+        const value = Math.round(progress * (endVal - startVal) + startVal);
+        this.animatedStats[index] = value;
+        if (frame >= totalFrames) {
+          this.animatedStats[index] = endVal;
+          sub.unsubscribe();
+        }
+      });
+  }
 }

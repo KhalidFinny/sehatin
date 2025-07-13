@@ -51,90 +51,36 @@ export class SidebarComponent implements OnDestroy {
       icon: "fas fa-tachometer-alt",
     },
     {
-      id: "user-management",
-      label: "Manajemen User",
-      icon: "fas fa-users",
-      subMenu: [
-        {
-          id: "user-list",
-          label: "Daftar User",
-          icon: "fas fa-list",
-        },
-        {
-          id: "add-user",
-          label: "Tambah User",
-          icon: "fas fa-user-plus",
-        },
-        {
-          id: "user-roles",
-          label: "Role User",
-          icon: "fas fa-user-shield",
-        },
-      ],
-    },
-    {
-      id: "content-management",
-      label: "Manajemen Konten",
-      icon: "fas fa-file-alt",
-      subMenu: [
-        {
-          id: "articles",
-          label: "Artikel",
-          icon: "fas fa-newspaper",
-        },
-        {
-          id: "categories",
-          label: "Kategori",
-          icon: "fas fa-tags",
-        },
-        {
-          id: "media",
-          label: "Media",
-          icon: "fas fa-images",
-        },
-      ],
-    },
-    {
       id: "analytics",
       label: "Analitik",
       icon: "fas fa-chart-bar",
       subMenu: [
         {
-          id: "user-analytics",
-          label: "Analitik User",
+          id: "kecamatan-analytics",
+          label: "Analitik Kecamatan",
           icon: "fas fa-chart-line",
         },
         {
-          id: "content-analytics",
-          label: "Analitik Konten",
-          icon: "fas fa-chart-pie",
-        },
-        {
-          id: "reports",
-          label: "Laporan",
-          icon: "fas fa-file-chart",
+          id: "analytics-penyakit",
+          label: "Analitik Penyakit",
+          icon: "fas fa-user-doctor",
         },
       ],
     },
     {
-      id: "settings",
-      label: "Pengaturan",
-      icon: "fas fa-cog",
+      id: "report",
+      label: "Laporan",
+      icon: "fas fa-file-alt",
       subMenu: [
         {
-          id: "general-settings",
-          label: "Pengaturan Umum",
-          icon: "fas fa-sliders-h",
+          id: "report-kecamatan",
+          label: "Laporan Kecamatan",
+          icon: "fas fa-location-dot",
         },
         {
-          id: "security",
-          label: "Keamanan",
-          icon: "fas fa-shield-alt",
-        },
-        {
-          id: "backup",
-          label: "Backup & Restore",
-          icon: "fas fa-database",
+          id: "report-kesehatan",
+          label: "Laporan Kesehatan",
+          icon: "fas fa-heartbeat",
         },
       ],
     },
@@ -193,18 +139,25 @@ export class SidebarComponent implements OnDestroy {
   ];
 
   getCurrentConfig(): SidebarConfig {
-    // Jika config diberikan, gunakan itu
-    if (this.config && this.config.userName) {
+    // Prioritaskan input userType jika diberikan
+    if (this.userType === 'admin' || this.userType === 'user') {
+      return {
+        userType: this.userType,
+        userName: this.userType === 'admin' ? 'Admin Sehatin' : 'User Sehatin',
+        userEmail: this.userType === 'admin' ? 'admin@sehatin.com' : 'user@sehatin.com',
+        userInitial: this.userType === 'admin' ? 'A' : 'U',
+      };
+    }
+    // Jika config diberikan dan valid, gunakan itu
+    if (this.config && (this.config.userType === 'admin' || this.config.userType === 'user')) {
       return this.config;
     }
-
-    // Jika tidak, buat config berdasarkan userType
-    const type = this.userType || "user";
+    // Default fallback
     return {
-      userType: type,
-      userName: type === "admin" ? "Admin Sehatin" : "User Sehatin",
-      userEmail: type === "admin" ? "admin@sehatin.com" : "user@sehatin.com",
-      userInitial: type === "admin" ? "A" : "U",
+      userType: 'user',
+      userName: 'User Sehatin',
+      userEmail: 'user@sehatin.com',
+      userInitial: 'U',
     };
   }
 
