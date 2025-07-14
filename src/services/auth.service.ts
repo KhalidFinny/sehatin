@@ -91,7 +91,7 @@ export class AuthService {
     this.currentUser = null;
     if (isPlatformBrowser(this.platformId)) localStorage.removeItem("currentUser");
     this.authStateChanged.next();
-    this.router.navigate(["/masuk"]);
+    this.router.navigate(["/"]);
   }
 
   getCurrentUser(): User | null {
