@@ -27,7 +27,7 @@ export class Masuk {
     private router: Router,
     private cdr: ChangeDetectorRef,
   ) {
-    this.title.setTitle("Masuk - SEHATIN");
+    this.title.setTitle("Masuk | SEHATIN");
     this.meta.addTags([
       {
         name: "description",
@@ -35,7 +35,7 @@ export class Masuk {
       },
       {
         property: "og:title",
-        content: "Masuk - SEHATIN",
+        content: "Masuk | SEHATIN",
       },
       {
         property: "og:description",
@@ -47,7 +47,7 @@ export class Masuk {
       },
       {
         property: "twitter:title",
-        content: "Masuk - SEHATIN",
+        content: "Masuk | SEHATIN",
       },
       {
         property: "twitter:description",

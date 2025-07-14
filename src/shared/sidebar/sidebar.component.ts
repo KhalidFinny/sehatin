@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from "@services/auth.service";
 
 export interface SidebarMenuItem {
   id: string;
@@ -135,29 +135,33 @@ export class SidebarComponent implements OnDestroy {
           icon: "fas fa-history",
         },
       ],
-    }
+    },
   ];
 
   getCurrentConfig(): SidebarConfig {
     // Prioritaskan input userType jika diberikan
-    if (this.userType === 'admin' || this.userType === 'user') {
+    if (this.userType === "admin" || this.userType === "user") {
       return {
         userType: this.userType,
-        userName: this.userType === 'admin' ? 'Admin Sehatin' : 'User Sehatin',
-        userEmail: this.userType === 'admin' ? 'admin@sehatin.com' : 'user@sehatin.com',
-        userInitial: this.userType === 'admin' ? 'A' : 'U',
+        userName: this.userType === "admin" ? "Admin Sehatin" : "User Sehatin",
+        userEmail:
+          this.userType === "admin" ? "admin@sehatin.com" : "user@sehatin.com",
+        userInitial: this.userType === "admin" ? "A" : "U",
       };
     }
     // Jika config diberikan dan valid, gunakan itu
-    if (this.config && (this.config.userType === 'admin' || this.config.userType === 'user')) {
+    if (
+      this.config &&
+      (this.config.userType === "admin" || this.config.userType === "user")
+    ) {
       return this.config;
     }
     // Default fallback
     return {
-      userType: 'user',
-      userName: 'User Sehatin',
-      userEmail: 'user@sehatin.com',
-      userInitial: 'U',
+      userType: "user",
+      userName: "User Sehatin",
+      userEmail: "user@sehatin.com",
+      userInitial: "U",
     };
   }
 

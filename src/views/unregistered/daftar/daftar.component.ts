@@ -12,7 +12,7 @@ import { Meta, Title } from "@angular/platform-browser";
   templateUrl: "./daftar.component.html",
   styleUrl: "./daftar.component.css",
 })
-export class DaftarComponent {
+export class Daftar {
   email: string = "";
   name: string = "";
   nik: string = "";

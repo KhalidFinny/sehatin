@@ -1,63 +1,96 @@
-import { Component, OnInit } from '@angular/core';
-import { ChartConfiguration, ChartType, ChartData, ChartOptions } from 'chart.js';
-import { NgChartsModule } from 'ng2-charts';
-import { FormsModule } from '@angular/forms';
-import { SidebarComponent } from '../../../shared/sidebar/sidebar.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
+import { Component, OnInit } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { Meta, Title } from "@angular/platform-browser";
+import { ChartConfiguration, ChartData, ChartOptions, ChartType } from "chart.js";
+import { getAllDistricts } from "indonesia-nodejs";
+import { NgChartsModule } from "ng2-charts";
+import { SidebarComponent } from "@shared/sidebar/sidebar.component";
 
 @Component({
-  selector: 'app-admin-dasbor',
+  selector: "halaman-admin-dasbor",
   standalone: true,
   imports: [CommonModule, SidebarComponent, NgChartsModule, FormsModule],
-  templateUrl: './dasbor.component.html',
-  styleUrl: './dasbor.component.css',
+  templateUrl: "./dasbor.component.html",
+  styleUrl: "./dasbor.component.css",
 })
-export class DasborComponent implements OnInit {
-  userType = 'admin';
-  currentDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  currentTime = new Date().toLocaleTimeString('id-ID');
+export class DasborAdmin implements OnInit {
+  constructor(private title: Title, private meta: Meta) {
+    this.title.setTitle("Dasbor Admin | SEHATIN");
+    this.meta.addTags([
+      {
+        name: "description",
+        content: "Dasbor Admin",
+      },
+      {
+        property: "og:title",
+        content: "Dasbor Admin",
+      },
+      {
+        property: "og:description",
+        content: "Dasbor Admin",
+      },
+      {
+        property: "og:image",
+        content: "",
+      },
+      {
+        property: "twitter:title",
+        content: "Dasbor Admin",
+      },
+      {
+        property: "twitter:description",
+        content: "Dasbor Admin",
+      },
+      {
+        property: "twitter:image",
+        content: "",
+      },
+    ]);
+  }
 
-  // Modal testing form
-  showTestModal = false;
-  newData = {
-    kecamatan: '',
-    penyakit: 'kolesterol',
+  penyakitDipilih = "kolesterol";
+  tampilkanModalUji = false;
+  tipePengguna = "admin";
+  waktuSekarang = new Date().toLocaleTimeString("id-ID");
+  tanggalHariIni = new Date().toLocaleDateString("id-ID", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  dataBaru = {
+    kecamatan: "",
+    penyakit: "kolesterol",
     jumlah: 0,
-    tahun: 2025
+    tahun: 2025,
   };
 
-  penyakitList = [
-    { label: 'Kolesterol', value: 'kolesterol' },
-    { label: 'Hipertensi', value: 'hipertensi' },
-    { label: 'Diabetes', value: 'diabetes' },
-  ];
-  selectedPenyakit = 'kolesterol';
-
-  kecamatanLabels = [
-    'Ampelgading', 'Bantur', 'Bululawang', 'Dampit', 'Dau', 'Donomulyo', 'Gedangan', 'Gondanglegi',
-    'Jabung', 'Kalipare', 'Karangploso', 'Kasembon', 'Kepanjen', 'Kromengan', 'Lawang', 'Ngajum',
-    'Ngantang', 'Pagak', 'Pagelaran', 'Pakis', 'Pakisaji', 'Poncokusumo', 'Pujon', 'Sumbermanjing Wetan',
-    'Singosari', 'Sumberpucung', 'Tajinan', 'Tirtoyudo', 'Tumpang', 'Turen', 'Wagir', 'Wajak', 'Wonosari',
+  daftarPenyakit = [
+    { label: "Kolesterol", value: "kolesterol" },
+    { label: "Hipertensi", value: "hipertensi" },
+    { label: "Diabetes", value: "diabetes" },
   ];
 
-  // Struktur data per tahun
-  penyakitDataByYear: Record<number, Record<string, number[]>> = {};
-  penyakitData: Record<string, number[]> = {}; // Data untuk tahun yang dipilih
+  daftarKecamatan: string[] = [];
+  tahunTersedia = [2020, 2021, 2022, 2023, 2024, 2025];
+  tahunDipilih = 2025;
+  dataPenyakitPertahun: Record<number, Record<string, number[]>> = {};
+  dataPenyakitAktif: Record<string, number[]> = {};
 
-  yearList = [2020, 2021, 2022, 2023, 2024, 2025];
-  selectedYear = 2025;
-
-  public barChartOptions: ChartConfiguration['options'] = {
+  // Opsi grafik batang
+  opsiGrafikBatang: ChartConfiguration["options"] = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       title: { display: false },
       tooltip: {
-        backgroundColor: '#b74660',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: '#b74660',
+        backgroundColor: "#b74660",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "#b74660",
         borderWidth: 1,
         padding: 12,
         cornerRadius: 8,
@@ -66,70 +99,47 @@ export class DasborComponent implements OnInit {
     },
     scales: {
       x: {
-        ticks: {
-          color: '#0ea5e9',
-          font: { weight: 'normal', size: 12 },
-        },
-        grid: {
-          color: '#e0e7ef',
-        },
+        ticks: { color: "#0ea5e9", font: { size: 12 } },
+        grid: { color: "#e0e7ef" },
       },
       y: {
         beginAtZero: true,
-        ticks: {
-          color: '#64748b',
-          font: { weight: 'normal', size: 12 },
-        },
-        grid: {
-          color: '#e0e7ef',
-        },
+        ticks: { color: "#64748b", font: { size: 12 } },
+        grid: { color: "#e0e7ef" },
       },
     },
   };
-  public barChartType: ChartType = 'bar';
-  public barChartData = {
-    labels: [] as string[],
-    datasets: [
-      {
-        data: [] as number[],
-        label: 'Jumlah Kasus',
-        backgroundColor: 'rgba(14,165,233,0.7)', // biru utama
-        borderRadius: 8,
-        hoverBackgroundColor: 'rgba(34,211,238,0.9)', // cyan terang saat hover
-        maxBarThickness: 32,
-      }
-    ]
-  };
 
-  // Pie chart data: total kasus per penyakit
-  public pieChartLabels = ['Kolesterol', 'Hipertensi', 'Diabetes'];
-  public pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: this.pieChartLabels,
+  tipeGrafikBatang: ChartType = "bar";
+  dataGrafikBatang = this.bentukDataGrafikBatang();
+
+  labelGrafikPie = ["Kolesterol", "Hipertensi", "Diabetes"];
+  dataGrafikLingkaran: ChartData<"pie", number[], string> = {
+    labels: this.labelGrafikPie,
     datasets: [
       {
         data: [0, 0, 0],
-        backgroundColor: ['#0ea5e9', '#f59e42', '#22d3ee'], // primary, secondary, accent
+        backgroundColor: ["#0ea5e9", "#f59e42", "#22d3ee"],
         borderWidth: 2,
-        borderColor: '#fff',
+        borderColor: "#fff",
         hoverOffset: 8,
       },
     ],
   };
-  public pieChartOptions: ChartOptions<'pie'> = {
+
+  opsiGrafikLingkaran: ChartOptions<"pie"> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'bottom',
-        labels: {
-          color: '#334155',
-          font: { size: 14, weight: 'normal' },
-        },
+        position: "bottom",
+        labels: { color: "#334155", font: { size: 14 } },
       },
       tooltip: {
-        backgroundColor: '#0ea5e9',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: '#38bdf8',
+        backgroundColor: "#0ea5e9",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "#38bdf8",
         borderWidth: 1,
         padding: 12,
         cornerRadius: 8,
@@ -138,59 +148,29 @@ export class DasborComponent implements OnInit {
     },
   };
 
-  // Line chart data: tren penyakit per tahun
-  public lineChartLabels = this.yearList.map(String);
-  public lineChartData: ChartData<'line'> = {
-    labels: this.lineChartLabels,
+  labelGrafikGaris = this.tahunTersedia.map(String);
+  dataGrafikGaris: ChartData<"line"> = {
+    labels: this.labelGrafikGaris,
     datasets: [
-      {
-        label: 'Kolesterol',
-        data: this.yearList.map(() => Math.floor(Math.random() * 300) + 100),
-        borderColor: '#0ea5e9', // primary
-        backgroundColor: 'rgba(14,165,233,0.15)',
-        tension: 0.4,
-        pointRadius: 4,
-        pointBackgroundColor: '#0ea5e9',
-        fill: true,
-      },
-      {
-        label: 'Hipertensi',
-        data: this.yearList.map(() => Math.floor(Math.random() * 200) + 80),
-        borderColor: '#f59e42', // secondary
-        backgroundColor: 'rgba(245,158,66,0.15)',
-        tension: 0.4,
-        pointRadius: 4,
-        pointBackgroundColor: '#f59e42',
-        fill: true,
-      },
-      {
-        label: 'Diabetes',
-        data: this.yearList.map(() => Math.floor(Math.random() * 150) + 50),
-        borderColor: '#22d3ee', // accent
-        backgroundColor: 'rgba(34,211,238,0.15)',
-        tension: 0.4,
-        pointRadius: 4,
-        pointBackgroundColor: '#22d3ee',
-        fill: true,
-      },
+      this.buatDatasetGaris("Kolesterol", "#0ea5e9", 100, 300),
+      this.buatDatasetGaris("Hipertensi", "#f59e42", 80, 200),
+      this.buatDatasetGaris("Diabetes", "#22d3ee", 50, 150),
     ],
   };
-  public lineChartOptions: ChartOptions<'line'> = {
+
+  opsiGrafikGaris: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
-        labels: {
-          color: '#334155',
-          font: { size: 14, weight: 'normal' },
-        },
+        position: "top",
+        labels: { color: "#334155", font: { size: 14 } },
       },
       tooltip: {
-        backgroundColor: '#0ea5e9',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: '#38bdf8',
+        backgroundColor: "#0ea5e9",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+        borderColor: "#38bdf8",
         borderWidth: 1,
         padding: 12,
         cornerRadius: 8,
@@ -198,235 +178,157 @@ export class DasborComponent implements OnInit {
       },
     },
     scales: {
-      x: {
-        ticks: {
-          color: '#0ea5e9',
-          font: { weight: 'normal', size: 12 },
-        },
-        grid: {
-          color: '#e0e7ef',
-        },
-      },
+      x: { ticks: { color: "#0ea5e9" }, grid: { color: "#e0e7ef" } },
       y: {
         beginAtZero: true,
-        ticks: {
-          color: '#64748b',
-          font: { weight: 'normal', size: 12 },
-        },
-        grid: {
-          color: '#e0e7ef',
-        },
+        ticks: { color: "#64748b" },
+        grid: { color: "#e0e7ef" },
       },
     },
   };
 
-  getColorVar(name: string): string {
-    if (typeof window !== 'undefined') {
-      return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || '#000';
-    }
-    return '#000';
+  async ngOnInit() {
+    this.inisialisasiDataPertahun();
+    this.ambilDataLokal();
+    this.perbaruiSemuaGrafik();
+    this.daftarKecamatan = (await getAllDistricts()).filter((district) => district.city_code === 3507).map((district) => district.name).sort((a, b) => a.localeCompare(b));
+    this.dataGrafikBatang = this.bentukDataGrafikBatang();
+    this.perbaruiSemuaGrafik();
   }
 
-  ngOnInit() {
-    // Initialize data per tahun terlebih dahulu
-    this.initializeDataByYear();
-
-    // Load data dari localStorage
-    this.loadChartData();
-
-    // Update chart colors after view init
-    const primary = '#0ea5e9'; // biru utama
-    const secondary = this.getColorVar('--color-secondary');
-    const accent = this.getColorVar('--color-accent');
-    const cyan = '#22d3ee';
-
-    // Bar chart warna biru utama
-    this.barChartData.datasets[0].backgroundColor = primary;
-    this.barChartData.datasets[0].hoverBackgroundColor = cyan;
-
-    // Pie chart warna: primary, secondary, accent
-    this.pieChartData.datasets[0].backgroundColor = [primary, secondary, accent];
-
-    // Line chart warna: primary, secondary, accent
-    this.lineChartData.datasets[0].borderColor = primary;
-    this.lineChartData.datasets[0].backgroundColor = primary + '22';
-    this.lineChartData.datasets[0].pointBackgroundColor = primary;
-    this.lineChartData.datasets[1].borderColor = secondary;
-    this.lineChartData.datasets[1].backgroundColor = secondary + '22';
-    this.lineChartData.datasets[1].pointBackgroundColor = secondary;
-    this.lineChartData.datasets[2].borderColor = accent;
-    this.lineChartData.datasets[2].backgroundColor = accent + '22';
-    this.lineChartData.datasets[2].pointBackgroundColor = accent;
-
-    // Update chart data setelah semua diinisialisasi
-    this.updateBarChartData();
-    this.updatePieChartData();
+  acakAngka(min: number, max: number, jumlah: number): number[] {
+    return Array(jumlah).fill(0).map(() => Math.floor(Math.random() * (max - min + 1)) + min);
   }
 
-  // Initialize data per tahun
-  initializeDataByYear() {
-    this.yearList.forEach(year => {
-      if (!this.penyakitDataByYear[year]) {
-        this.penyakitDataByYear[year] = {
-          kolesterol: Array(33).fill(0).map(() => Math.floor(Math.random() * 120) + 20),
-          hipertensi: Array(33).fill(0).map(() => Math.floor(Math.random() * 100) + 10),
-          diabetes: Array(33).fill(0).map(() => Math.floor(Math.random() * 80) + 5),
-        };
-      }
-    });
-    // Set data tahun yang dipilih
-    this.penyakitData = this.penyakitDataByYear[this.selectedYear];
-  }
-
-  // Update chart berdasarkan tahun yang dipilih
-  updateChartDataByYear() {
-    this.penyakitData = this.penyakitDataByYear[this.selectedYear];
-    this.updateBarChartData();
-    this.updatePieChartData();
-    this.saveChartData();
-  }
-
-  // Simpan data chart ke localStorage
-  saveChartData() {
-    const chartData = {
-      penyakitDataByYear: this.penyakitDataByYear,
-      selectedPenyakit: this.selectedPenyakit,
-      selectedYear: this.selectedYear,
-      lineChartData: this.lineChartData
+  buatDatasetGaris(label: string, warna: string, min: number, max: number) {
+    return {
+      label,
+      data: this.tahunTersedia.map(() => Math.floor(Math.random() * (max - min) + min)),
+      borderColor: warna,
+      backgroundColor: warna + "22",
+      tension: 0.4,
+      pointRadius: 4,
+      pointBackgroundColor: warna,
+      fill: true,
     };
-    localStorage.setItem('dashboardChartData', JSON.stringify(chartData));
   }
 
-  // Load data chart dari localStorage
-  loadChartData() {
-    const saved = localStorage.getItem('dashboardChartData');
-    if (saved) {
-      try {
-        const chartData = JSON.parse(saved);
-        this.penyakitDataByYear = chartData.penyakitDataByYear || {};
-        this.selectedPenyakit = chartData.selectedPenyakit || this.selectedPenyakit;
-        this.selectedYear = chartData.selectedYear || this.selectedYear;
-        this.lineChartData = chartData.lineChartData || this.lineChartData;
-
-        // Initialize data jika belum ada
-        this.initializeDataByYear();
-
-        // Update chart data
-        this.updateBarChartData();
-        this.updatePieChartData();
-      } catch (error) {
-        console.error('Error loading chart data:', error);
-        // Jika ada error, gunakan data default
-        this.initializeDataByYear();
-        this.updateBarChartData();
-        this.updatePieChartData();
-      }
-    }
-  }
-
-  // Update bar chart data
-  updateBarChartData() {
-    if (!this.penyakitData[this.selectedPenyakit]) {
-      this.penyakitData[this.selectedPenyakit] = Array(33).fill(0);
-    }
-
-    this.barChartData = {
-      labels: this.kecamatanLabels,
+  bentukDataGrafikBatang(): ChartData<"bar", number[], string> {
+    return {
+      labels: this.daftarKecamatan,
       datasets: [
         {
-          data: this.penyakitData[this.selectedPenyakit],
-          label: 'Jumlah Kasus',
-          backgroundColor: 'rgba(14,165,233,0.7)',
+          data: [],
+          label: "Jumlah Kasus",
+          backgroundColor: "#0ea5e9",
           borderRadius: 8,
-          hoverBackgroundColor: 'rgba(34,211,238,0.9)',
+          hoverBackgroundColor: "#22d3ee",
           maxBarThickness: 32,
-        }
-      ]
-    };
-  }
-
-  // Update pie chart data
-  updatePieChartData() {
-    const currentYearData = this.penyakitDataByYear[this.selectedYear] || {
-      kolesterol: Array(33).fill(0),
-      hipertensi: Array(33).fill(0),
-      diabetes: Array(33).fill(0),
-    };
-
-    this.pieChartData = {
-      labels: this.pieChartLabels,
-      datasets: [
-        {
-          data: [
-            currentYearData['kolesterol'].reduce((a: number, b: number) => a + b, 0),
-            currentYearData['hipertensi'].reduce((a: number, b: number) => a + b, 0),
-            currentYearData['diabetes'].reduce((a: number, b: number) => a + b, 0),
-          ],
-          backgroundColor: ['#0ea5e9', '#f59e42', '#22d3ee'],
-          borderWidth: 2,
-          borderColor: '#fff',
-          hoverOffset: 8,
         },
       ],
     };
   }
 
-  onPenyakitChange() {
-    this.updateBarChartData();
-    this.updatePieChartData();
-    this.saveChartData(); // Simpan ke localStorage
+  inisialisasiDataPertahun() {
+    for (const tahun of this.tahunTersedia) {
+      if (!this.dataPenyakitPertahun[tahun]) {
+        this.dataPenyakitPertahun[tahun] = {
+          kolesterol: this.acakAngka(20, 120, 33),
+          hipertensi: this.acakAngka(10, 100, 33),
+          diabetes: this.acakAngka(5, 80, 33),
+        };
+      }
+    }
+    this.dataPenyakitAktif = this.dataPenyakitPertahun[this.tahunDipilih];
   }
 
-  // Fungsi modal testing
-  openTestModal() {
-    this.showTestModal = true;
+  perbaruiGrafikBatang() {
+    this.dataGrafikBatang.datasets[0].data = this.dataPenyakitAktif[this.penyakitDipilih] || [];
   }
 
-  closeTestModal() {
-    this.showTestModal = false;
-    // Reset form
-    this.newData = {
-      kecamatan: '',
-      penyakit: 'kolesterol',
+  perbaruiGrafikPie() {
+    const tahunIni = this.dataPenyakitPertahun[this.tahunDipilih];
+    this.dataGrafikLingkaran.datasets[0].data = [
+      tahunIni["kolesterol"].reduce((a, b) => a + b, 0),
+      tahunIni["hipertensi"].reduce((a, b) => a + b, 0),
+      tahunIni["diabetes"].reduce((a, b) => a + b, 0),
+    ];
+  }
+
+  perbaruiSemuaGrafik() {
+    this.perbaruiGrafikBatang();
+    this.perbaruiGrafikPie();
+  }
+
+  ubahTahun() {
+    this.dataPenyakitAktif = this.dataPenyakitPertahun[this.tahunDipilih];
+    this.perbaruiSemuaGrafik();
+    this.simpanKeLocalStorage();
+  }
+
+  ubahPenyakit() {
+    this.perbaruiSemuaGrafik();
+    this.simpanKeLocalStorage();
+  }
+
+  simpanKeLocalStorage() {
+    localStorage.setItem("dataDasbor", JSON.stringify({
+      dataPenyakitPertahun: this.dataPenyakitPertahun,
+      penyakitDipilih: this.penyakitDipilih,
+      tahunDipilih: this.tahunDipilih,
+    }));
+  }
+
+  ambilDataLokal() {
+    const simpanan = localStorage.getItem("dataDasbor");
+    if (simpanan) {
+      const data = JSON.parse(simpanan);
+      this.dataPenyakitPertahun = data.dataPenyakitPertahun || {};
+      this.penyakitDipilih = data.penyakitDipilih || this.penyakitDipilih;
+      this.tahunDipilih = data.tahunDipilih || this.tahunDipilih;
+      this.inisialisasiDataPertahun();
+    }
+  }
+
+  // Modal tambah data uji
+  bukaModalUji() {
+    this.tampilkanModalUji = true;
+  }
+
+  tutupModalUji() {
+    this.tampilkanModalUji = false;
+    this.dataBaru = {
+      kecamatan: "",
+      penyakit: "kolesterol",
       jumlah: 0,
-      tahun: 2025
+      tahun: 2025,
     };
   }
 
-  addTestData() {
-    if (!this.newData.kecamatan || this.newData.jumlah <= 0) {
-      alert('Mohon isi semua field dengan benar');
+  tambahDataUji() {
+    const indeks = this.daftarKecamatan.indexOf(this.dataBaru.kecamatan);
+    if (indeks === -1 || this.dataBaru.jumlah <= 0) {
+      alert("Isian tidak valid.");
       return;
     }
 
-    const kecamatanIndex = this.kecamatanLabels.indexOf(this.newData.kecamatan);
-    if (kecamatanIndex !== -1) {
-      // Pastikan data tahun ada
-      if (!this.penyakitDataByYear[this.newData.tahun]) {
-        this.penyakitDataByYear[this.newData.tahun] = {
-          kolesterol: Array(33).fill(0),
-          hipertensi: Array(33).fill(0),
-          diabetes: Array(33).fill(0),
-        };
-      }
-
-      // Update data penyakit berdasarkan tahun
-      this.penyakitDataByYear[this.newData.tahun][this.newData.penyakit][kecamatanIndex] = this.newData.jumlah;
-
-      // Update chart jika tahun yang dipilih sama dengan tahun data yang ditambah
-      if (this.selectedYear === this.newData.tahun) {
-        this.penyakitData = this.penyakitDataByYear[this.selectedYear];
-        this.updateBarChartData();
-        this.updatePieChartData();
-      }
-
-      // Simpan ke localStorage
-      this.saveChartData();
-
-      // Tutup modal dan reset form
-      this.closeTestModal();
-
-      alert('Data berhasil ditambahkan!');
+    if (!this.dataPenyakitPertahun[this.dataBaru.tahun]) {
+      this.dataPenyakitPertahun[this.dataBaru.tahun] = {
+        kolesterol: Array(33).fill(0),
+        hipertensi: Array(33).fill(0),
+        diabetes: Array(33).fill(0),
+      };
     }
+
+    this.dataPenyakitPertahun[this.dataBaru.tahun][this.dataBaru.penyakit][indeks] = this.dataBaru.jumlah;
+
+    if (this.dataBaru.tahun === this.tahunDipilih) {
+      this.dataPenyakitAktif = this.dataPenyakitPertahun[this.tahunDipilih];
+      this.perbaruiSemuaGrafik();
+    }
+
+    this.simpanKeLocalStorage();
+    this.tutupModalUji();
+    alert("Data berhasil ditambahkan!");
   }
 }
