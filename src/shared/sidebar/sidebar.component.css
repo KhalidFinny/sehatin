@@ -1,154 +1,10 @@
-/* Sidebar Styles */
-.sidebar {
-  transition: transform 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Profile section styling */
-.sidebar .bg-gradient-to-r {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-hov-blue) 100%);
-}
-
-/* Navigation area */
-.sidebar nav {
-  flex: 1;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Menu list */
-.sidebar nav ul {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Logout section styling */
-.sidebar nav ul li:last-child {
-  margin-top: auto;
-  border-top: 1px solid #e5e7eb;
-  padding-top: 1rem;
-}
-
-/* Font Awesome icon styling */
-.sidebar i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  font-size: 1rem;
-}
-
-/* Parent menu items with sub-menus */
-.sidebar nav a[href="#"] {
-  cursor: pointer;
-}
-
-/* Ensure sub-menu container is connected to parent */
-.sidebar nav .relative {
-  position: relative;
-}
-
-/* Sub-menu animation */
-.sidebar nav .ml-8 {
-  animation: slideDown 0.2s ease-out;
-  position: relative;
-  z-index: 10;
-  /* Ensure sub-menu is connected to parent */
-  margin-top: 0;
-  padding-top: 0.25rem;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Caret icon animation */
-.sidebar nav .fas.fa-caret-down,
-.sidebar nav .fas.fa-caret-up {
-  transition: transform 0.2s ease-in-out;
-}
-
-/* Hover delay to prevent flickering */
-.sidebar nav a {
-  transition: all 0.2s ease-in-out;
-}
-
-/* Ensure sub-menu container maintains hover state */
-.sidebar nav .ml-8:hover {
-  opacity: 1;
-}
-
-/* Create continuous hover area */
-.sidebar nav .relative:hover .ml-8 {
-  opacity: 1;
-}
-
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .sidebar-overlay {
-    display: block !important;
-  }
-}
-
-/* Hover effects */
-.sidebar nav ul li a:hover {
-  transform: translateX(4px);
-}
-
-/* Active state untuk menu */
-.sidebar nav ul li a.active {
-  background-color: var(--color-primary);
-  color: white;
-}
-
-/* Smooth transitions */
-.sidebar * {
-  transition: all 0.2s ease-in-out;
-}
-
-/* Scrollbar styling untuk navigation */
-.sidebar nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.sidebar nav::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar nav::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 2px;
-}
-
-.sidebar nav::-webkit-scrollbar-thumb:hover {
-  background: var(--color-hov-blue);
-}
-
 .submenu-open {
   max-height: 300px;
   opacity: 1;
   transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s cubic-bezier(0.4,0,0.2,1);
   will-change: max-height, opacity;
 }
+
 .submenu-closed {
   max-height: 0;
   opacity: 0;
@@ -157,10 +13,11 @@
 }
 
 .submenu-fadein {
-  animation: submenuFadeIn 0.18s cubic-bezier(0.4,0,0.2,1);
+  animation: fade-in 0.18s cubic-bezier(0.4,0,0.2,1);
   will-change: opacity, transform;
 }
-@keyframes submenuFadeIn {
+
+@keyframes fade-in {
   from {
     opacity: 0;
     transform: translateY(-8px);

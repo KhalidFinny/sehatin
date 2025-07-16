@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
 import { InputComponent } from "@shared/input/input.component";
 import { Meta, Title } from "@angular/platform-browser";
+import { BasePage } from "helpers/base-page";
 
 @Component({
   selector: "pages-daftar",
@@ -13,58 +14,31 @@ import { Meta, Title } from "@angular/platform-browser";
   styleUrl: "./daftar.component.css",
 })
 export class Daftar {
-  email: string = "";
-  name: string = "";
+  surel: string = "";
+  nama_lengkap: string = "";
   nik: string = "";
-  password: string = "";
-  confirmPassword: string = "";
+  kata_sandi: string = "";
+  konfirmasi_kata_sandi: string = "";
   isLoading: boolean = false;
   showAlert: boolean = false;
   alertMessage: string = "";
   alertType: "success" | "error" = "success";
 
+  private pageAttributes: BasePage;
+
   constructor(private router: Router, private title: Title, private meta: Meta) {
-    this.title.setTitle("Daftar | SEHATIN");
-    this.meta.addTags([
-      {
-        name: "description",
-        content: "Daftar ke sistem SEHATIN",
-      },
-      {
-        property: "og:title",
-        content: "Daftar | SEHATIN",
-      },
-      {
-        property: "og:description",
-        content: "Daftar ke sistem SEHATIN",
-      },
-      {
-        property: "og:image",
-        content: "",
-      },
-      {
-        property: "twitter:title",
-        content: "Daftar | SEHATIN",
-      },
-      {
-        property: "twitter:description",
-        content: "Daftar ke sistem SEHATIN",
-      },
-      {
-        property: "twitter:image",
-        content: "",
-      },
-    ]);
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Daftar | SEHATIN", "");
   }
 
   onRegister(): void {
-    if (!this.email || !this.name || !this.nik || !this.password || !this.confirmPassword) {
+    if (!this.surel || !this.nama_lengkap || !this.nik || !this.kata_sandi || !this.konfirmasi_kata_sandi) {
       this.showAlertMessage("Semua field harus diisi!", "error");
       return;
-    } else if (this.password !== this.confirmPassword) {
-      this.showAlertMessage("Password dan konfirmasi password tidak cocok!", "error");
+    } else if (this.kata_sandi !== this.konfirmasi_kata_sandi) {
+      this.showAlertMessage("Password dan konfirmasi kata_sandi tidak cocok!", "error");
       return;
-    } else if (this.password.length < 6) {
+    } else if (this.kata_sandi.length < 6) {
       this.showAlertMessage("Password minimal 6 karakter!", "error");
       return;
     } else if (this.nik.length < 8) {
@@ -73,8 +47,8 @@ export class Daftar {
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.email)) {
-      this.showAlertMessage("Format email tidak valid!", "error");
+    if (!emailRegex.test(this.surel)) {
+      this.showAlertMessage("Format surel tidak valid!", "error");
       return;
     }
 

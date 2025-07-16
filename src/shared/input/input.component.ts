@@ -12,9 +12,9 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/f
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class InputComponent implements ControlValueAccessor {
   @Input() name!: string;
@@ -49,7 +49,7 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   public onWheel(event: WheelEvent): void {
-    if (this.type === 'number') {
+    if (this.type === "number") {
       event.preventDefault();
       (event.target as HTMLInputElement).blur();
     }
@@ -59,21 +59,17 @@ export class InputComponent implements ControlValueAccessor {
     this.value = value;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: () => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
-  setDisabledState(isDisabled: boolean): void {
-    // Handle disabled state if needed
-  }
-
   get labelString(): string {
-    if (typeof this.label === 'string') return this.label;
-    if (this.label && typeof this.label === 'object' && 'text' in this.label) return (this.label as any).text;
-    return '[Label tidak valid]';
+    if (typeof this.label === "string") return this.label;
+    if (this.label && typeof this.label === "object" && "text" in this.label) return (this.label as any).text;
+    return "[Label tidak valid]";
   }
 }

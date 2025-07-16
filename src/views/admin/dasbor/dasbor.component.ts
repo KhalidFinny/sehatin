@@ -5,12 +5,12 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ChartConfiguration, ChartData, ChartOptions, ChartType } from "chart.js";
 import { getAllDistricts } from "indonesia-nodejs";
 import { NgChartsModule } from "ng2-charts";
-import { SidebarComponent } from "@shared/sidebar/sidebar.component";
+import { Sidebar } from "@shared/sidebar/sidebar.component";
 
 @Component({
   selector: "halaman-admin-dasbor",
   standalone: true,
-  imports: [CommonModule, SidebarComponent, NgChartsModule, FormsModule],
+  imports: [CommonModule, Sidebar, NgChartsModule, FormsModule],
   templateUrl: "./dasbor.component.html",
   styleUrl: "./dasbor.component.css",
 })

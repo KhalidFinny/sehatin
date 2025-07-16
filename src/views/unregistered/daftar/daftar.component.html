@@ -21,15 +21,15 @@
         name="email"
         label="Alamat Email"
         type="email"
-        [(ngModel)]="email"
+        [(ngModel)]="surel"
         [required]="true"
         placeholder="Masukkan email Anda"
       />
       <form-input
-        name="name"
+        name="nama_lengkap"
         label="Nama Lengkap"
         type="text"
-        [(ngModel)]="name"
+        [(ngModel)]="nama_lengkap"
         [required]="true"
         placeholder="Masukkan nama lengkap Anda"
       />
@@ -42,20 +42,20 @@
         placeholder="Masukkan NIK Anda"
       />
       <form-input
-        name="password"
+        name="kata_sandi"
         label="Password"
         type="password"
-        [(ngModel)]="password"
+        [(ngModel)]="kata_sandi"
         [required]="true"
         placeholder="Masukkan password"
       />
       <form-input
-        name="confirmPassword"
-        label="Konfirmasi Password"
+        name="konfirmasi_kata_sandi"
+        label="Konfirmasi Kata Sandi"
         type="password"
-        [(ngModel)]="confirmPassword"
+        [(ngModel)]="konfirmasi_kata_sandi"
         [required]="true"
-        placeholder="Ulangi password Anda"
+        placeholder="Ulangi kata sandi Anda"
       />
       <p class="text-text-secondary mt-8 text-center text-sm">
         Sudah punya akun?

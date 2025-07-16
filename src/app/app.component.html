@@ -1,13 +1,8 @@
-<ng-container *ngIf="isDashboardPage(); else normalLayout">
+<ng-container *ngIf="isAuthenticatedPage() || isGuestOnlyPage(); else publicLayout">
   <router-outlet />
 </ng-container>
-<ng-template #normalLayout>
-  <ng-container *ngIf="isAuthPage(); else publicLayout">
-    <router-outlet />
-  </ng-container>
-  <ng-template #publicLayout>
-    <shared-header />
-    <router-outlet />
-    <shared-footer />
-  </ng-template>
+<ng-template #publicLayout>
+  <shared-header />
+  <router-outlet />
+  <shared-footer />
 </ng-template>

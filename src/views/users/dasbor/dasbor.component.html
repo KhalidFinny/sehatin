@@ -1,7 +1,8 @@
-<app-sidebar [userType]="userType"></app-sidebar>
+<shared-sidebar userType="user" />
+
+<!-- prettier-ignore -->
 <main class="ml-64 cursor-default border-b border-gray-100 p-8">
   <!-- Sambutan -->
-  <!-- prettier-ignore -->
   <section class="flex items-end justify-between pb-6">
     <div>
       <h1 class="mb-1 text-4xl font-light tracking-tight">Dasbor Pengguna</h1>
@@ -14,10 +15,8 @@
       <h3 class="mt-1 text-xs text-gray-400">{{ currentTime }}</h3>
     </div>
   </section>
-
   <!-- Bento Layout -->
-  <!-- prettier-ignore -->
-  <section class="grid h-[calc(100vh-240px)] grid-cols-12 gap-4">
+  <section class="grid grid-cols-12 gap-4">
     <div class="col-span-5 flex flex-col">
       <!-- Skor Kesehatan -->
       <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
@@ -98,4 +97,5 @@
       </span>
     </div>
   </section>
+  <!-- Akhir dari Bento Layout -->
 </main>

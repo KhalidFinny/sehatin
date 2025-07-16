@@ -1,17 +1,18 @@
-import { Component, Input, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { Component, Input, OnDestroy } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { AuthService } from "@services/auth.service";
 
-export interface SidebarMenuItem {
+type SidebarMenuItem = {
   id: string;
   label: string;
   icon: string;
   link?: string;
   action?: () => void;
-  subMenu?: SidebarMenuItem[]; // Tambahan untuk sub menu
+  subMenu?: SidebarMenuItem[];
 }
 
-export interface SidebarConfig {
+type SidebarConfig = {
   userType: "admin" | "user";
   userName: string;
   userEmail: string;
@@ -19,12 +20,12 @@ export interface SidebarConfig {
 }
 
 @Component({
-  selector: "app-sidebar",
-  imports: [CommonModule],
+  selector: "shared-sidebar",
+  imports: [CommonModule, RouterModule],
   templateUrl: "./sidebar.component.html",
   styleUrl: "./sidebar.component.css",
 })
-export class SidebarComponent implements OnDestroy {
+export class Sidebar implements OnDestroy {
   @Input() config: SidebarConfig = {
     userType: "user",
     userName: "User Name",
@@ -32,23 +33,37 @@ export class SidebarComponent implements OnDestroy {
     userInitial: "U",
   };
 
-  // Input sederhana untuk user type saja
+  /**
+   * @var userType
+   * Tipe pengguna.
+   */
   @Input() userType: "admin" | "user" = "user";
 
-  // Property untuk mengelola sub menu yang terbuka
+  /**
+   * @var openSubMenuId
+   * ID sub-menu yang terbuka.
+   */
   openSubMenuId: string | null = null;
 
-  // Timeout untuk delay closing sub-menu
-  private closeTimeout: any = null;
+  /**
+   * @var closeTimeout
+   * Timeout untuk menutup sub-menu.
+   * NOTE: Jangan sesekali menggunakan any sebagai tipe data.
+   */
+  private closeTimeout: number = 0;
 
   constructor(private authService: AuthService) {}
 
-  // Menu templates untuk admin dan user dengan Font Awesome icons
+  /**
+   * @var adminMenuItems
+   * Menu item untuk admin.
+   */
   private adminMenuItems: SidebarMenuItem[] = [
     {
       id: "dashboard",
       label: "Dasbor",
       icon: "fas fa-tachometer-alt",
+      link: "/admin/dasbor",
     },
     {
       id: "analytics",
@@ -57,13 +72,15 @@ export class SidebarComponent implements OnDestroy {
       subMenu: [
         {
           id: "kecamatan-analytics",
-          label: "Analitik Kecamatan",
+          label: "Kecamatan",
           icon: "fas fa-chart-line",
+          link: "/admin/analitik/kecamatan",
         },
         {
           id: "analytics-penyakit",
-          label: "Analitik Penyakit",
+          label: "Penyakit",
           icon: "fas fa-user-doctor",
+          link: "/admin/analitik/penyakit",
         },
       ],
     },
@@ -74,45 +91,36 @@ export class SidebarComponent implements OnDestroy {
       subMenu: [
         {
           id: "report-kecamatan",
-          label: "Laporan Kecamatan",
+          label: "Kecamatan",
           icon: "fas fa-location-dot",
+          link: "/admin/laporan/kecamatan",
         },
         {
           id: "report-kesehatan",
-          label: "Laporan Kesehatan",
+          label: "Kesehatan",
           icon: "fas fa-heartbeat",
+          link: "/admin/laporan/kesehatan",
         },
       ],
     },
   ];
 
+  /**
+   * @var userMenuItems
+   * Item menu untuk pengguna.
+   */
   private userMenuItems: SidebarMenuItem[] = [
     {
       id: "dashboard",
       label: "Dasbor",
       icon: "fas fa-tachometer-alt",
+      link: "/pengguna/dasbor",
     },
     {
-      id: "health",
-      label: "Kesehatan",
-      icon: "fas fa-heartbeat",
-      subMenu: [
-        {
-          id: "health-records",
-          label: "Rekam Medis",
-          icon: "fas fa-notes-medical",
-        },
-        {
-          id: "appointments",
-          label: "Janji Temu",
-          icon: "fas fa-calendar-check",
-        },
-        {
-          id: "medications",
-          label: "Obat-obatan",
-          icon: "fas fa-pills",
-        },
-      ],
+      id: "health-records",
+      label: "Rekap Kesehatan",
+      icon: "fas fa-user-doctor",
+      link: "/pengguna/rekap-kesehatan",
     },
     {
       id: "consultation",
@@ -123,92 +131,73 @@ export class SidebarComponent implements OnDestroy {
           id: "chat-doctor",
           label: "Chat Dokter",
           icon: "fas fa-comment-medical",
+          link: "/pengguna/konsultasi/chat-dokter",
         },
         {
           id: "video-call",
           label: "Video Call",
           icon: "fas fa-video",
+          link: "/pengguna/konsultasi/video-call",
         },
         {
           id: "consultation-history",
           label: "Riwayat Konsultasi",
           icon: "fas fa-history",
+          link: "/pengguna/konsultasi/riwayat-konsultasi",
         },
       ],
     },
   ];
 
+  /**
+   * @returns void
+   * Fungsi untuk menutup sidebar setelah beberapa detik.
+   */
+  ngOnDestroy(): void {
+    if (this.closeTimeout) clearTimeout(this.closeTimeout);
+  }
+
+  /**
+   * @returns SidebarConfig
+   * Getter untuk mengambil konfigurasi sidebar berdasarkan tipe pengguna.
+   */
   getCurrentConfig(): SidebarConfig {
-    // Prioritaskan input userType jika diberikan
-    if (this.userType === "admin" || this.userType === "user") {
-      return {
-        userType: this.userType,
-        userName: this.userType === "admin" ? "Admin Sehatin" : "User Sehatin",
-        userEmail:
-          this.userType === "admin" ? "admin@sehatin.com" : "user@sehatin.com",
-        userInitial: this.userType === "admin" ? "A" : "U",
-      };
-    }
-    // Jika config diberikan dan valid, gunakan itu
-    if (
-      this.config &&
-      (this.config.userType === "admin" || this.config.userType === "user")
-    ) {
-      return this.config;
-    }
-    // Default fallback
+    const type = this.userType || this.config?.userType || "user";
+    const name = type === "admin" ? "Admin Sehatin" : "User Sehatin";
+    const email = type === "admin" ? "admin@sehatin.com" : "user@sehatin.com";
+    const initial = type === "admin" ? "A" : "U";
+
     return {
-      userType: "user",
-      userName: "User Sehatin",
-      userEmail: "user@sehatin.com",
-      userInitial: "U",
+      userType: type,
+      userName: name,
+      userEmail: email,
+      userInitial: initial,
     };
   }
 
+  /**
+   * @returns SidebarMenuItem[]
+   * Getter untuk mengambil menu berdasarkan tipe pengguna.
+   */
   get menuItems(): SidebarMenuItem[] {
-    // Gunakan userType input jika config tidak diberikan
     const type = this.getCurrentConfig().userType;
     return type === "admin" ? this.adminMenuItems : this.userMenuItems;
   }
 
-  // Method untuk toggle sub menu
-  toggleSubMenu(item: SidebarMenuItem) {
-    if (this.openSubMenuId === item.id) {
-      this.openSubMenuId = null;
-    } else {
-      this.openSubMenuId = item.id;
-    }
+  /**
+   * @param item SidebarMenuItem
+   * @returns void
+   * Fungsi untuk membuka dan menutup sub-menu berdasarkan item yang diklik.
+   */
+  toggleSubMenu(item: SidebarMenuItem): void {
+    this.openSubMenuId = this.openSubMenuId === item.id ? null : item.id;
   }
 
-  // Method untuk hover sub menu
-  onMenuHover(item: SidebarMenuItem) {
-    // Clear any existing timeout
-    if (this.closeTimeout) {
-      clearTimeout(this.closeTimeout);
-      this.closeTimeout = null;
-    }
-
-    if (item.subMenu && item.subMenu.length > 0) {
-      this.openSubMenuId = item.id;
-    }
-  }
-
-  // Method untuk leave sub menu
-  onMenuLeave() {
-    // Clear any existing timeout first
-    if (this.closeTimeout) {
-      clearTimeout(this.closeTimeout);
-    }
-
-    // Add delay before closing sub-menu
-    this.closeTimeout = setTimeout(() => {
-      this.openSubMenuId = null;
-      this.closeTimeout = null;
-    }, 300); // 300ms delay for smooth movement
-  }
-
-  closeSidebar() {
-    // Logic untuk menutup sidebar di mobile
+  /**
+   * @returns void
+   * Fungsi untuk menutup sidebar.
+   */
+  closeSidebar(): void {
     const overlay = document.querySelector(".sidebar-overlay");
     const sidebar = document.querySelector(".sidebar");
 
@@ -219,23 +208,25 @@ export class SidebarComponent implements OnDestroy {
     }
   }
 
-  onMenuClick(item: SidebarMenuItem) {
+  /**
+   * @param item
+   * @returns void
+   * Fungsi untuk mengelola klik menu.
+   */
+  onMenuClick(item: SidebarMenuItem): void {
     if (item.subMenu && item.subMenu.length > 0) {
       this.toggleSubMenu(item);
       return;
     }
-
-    if (item.action) item.action();
-    console.log("Menu clicked:", item.id);
+    
+    if (item.action instanceof Function) item.action();
   }
 
-  onLogout() {
+  /**
+   * @returns void
+   * Fungsi untuk melakukan logout.
+   */
+  onLogout(): void {
     this.authService.logout();
-  }
-
-  ngOnDestroy(): void {
-    if (this.closeTimeout) {
-      clearTimeout(this.closeTimeout);
-    }
   }
 }

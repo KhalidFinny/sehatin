@@ -12,33 +12,29 @@ import { AuthService } from "@services/auth.service";
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
 })
-export class AppComponent implements OnInit, OnDestroy {
-  title: string = "sehatin";
+export class AppComponent implements OnDestroy, OnInit {
   private authSubscription?: Subscription;
+  authInitialized = false;
 
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    // Subscribe to auth changes
-    this.authSubscription = this.authService.authStateChanged.subscribe(() => {
-      // Force re-evaluation of auth state
-      console.log("Auth state changed, current user:", this.authService.getCurrentUser());
+    this.authSubscription = this.authService.fetchLocalStorage.subscribe((ready) => {
+      if (ready) this.authInitialized = true;
     });
   }
 
   ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    if (this.authSubscription !== undefined) this.authSubscription.unsubscribe();
   }
 
-  isAuthPage(): boolean {
+  isAuthenticatedPage(): boolean {
+    const url = this.router.url.split("?")[0];
+    return url.startsWith("/admin") || url.startsWith("/pengguna");
+  }
+
+  isGuestOnlyPage(): boolean {
     const authRoutes = ["/daftar", "/lupa-kata-sandi", "/masuk", "/ubah-kata-sandi"];
     return authRoutes.includes(this.router.url.split("?")[0]);
-  }
-
-  isDashboardPage(): boolean {
-    const dashboardRoutes = ["/admin/dasbor", "/pengguna/dasbor"];
-    return dashboardRoutes.includes(this.router.url.split("?")[0]);
   }
 }

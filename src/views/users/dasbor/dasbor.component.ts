@@ -1,16 +1,14 @@
 import { Component } from "@angular/core";
-import { SidebarComponent } from "../../../shared/sidebar/sidebar.component";
+import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "pages-dasbor-pengguna",
-  imports: [SidebarComponent],
+  imports: [Sidebar],
   templateUrl: "./dasbor.component.html",
   styleUrl: "./dasbor.component.css",
 })
 export class DasborPengguna {
-  userType: "admin" | "user" = "user";
-
   currentDate: string = "";
   currentTime: string = "";
 

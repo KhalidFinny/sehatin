@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
+import { BasePage } from "helpers/base-page";
 
 @Component({
   selector: "pages-tentang-kami",
@@ -8,37 +9,10 @@ import { Meta, Title } from "@angular/platform-browser";
   styleUrl: "./tentang-kami.component.css",
 })
 export class TentangKami {
+  private pageAttributes: BasePage;
+
   constructor(private title: Title, private meta: Meta) {
-    this.title.setTitle("Tentang Kami");
-    this.meta.addTags([
-      {
-        name: "description",
-        content: "Tentang Kami",
-      },
-      {
-        property: "og:title",
-        content: "Tentang Kami",
-      },
-      {
-        property: "og:description",
-        content: "Tentang Kami",
-      },
-      {
-        property: "og:image",
-        content: "",
-      },
-      {
-        property: "twitter:title",
-        content: "Tentang Kami",
-      },
-      {
-        property: "twitter:description",
-        content: "Tentang Kami",
-      },
-      {
-        property: "twitter:image",
-        content: "",
-      },
-    ]);
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Tentang Kami | SEHATIN", "");
   }
 }

@@ -24,23 +24,38 @@
   <section class="px-4 pb-6">
     <nav class="relative space-y-1">
       <!-- Main Menu Items -->
-      <ng-container *ngFor="let item of menuItems" class="relative" (mouseenter)="onMenuHover(item)" (mouseleave)="onMenuLeave()">
-        <button type="button" class="group hover:text-primary relative flex w-full cursor-pointer items-center rounded-lg px-4 py-3 text-gray-600 transition-all duration-200 hover:bg-gray-50" (click)="onMenuClick(item)">
-          <!-- Active indicator -->
-          <span class="bg-primary absolute top-0 bottom-0 left-0 w-1 rounded-r-full opacity-0 transition-opacity duration-200 group-hover:opacity-40"></span>
-          <!-- Icon & Label -->
-          <i [class]="item.icon + ' mr-3 text-sm'"></i>
-          <span class="text-sm font-medium">{{ item.label }}</span>
-          <!-- Dropdown caret if has submenu -->
-          <span *ngIf="item.subMenu" class="ml-auto">
-            <i class="fas" [ngClass]=" openSubMenuId === item.id ? 'fa-caret-up' : 'fa-caret-down'"></i>
-          </span>
-        </button>
-        <!-- Sub Menu -->
+      <div *ngFor="let item of menuItems" class="relative">
+        <ng-container>
+          <!-- Gunakan button jika ada submenu -->
+          <button
+            *ngIf="item.subMenu; else noSubmenu"
+            type="button"
+            class="group hover:text-primary relative flex w-full cursor-pointer items-center rounded-lg px-4 py-3 text-gray-600 transition-all duration-200 hover:bg-gray-50"
+            (click)="onMenuClick(item)"
+          >
+            <span class="bg-primary absolute top-0 bottom-0 left-0 w-1 rounded-r-full opacity-0 transition-opacity duration-200 group-hover:opacity-40"></span>
+            <i [class]="item.icon + ' mr-3 text-sm'"></i>
+            <span class="text-sm font-medium">{{ item.label }}</span>
+            <span class="ml-auto">
+              <i class="fas" [ngClass]="openSubMenuId === item.id ? 'fa-caret-up' : 'fa-caret-down'"></i>
+            </span>
+          </button>
+          <ng-template #noSubmenu>
+            <a
+              [routerLink]="item.link"
+              class="group hover:text-primary relative flex w-full cursor-pointer items-center rounded-lg px-4 py-3 text-gray-600 transition-all duration-200 hover:bg-gray-50"
+              (click)="onMenuClick(item)"
+            >
+              <span class="bg-primary absolute top-0 bottom-0 left-0 w-1 rounded-r-full opacity-0 transition-opacity duration-200 group-hover:opacity-40"></span>
+              <i [class]="item.icon + ' mr-3 text-sm'"></i>
+              <span class="text-sm font-medium">{{ item.label }}</span>
+            </a>
+          </ng-template>
+        </ng-container>
         <div *ngIf="item.subMenu && openSubMenuId === item.id" class="submenu-fadein mt-1 ml-8 space-y-1">
           <a
             *ngFor="let sub of item.subMenu"
-            href="#"
+            [routerLink]="sub.link || '#'"
             class="hover:text-primary flex items-center rounded px-3 py-2 text-sm text-gray-500 transition-all duration-200 hover:bg-gray-100"
             (click)="onMenuClick(sub)"
           >
@@ -48,8 +63,7 @@
             <span>{{ sub.label }}</span>
           </a>
         </div>
-        <!-- End of Sub Menu -->
-      </ng-container>
+      </div>
       <!-- Divider / Spacer -->
       <div class="flex items-center py-4">
         <span class="h-px w-3 bg-gray-200"></span>

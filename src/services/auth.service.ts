@@ -1,18 +1,19 @@
 import { Injectable, Inject, PLATFORM_ID } from "@angular/core";
 import { Router } from "@angular/router";
 import { isPlatformBrowser } from "@angular/common";
-import { Subject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 
-export interface User {
+type User = {
   id: number;
   email: string;
   password: string;
   name: string;
   role: "admin" | "user";
-}
+};
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
+  private currentUser: User | null = null;
   private users: User[] = [
     {
       id: 1,
@@ -30,44 +31,30 @@ export class AuthService {
     },
   ];
 
-  private currentUser: User | null = null;
   public authStateChanged = new Subject<void>();
+  public fetchLocalStorage = new BehaviorSubject<boolean>(false);
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     if (!isPlatformBrowser(this.platformId)) return;
     const savedUser = localStorage.getItem("currentUser");
-    if (!savedUser) return;
-    this.currentUser = JSON.parse(savedUser);
+    if (savedUser) this.currentUser = JSON.parse(savedUser);
+    this.fetchLocalStorage.next(true);
   }
 
   login(email: string, password: string): boolean {
-    console.log("Login attempt:", { email, password });
-
     const user = this.users.find((u) => u.email === email && u.password === password);
-
-    if (!user) {
-      console.log("Login failed: user not found");
-      return false;
-    }
+    if (!user || user === null) return false;
 
     this.currentUser = user;
+    if (isPlatformBrowser(this.platformId)) localStorage.setItem("currentUser", JSON.stringify(user));
 
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-    }
-
-    console.log("Login successful, user set:", this.currentUser);
     this.authStateChanged.next();
     return true;
   }
 
   redirectToDashboard(): void {
     if (!this.currentUser) return;
-
-    const role = this.currentUser.role;
-    const route = role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
-
-    console.log("Redirecting user:", role);
+    const route = this.currentUser.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
     this.router.navigate([route]);
   }
 
@@ -103,10 +90,12 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.currentUser?.role === "admin";
+    if (this.currentUser === null) return false;
+    return this.currentUser.role === "admin";
   }
 
   isUser(): boolean {
-    return this.currentUser?.role === "user";
+    if (this.currentUser === null) return false;
+    return this.currentUser.role === "user";
   }
 }

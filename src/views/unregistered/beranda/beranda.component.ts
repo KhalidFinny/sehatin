@@ -1,8 +1,9 @@
 import { CommonModule, isPlatformBrowser } from "@angular/common";
 import { Component, OnInit, Inject, PLATFORM_ID } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
-import { interval } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { interval } from "rxjs";
+import { takeWhile } from "rxjs/operators";
+import { BasePage } from "helpers/base-page";
 
 type Doctors = {
   image: string;
@@ -13,7 +14,7 @@ type Doctors = {
   experience: string;
   place: string;
   link: string | URL;
-}
+};
 
 type Statistics = {
   color: string;
@@ -31,42 +32,11 @@ type Statistics = {
   styleUrl: "./beranda.component.css",
 })
 export class Beranda implements OnInit {
-  constructor(
-    private title: Title,
-    private meta: Meta,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    this.title.setTitle("Beranda | SEHATIN");
-    this.meta.addTags([
-      {
-        name: "description",
-        content: "Beranda",
-      },
-      {
-        property: "og:title",
-        content: "Beranda",
-      },
-      {
-        property: "og:description",
-        content: "Beranda",
-      },
-      {
-        property: "og:image",
-        content: "",
-      },
-      {
-        property: "twitter:title",
-        content: "Beranda",
-      },
-      {
-        property: "twitter:description",
-        content: "Beranda",
-      },
-      {
-        property: "twitter:image",
-        content: "",
-      },
-    ]);
+  private pageAttributes: BasePage;
+
+  constructor(private title: Title, private meta: Meta, @Inject(PLATFORM_ID) private platformId: Object) {
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Beranda | SEHATIN", "");
   }
 
   statistics: Statistics[] = [
@@ -134,38 +104,28 @@ export class Beranda implements OnInit {
   ];
 
   animatedStats: number[] = [];
-
   ngOnInit() {
-    this.animatedStats = this.statistics.map(() => 0);
-    this.animateAllStats();
+    this.animateAllStats(1500); // durasi 1.5 detik
   }
 
-  animateAllStats() {
-    this.statistics.forEach((stat, i) => {
-      this.animateCountUp(i, stat.value, 1500); // 1.5 detik
-    });
-  }
-
-  animateCountUp(index: number, endVal: number, duration: number) {
+  animateAllStats(duration: number = 1000) {
     if (!isPlatformBrowser(this.platformId)) {
-      this.animatedStats[index] = endVal;
+      this.animatedStats = this.statistics.map((stat) => stat.value);
       return;
     }
-    const frameRate = 60; // 60fps
-    const totalFrames = Math.round((duration / 1000) * frameRate);
+
+    const frameRate = 60; // 60 fps
+    const totalFrame = Math.round((duration / 1000) * frameRate);
     let frame = 0;
-    const startVal = 0;
+    this.animatedStats = this.statistics.map(() => 0);
+
     const sub = interval(1000 / frameRate)
-      .pipe(takeWhile(() => frame <= totalFrames))
+      .pipe(takeWhile(() => frame <= totalFrame))
       .subscribe(() => {
         frame++;
-        const progress = frame / totalFrames;
-        const value = Math.round(progress * (endVal - startVal) + startVal);
-        this.animatedStats[index] = value;
-        if (frame >= totalFrames) {
-          this.animatedStats[index] = endVal;
-          sub.unsubscribe();
-        }
+        const progress = frame / totalFrame;
+        this.animatedStats = this.statistics.map((stat, i) => frame >= totalFrame ? stat.value : Math.round(progress * stat.value));
+        if (frame >= totalFrame) sub.unsubscribe();
       });
   }
 }

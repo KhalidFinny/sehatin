@@ -1,5 +1,5 @@
 <fieldset class="flex w-full flex-col justify-between" [ngClass]="{ 'space-y-4': !info }">
-  <label [for]="name" class="form-label font-medium text-sm text-[var(--primary-text)]">
+  <label [for]="name" class="form-label text-sm font-medium text-[var(--primary-text)]">
     <ng-container *ngIf="required; else labelTemplate">
       {{ labelString }} <span class="text-red-500">*</span>
     </ng-container>
@@ -9,7 +9,7 @@
       </ng-container>
     </ng-template>
   </label>
-  <h6 *ngIf="info" class="cursor-default mt-1 mb-3 text-xs text-red-500">
+  <h6 *ngIf="info" class="mt-1 mb-3 cursor-default text-xs text-red-500">
     {{ info }}
   </h6>
   <div class="relative">
@@ -18,23 +18,29 @@
     </span>
     <input
       [name]="name"
-      [type]="type === 'password' ? (showPassword ? 'text' : 'password') : (type || 'text')"
+      [type]="type === 'password' ? showPassword ? 'text' : 'password' : type || 'text'"
       [value]="type !== 'file' ? value : ''"
       [placeholder]="placeholder"
-      class="appearance-none w-full rounded-lg border-1 text-sm transition-all duration-200 border-[var(--stroke)] text-[var(--primary-text)] lg:focus:outline-none lg:focus:border-[var(--primary)]"
+      [required]="required"
+      autocomplete="off"
+      [attr.step]="type === 'number' ? 'any' : null"
+      (input)="handleInput($event)"
+      (wheel)="type === 'number' ? onWheel($event) : null"
+      class="w-full appearance-none rounded-lg border-1 border-[var(--stroke)] text-sm text-[var(--primary-text)] transition-all duration-200 lg:focus:border-[var(--primary)] lg:focus:outline-none"
       [ngClass]="{
-        'pl-12 py-2.5': type !== 'file',
+        'py-2.5 pl-12': type !== 'file',
         'pr-12': type === 'password',
         'pr-4': type !== 'password',
-        'file:mr-4 file:py-2 file:px-4 file:border-0 file:rounded file:bg-[var(--green-tertiary)] file:text-white file:cursor-pointer': type === 'file'
+        'file:mr-4 file:cursor-pointer file:rounded file:border-0 file:bg-[var(--green-tertiary)] file:px-4 file:py-2 file:text-white': type === 'file',
       }"
-      [required]="!!required"
-      (input)="handleInput($event)"
-      [attr.step]="type === 'number' ? 'any' : null"
-      (wheel)="type === 'number' ? onWheel($event) : null"
-      autocomplete="off"
     />
-    <span *ngIf="required && type !== 'password'" class="required-star">*</span>
-    <i *ngIf="type === 'password'" (click)="toggleShowPassword()" [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="fa-solid fa-eye cursor-pointer absolute top-1/2 right-0 -translate-y-1/2 pr-4 text-gray-500"></i>
+    <span class="absolute top-1/2 right-3 flex w-6 -translate-y-1/2 items-center justify-center pr-4">
+      <i
+        *ngIf="type === 'password'"
+        (click)="toggleShowPassword()"
+        [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+        class="cursor-pointer text-gray-500"
+      ></i>
+    </span>
   </div>
 </fieldset>

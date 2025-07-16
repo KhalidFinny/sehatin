@@ -1,0 +1,21 @@
+<section class="relative mb-6 w-full overflow-x-auto rounded-lg border border-[#bebdbd]">
+  <table class="w-full min-w-max table-auto border-collapse cursor-default">
+    <thead class="bg-primary text-white">
+      <tr>
+        <th *ngFor="let header of headers" class="w-1/{{ headers.length }} px-6 py-4 text-right font-medium tracking-wider">
+          <div class="flex space-x-2 text-xs font-medium whitespace-nowrap">
+            <h5>{{ header }}</h5>
+            <i class="fa-solid fa-sort cursor-pointer" *ngIf="isSortable(header)"></i>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of rows" class="border-t border-[var(--stroke)] text-sm text-[var(--primary-text)] transition-all duration-200">
+        <td *ngFor="let cell of row" class="px-6 py-3 whitespace-nowrap">
+          <section class="flex cursor-default space-x-3 text-[10pt]" [innerHTML]="cell"></section>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>

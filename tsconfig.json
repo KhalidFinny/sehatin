@@ -26,6 +26,7 @@
       "@app/*": ["app/*"],
       "@errors/*": ["errors/*"],
       "@guards/*": ["guards/*"],
+      "@helpers/*": ["helpers/*"],
       "@services/*": ["services/*"],
       "@shared/*": ["shared/*"],
       "@views/*": ["views/*"],

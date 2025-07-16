@@ -31,6 +31,11 @@ app.use(express.static(browserDistFolder, {
 }));
 
 /**
+ * Parse incoming requests as JSON if the Content-Type header is set to application/json.
+ */
+app.use(express.json());
+
+/**
  * Handle all other requests by rendering the Angular application.
  */
 app.use("/**", (req, res, next) => {angularApp.handle(req).then((response) =>

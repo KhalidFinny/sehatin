@@ -5,6 +5,7 @@ import { Meta, Title } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { AuthService } from "@services/auth.service";
 import { InputComponent } from "@shared/input/input.component";
+import { BasePage } from "helpers/base-page";
 
 @Component({
   selector: "pages-masuk",
@@ -13,66 +14,33 @@ import { InputComponent } from "@shared/input/input.component";
   styleUrl: "./masuk.component.css",
 })
 export class Masuk {
-  email: string = "";
-  password: string = "";
+  surel: string = "";
+  kata_sandi: string = "";
   showAlert: boolean = false;
   alertMessage: string = "";
   alertType: "success" | "error" = "error";
   isLoading: boolean = false;
 
-  constructor(
-    private title: Title,
-    private meta: Meta,
-    private authService: AuthService,
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-  ) {
-    this.title.setTitle("Masuk | SEHATIN");
-    this.meta.addTags([
-      {
-        name: "description",
-        content: "Masuk ke sistem SEHATIN",
-      },
-      {
-        property: "og:title",
-        content: "Masuk | SEHATIN",
-      },
-      {
-        property: "og:description",
-        content: "Masuk ke sistem SEHATIN",
-      },
-      {
-        property: "og:image",
-        content: "",
-      },
-      {
-        property: "twitter:title",
-        content: "Masuk | SEHATIN",
-      },
-      {
-        property: "twitter:description",
-        content: "Masuk ke sistem SEHATIN",
-      },
-      {
-        property: "twitter:image",
-        content: "",
-      },
-    ]);
+  private pageAttributes: BasePage;
+
+  constructor(private title: Title, private meta: Meta, private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) {
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Masuk | SEHATIN", "");
   }
 
   onLogin(): void {
-    if (!this.email || !this.password) {
-      this.showAlertMessage("Email dan password harus diisi!", "error");
+    if (!this.surel || !this.kata_sandi) {
+      this.showAlertMessage("Email dan kata_sandi harus diisi!", "error");
       return;
     }
 
     this.isLoading = true;
     this.cdr.detectChanges();
     setTimeout(() => {
-      const success = this.authService.login(this.email, this.password);
+      const success = this.authService.login(this.surel, this.kata_sandi);
 
       if (!success) {
-        this.showAlertMessage("Email atau password salah!", "error");
+        this.showAlertMessage("Email atau kata_sandi salah!", "error");
         this.isLoading = false;
         this.cdr.detectChanges();
         return;
