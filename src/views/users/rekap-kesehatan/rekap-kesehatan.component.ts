@@ -25,10 +25,29 @@ type Statistics = {
 export class RekapKesehatan {
   public isSidebarOpen: boolean = true;
   private pageAttributes: BasePage;
-  
+  currentDate: string = '';
+  currentTime: string = '';
+  private intervalId: any;
+
   constructor(private title: Title, private meta: Meta) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Rekap Kesehatan | SEHATIN", "");
+    this.updateDateTime();
+    this.intervalId = setInterval(() => this.updateDateTime(), 60000);
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) clearInterval(this.intervalId);
+  }
+
+  private updateDateTime() {
+    const now = new Date();
+    this.currentDate = now.toLocaleDateString('id-ID', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    });
+    this.currentTime = now.toLocaleTimeString('id-ID', {
+      hour: '2-digit', minute: '2-digit',
+    });
   }
 
   statistics: Statistics[] = [
