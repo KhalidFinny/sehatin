@@ -1,12 +1,12 @@
-<shared-sidebar userType="user" />
+<shared-sidebar *ngIf="isSidebarOpen" (close)="toggleSidebar()" userType="user" />
 
-<main class="ml-64 cursor-default border-b border-gray-100 p-8">
+<!-- prettier-ignore -->
+<main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
   <!-- Statistik Pengguna -->
-  <section class="flex flex-col rounded-xl bg-white p-6">
+  <section class="flex w-auto flex-col rounded-xl bg-white p-6">
     <h4 class="from-primary to-text-primary bg-gradient-to-r bg-clip-text text-xl font-bold text-transparent">
       Statistik
     </h4>
-    <!-- prettier-ignore -->
     <article class="mt-4 w-full overflow-x-auto">
       <div class="grid min-w-max grid-cols-1 gap-4 md:grid-cols-4">
         @for (stats of statistics; track $index) {
@@ -31,9 +31,7 @@
       </div>
     </article>
     <!-- Akhir dari Statistik Pengguna -->
-
     <!-- Info -->
-    <!-- prettier-ignore -->
     <figure class="mt-8 flex w-full flex-col items-start rounded-lg border border-l-6 border-blue-200 bg-blue-50 p-4 pl-6 text-sm text-blue-800 shadow-sm">
       <span class="flex items-center gap-3">
         <i class="fa-solid fa-circle-info mt-0.75 text-lg text-blue-500"></i>
@@ -56,7 +54,6 @@
       </span>
     </figure>
     <!-- Akhir dari Info -->
-
     <h4 class="from-primary to-text-primary mt-8 mb-4 bg-gradient-to-r bg-clip-text text-xl font-bold text-transparent">
       Riwayat Pengisian
     </h4>

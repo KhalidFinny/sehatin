@@ -1,51 +1,29 @@
 import { Component } from "@angular/core";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Meta, Title } from "@angular/platform-browser";
+import { CommonModule } from "@angular/common";
+import { BasePage } from "@helpers/base-page";
+import { HamburgerMenu } from "@shared/hamburger-menu/hamburger-menu.component";
 
 @Component({
   selector: "pages-dasbor-pengguna",
-  imports: [Sidebar],
-  templateUrl: "./dasbor.component.html",
+  imports: [CommonModule, HamburgerMenu, Sidebar],
+  standalone: true,
   styleUrl: "./dasbor.component.css",
+  templateUrl: "./dasbor.component.html",
 })
 export class DasborPengguna {
   currentDate: string = "";
   currentTime: string = "";
 
+  public isSidebarOpen: boolean = true;
+  private pageAttributes: BasePage;
+
   constructor(private title: Title, private meta: Meta) {
     this.updateDateTime();
     setInterval(() => this.updateDateTime(), 1000);
-    this.title.setTitle("Dasbor Pengguna | SEHATIN");
-    this.meta.addTags([
-      {
-        name: "description",
-        content: "Dasbor Pengguna",
-      },
-      {
-        property: "og:title",
-        content: "Dasbor Pengguna",
-      },
-      {
-        property: "og:description",
-        content: "Dasbor Pengguna",
-      },
-      {
-        property: "og:image",
-        content: "",
-      },
-      {
-        property: "twitter:title",
-        content: "Dasbor Pengguna",
-      },
-      {
-        property: "twitter:description",
-        content: "Dasbor Pengguna",
-      },
-      {
-        property: "twitter:image",
-        content: "",
-      },
-    ]);
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Dasbor | SEHATIN", "");
   }
 
   updateDateTime() {
@@ -63,5 +41,9 @@ export class DasborPengguna {
       minute: "2-digit",
       second: "2-digit",
     });
+  }
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
 }

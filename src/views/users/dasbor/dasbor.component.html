@@ -1,7 +1,7 @@
-<shared-sidebar userType="user" />
+<shared-sidebar *ngIf="isSidebarOpen" (close)="toggleSidebar()" userType="user" />
 
 <!-- prettier-ignore -->
-<main class="ml-64 cursor-default border-b border-gray-100 p-8">
+<main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
   <!-- Sambutan -->
   <section class="flex items-end justify-between pb-6">
     <div>

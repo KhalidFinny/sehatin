@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
+import { RouterModule } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Table } from "@shared/table/table.component";
@@ -16,12 +17,15 @@ type Statistics = {
 
 @Component({
   selector: "pages-rekap-kesehatan",
-  imports: [CommonModule, Table, Sidebar],
+  imports: [CommonModule, Table, RouterModule, Sidebar],
   templateUrl: "./rekap-kesehatan.component.html",
+  standalone: true,
   styleUrl: "./rekap-kesehatan.component.css",
 })
 export class RekapKesehatan {
+  public isSidebarOpen: boolean = true;
   private pageAttributes: BasePage;
+  
   constructor(private title: Title, private meta: Meta) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Rekap Kesehatan | SEHATIN", "");
@@ -61,4 +65,8 @@ export class RekapKesehatan {
       info: "Cukup Aktif",
     },
   ];
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }
