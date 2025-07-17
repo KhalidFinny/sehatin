@@ -7,6 +7,7 @@ import { Kontak } from "@views/unregistered/kontak/kontak.component";
 import { Masuk } from "@views/unregistered/masuk/masuk.component";
 import { Daftar } from "@views/unregistered/daftar/daftar.component";
 import { DasborAdmin } from "@views/admin/dasbor/dasbor.component";
+import { KecamatanComponent } from "@views/admin/kecamatan/kecamatan.component";
 import { DasborPengguna } from "@views/users/dasbor/dasbor.component";
 import { RekapKesehatan } from "@views/users/rekap-kesehatan/rekap-kesehatan.component";
 
@@ -24,6 +25,7 @@ export const routes: Routes = [
    * Perutean untuk admin.
    */
   { path: "admin/dasbor", component: DasborAdmin, canActivate: [AuthGuard] },
+  { path: "admin/kecamatan", component: KecamatanComponent, canActivate: [AuthGuard] },
 
   /**
    * Perutean untuk pengguna.

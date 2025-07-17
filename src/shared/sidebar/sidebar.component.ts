@@ -74,7 +74,7 @@ export class Sidebar implements OnDestroy {
           id: "kecamatan-analytics",
           label: "Kecamatan",
           icon: "fas fa-chart-line",
-          link: "/admin/analitik/kecamatan",
+          link: "/admin/kecamatan",
         },
         {
           id: "analytics-penyakit",
@@ -218,7 +218,7 @@ export class Sidebar implements OnDestroy {
       this.toggleSubMenu(item);
       return;
     }
-    
+
     if (item.action instanceof Function) item.action();
   }
 

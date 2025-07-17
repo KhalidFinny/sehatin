@@ -1,0 +1,116 @@
+<shared-sidebar userType="admin"></shared-sidebar>
+
+<main class="ml-64 bg-gray-50 border-b border-gray-100 min-h-screen p-8">
+  <section class="pb-8">
+    <div>
+      <h1 class="mb-1 text-4xl font-light tracking-tight">Daftar Kecamatan</h1>
+      <p class="text-text-secondary text-base font-normal">
+        Rekap data penderita Penyakit Tidak Menular (PTM) di seluruh kecamatan Malang
+      </p>
+    </div>
+  </section>
+
+  <section *ngIf="loading" class="flex items-center justify-center h-64">
+    <div class="text-center">
+      <i class="fas fa-spinner fa-spin text-4xl text-primary mb-4"></i>
+      <p class="text-text-secondary">Memuat data kecamatan...</p>
+    </div>
+  </section>
+
+  <section *ngIf="!loading">
+    <!-- Controls Section -->
+    <figure class="bg-white rounded-lg border border-gray-200 mb-6">
+      <figcaption class="flex items-center justify-between p-4">
+        <!-- Left: Counter -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+            <i class="fas fa-list text-primary text-sm"></i>
+          </div>
+          <span class="text-gray-700 font-medium">{{ filteredKecamatanList.length }} Kecamatan</span>
+        </div>
+
+        <!-- Right: Controls -->
+        <div class="flex items-center gap-3">
+          <!-- Filter Dropdown -->
+          <div class="relative">
+            <select id="filterPenyakit"
+                    class="appearance-none bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                    [(ngModel)]="penyakitDipilih"
+                    (change)="onPenyakitChange()">
+              <option *ngFor="let p of daftarPenyakit" [value]="p.value">{{ p.label }}</option>
+            </select>
+            <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+          </div>
+
+          <!-- Sort Button -->
+          <button class="flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded-lg transition-colors text-sm"
+                  (click)="toggleSortOrder()">
+            <i class="fas fa-sort text-gray-500"></i>
+            <span class="text-gray-700">{{ sortOrder === 'desc' ? 'Tertinggi' : 'Terendah' }}</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="h-6 w-px bg-gray-300"></div>
+
+          <!-- Excel Button -->
+          <button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
+                  (click)="downloadExcel()">
+            <i class="fas fa-download"></i>
+            <span>Excel</span>
+          </button>
+        </div>
+      </figcaption>
+    </figure>
+
+    <!-- Kecamatan List -->
+    <div class="space-y-3">
+      <figure *ngFor="let kecamatan of filteredKecamatanList; let i = index" class="group bg-white rounded-lg border border-gray-200 hover:border-primary/30 transition-all duration-200">
+        <div class="p-6">
+          <figcaption class="flex items-center justify-between">
+            <!-- Left Section -->
+            <div class="flex items-center gap-4 flex-1">
+              <!-- Rank -->
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                <span class="text-primary font-bold text-sm">{{ i + 1 }}</span>
+              </div>
+
+              <!-- Kecamatan Info -->
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-gray-800 group-hover:text-primary transition-colors">
+                  {{ kecamatan.nama }}
+                </h3>
+                <p class="text-sm text-gray-500 mt-1">Kabupaten Malang</p>
+              </div>
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex items-center gap-6">
+              <!-- Stats -->
+              <div class="text-right">
+                <div class="text-2xl font-bold text-primary">{{ getJumlahPenderita(kecamatan) | number }}</div>
+                <div class="text-sm text-gray-500">Penderita</div>
+              </div>
+
+              <!-- Action Button -->
+              <button class="px-4 py-2 bg-primary/10 text-primary border border-primary/20 rounded-md hover:bg-primary/20 transition-colors text-sm font-medium" (click)="lihatDetail(kecamatan)">
+                <i class="fas fa-eye mr-2"></i>
+                Detail
+              </button>
+            </div>
+          </figcaption>
+        </div>
+      </figure>
+    </div>
+
+    <!-- Empty State -->
+    <figure *ngIf="filteredKecamatanList.length === 0" class="bg-white rounded-lg border border-gray-200 p-12 text-center">
+      <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="fas fa-map-marker-alt text-2xl text-gray-400"></i>
+      </div>
+      <figcaption>
+        <h3 class="text-lg font-medium text-gray-800 mb-2">Tidak ada data kecamatan</h3>
+        <p class="text-gray-500">Silakan coba filter penyakit yang berbeda</p>
+      </figcaption>
+    </figure>
+  </section>
+</main>
