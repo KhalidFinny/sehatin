@@ -66,7 +66,7 @@ export class Sidebar implements OnDestroy {
   private adminMenuItems: SidebarMenuItem[] = [
     {
       id: "dashboard",
-      label: "Dasbor",
+      label: "Dashboard",
       icon: "fas fa-tachometer-alt",
       link: "/admin/dasbor",
     },
@@ -77,34 +77,15 @@ export class Sidebar implements OnDestroy {
       subMenu: [
         {
           id: "kecamatan-analytics",
-          label: "Kecamatan",
+          label: "Analitik Kecamatan",
           icon: "fas fa-chart-line",
           link: "/admin/kecamatan",
         },
         {
-          id: "analytics-penyakit",
-          label: "Penyakit",
+          id: "analytics-pengguna",
+          label: "Analitik Pengguna",
           icon: "fas fa-user-doctor",
-          link: "/admin/analitik/penyakit",
-        },
-      ],
-    },
-    {
-      id: "report",
-      label: "Laporan",
-      icon: "fas fa-file-alt",
-      subMenu: [
-        {
-          id: "report-kecamatan",
-          label: "Kecamatan",
-          icon: "fas fa-location-dot",
-          link: "/admin/laporan/kecamatan",
-        },
-        {
-          id: "report-kesehatan",
-          label: "Kesehatan",
-          icon: "fas fa-heartbeat",
-          link: "/admin/laporan/kesehatan",
+          link: "/admin/analitik/pengguna",
         },
       ],
     },
@@ -117,7 +98,7 @@ export class Sidebar implements OnDestroy {
   private userMenuItems: SidebarMenuItem[] = [
     {
       id: "dashboard",
-      label: "Dasbor",
+      label: "Dashboard",
       icon: "fas fa-tachometer-alt",
       link: "/pengguna/dasbor",
     },

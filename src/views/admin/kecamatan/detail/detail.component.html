@@ -1,1 +1,131 @@
-<p>detail works!</p>
+<shared-sidebar [userType]="'admin'"></shared-sidebar>
+<main class="ml-64 bg-gray-50 min-h-screen">
+  <!-- Header Section -->
+  <section class="p-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="mb-1 text-4xl font-light tracking-tight">Analitik Kecamatan</h1>
+        <p class="text-text-secondary text-base font-normal">Detail data kecamatan</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content Section -->
+  <section class="px-8 pb-8">
+    <div class="max-w-7xl mx-auto">
+      <ng-container *ngIf="kecamatan; else notFound">
+        <!-- Kecamatan Overview Card -->
+        <figure class="rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200 mb-6 flex flex-col">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+              </div>
+              <div>
+                <h2 class="text-2xl font-bold text-heading">{{ kecamatan.nama }}</h2>
+                <p class="text-sm text-gray-500">Kecamatan Malang</p>
+              </div>
+            </div>
+            <!-- Stats Overview -->
+            <div class="flex items-center gap-8">
+              <div class="text-center">
+                <div class="text-2xl font-bold text-primary">{{ kecamatan.totalPenderita | number }}</div>
+                <div class="text-xs text-gray-500">Total Penderita</div>
+              </div>
+              <div class="w-px h-8 bg-gray-200"></div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-hov-blue">{{ kecamatan.populasi | number }}</div>
+                <div class="text-xs text-gray-500">Populasi</div>
+              </div>
+              <div class="w-px h-8 bg-gray-200"></div>
+              <div class="text-center">
+                <div class="text-2xl font-bold text-color-primary-alt" style="color: #43a36d">{{ ((kecamatan.totalPenderita / kecamatan.populasi) * 100).toFixed(1) }}%</div>
+                <div class="text-xs text-gray-500">Persentase PTM</div>
+              </div>
+            </div>
+          </div>
+        </figure>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <!-- Pie Chart -->
+          <figure class="rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fas fa-chart-pie text-primary text-sm"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-heading">Proporsi Penyakit</h3>
+                <p class="text-xs text-gray-500">Distribusi jenis PTM</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="w-full sm:w-[350px] md:w-[400px] lg:w-[300px] h-80 mx-auto">
+                <canvas baseChart [data]="chartPieData" [options]="chartPieOptions" [type]="'pie'"></canvas>
+              </div>
+            </div>
+          </figure>
+
+          <!-- Doughnut Chart -->
+          <figure class="rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fas fa-circle-notch text-primary text-sm"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-heading">Persentase PTM</h3>
+                <p class="text-xs text-gray-500">PTM vs total populasi</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-center">
+              <div class="w-full sm:w-[350px] md:w-[400px] lg:w-[300px] h-80 mx-auto">
+                <canvas baseChart [data]="chartDoughnutData" [options]="chartDoughnutOptions" [type]="'doughnut'"></canvas>
+              </div>
+            </div>
+          </figure>
+
+          <!-- Line Chart -->
+          <figure class="rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200 lg:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fas fa-chart-line text-primary text-sm"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-heading">Trend Penderita</h3>
+                <p class="text-xs text-gray-500">Perkembangan per tahun</p>
+              </div>
+            </div>
+            <div class="w-full">
+              <canvas baseChart [data]="chartLineData" [options]="chartLineOptions" [type]="'line'"></canvas>
+            </div>
+          </figure>
+
+          <!-- Bar Chart -->
+          <figure class="rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200 lg:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                <i class="fas fa-chart-bar text-primary text-sm"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold text-heading">Perbandingan Penyakit</h3>
+                <p class="text-xs text-gray-500">Jumlah per jenis PTM</p>
+              </div>
+            </div>
+            <div class="w-full">
+              <canvas baseChart [data]="chartBarData" [options]="chartBarOptions" [type]="'bar'"></canvas>
+            </div>
+          </figure>
+        </div>
+      </ng-container>
+      <ng-template #notFound>
+        <div class="text-center py-20">
+          <i class="fas fa-exclamation-triangle text-4xl text-red-400 mb-4"></i>
+          <h2 class="text-xl font-semibold text-gray-700 mb-2">Data kecamatan tidak ditemukan</h2>
+          <a routerLink="/admin/kecamatan" class="inline-block mt-4 px-4 py-2 rounded bg-primary text-white hover:bg-hov-blue transition">
+            <i class="fas fa-arrow-left mr-2"></i>Kembali ke Daftar Kecamatan
+          </a>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+</main>

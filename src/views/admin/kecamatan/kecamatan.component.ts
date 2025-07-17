@@ -4,6 +4,23 @@ import { FormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Sidebar } from '@shared/sidebar/sidebar.component';
 import { getAllDistricts } from 'indonesia-nodejs';
+import { Router } from '@angular/router';
+
+// Fungsi hash string ke angka
+function hashString(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
+
+// Fungsi random dengan seed
+function seededRandom(seed: number) {
+  let x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
 
 /**
  * Interface untuk data kecamatan yang berisi informasi penderita PTM
@@ -54,7 +71,7 @@ export class KecamatanComponent implements OnInit {
    * @param title - Service untuk mengatur title halaman
    * @param meta - Service untuk mengatur meta tags
    */
-  constructor(private title: Title, private meta: Meta) {
+  constructor(private title: Title, private meta: Meta, private router: Router) {
     this.title.setTitle("Daftar Kecamatan | SEHATIN");
     this.meta.addTags([
       { name: "description", content: "Daftar data penderita PTM per kecamatan" },
@@ -133,16 +150,16 @@ export class KecamatanComponent implements OnInit {
       // Filter hanya kecamatan di Kabupaten Malang (city_code: 3507)
       const malangDistricts = allDistricts.filter(district => district.city_code === 3507);
 
-      // Generate data dummy untuk setiap kecamatan
+      // Generate data dummy deterministik untuk setiap kecamatan
       this.kecamatanList = malangDistricts.map((district, index) => {
-        // Generate angka acak yang masuk akal untuk data PTM
-        const diabetes = Math.floor(Math.random() * 50) + 20;      // Range: 20-70
-        const kardiovaskular = Math.floor(Math.random() * 40) + 15; // Range: 15-55
-        const obesitas = Math.floor(Math.random() * 60) + 25;       // Range: 25-85
-        const hipertensi = Math.floor(Math.random() * 80) + 30;     // Range: 30-110
-        const kolesterol = Math.floor(Math.random() * 45) + 20;     // Range: 20-65
+        const seed = hashString(district.name);
+        // Gunakan seededRandom untuk setiap penyakit
+        const diabetes = 20 + Math.floor(seededRandom(seed + 1) * 51); // 20-70
+        const kardiovaskular = 15 + Math.floor(seededRandom(seed + 2) * 41); // 15-55
+        const obesitas = 25 + Math.floor(seededRandom(seed + 3) * 61); // 25-85
+        const hipertensi = 30 + Math.floor(seededRandom(seed + 4) * 81); // 30-110
+        const kolesterol = 20 + Math.floor(seededRandom(seed + 5) * 46); // 20-65
         const totalPenderita = diabetes + kardiovaskular + obesitas + hipertensi + kolesterol;
-
         return {
           id: index + 1,
           nama: district.name,
@@ -239,7 +256,7 @@ export class KecamatanComponent implements OnInit {
    * @param {KecamatanData} kecamatan - Data kecamatan yang dipilih
    */
   lihatDetail(kecamatan: KecamatanData): void {
-    alert('Detail kecamatan: ' + kecamatan.nama);
+    this.router.navigate(['/admin/kecamatan', kecamatan.id]);
   }
 
   /**
