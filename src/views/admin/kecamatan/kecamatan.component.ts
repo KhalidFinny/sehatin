@@ -3,7 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Sidebar } from '@shared/sidebar/sidebar.component';
+import { getAllDistricts } from 'indonesia-nodejs';
 
+/**
+ * Interface untuk data kecamatan yang berisi informasi penderita PTM
+ * @interface KecamatanData
+ * @property {number} id - ID unik kecamatan
+ * @property {string} nama - Nama kecamatan
+ * @property {number} totalPenderita - Total penderita semua penyakit
+ * @property {number} diabetes - Jumlah penderita diabetes
+ * @property {number} kardiovaskular - Jumlah penderita kardiovaskular
+ * @property {number} obesitas - Jumlah penderita obesitas
+ * @property {number} hipertensi - Jumlah penderita hipertensi
+ * @property {number} kolesterol - Jumlah penderita kolesterol
+ */
 interface KecamatanData {
   id: number;
   nama: string;
@@ -15,6 +28,15 @@ interface KecamatanData {
   kolesterol: number;
 }
 
+/**
+ * Component untuk menampilkan daftar kecamatan dengan data penderita PTM
+ * Fitur utama:
+ * - Menampilkan data kecamatan dalam bentuk tabel
+ * - Filter berdasarkan jenis penyakit
+ * - Sorting ascending/descending
+ * - Export data ke Excel
+ * - Detail kecamatan
+ */
 @Component({
   selector: 'app-kecamatan',
   imports: [CommonModule, FormsModule, Sidebar],
@@ -22,9 +44,16 @@ interface KecamatanData {
   styleUrl: './kecamatan.component.css'
 })
 export class KecamatanComponent implements OnInit {
+  /** Tanggal hari ini dalam format Indonesia */
   tanggalHariIni: string = '';
+  /** Waktu sekarang dalam format Indonesia */
   waktuSekarang: string = '';
 
+  /**
+   * Constructor untuk inisialisasi component
+   * @param title - Service untuk mengatur title halaman
+   * @param meta - Service untuk mengatur meta tags
+   */
   constructor(private title: Title, private meta: Meta) {
     this.title.setTitle("Daftar Kecamatan | SEHATIN");
     this.meta.addTags([
@@ -34,13 +63,23 @@ export class KecamatanComponent implements OnInit {
     ]);
   }
 
+  /** Array berisi data kecamatan yang telah difilter */
   kecamatanList: KecamatanData[] = [];
+  /** Total keseluruhan penderita dari semua kecamatan */
   totalKeseluruhan = 0;
+  /** Status loading untuk menampilkan spinner */
   loading = true;
+  /** Penyakit yang dipilih untuk filter (default: total) */
   penyakitDipilih = 'total';
+  /** Urutan sorting (asc/desc) */
   sortOrder: 'asc' | 'desc' = 'desc';
+  /** Array berisi data kecamatan yang telah difilter dan diurutkan */
   filteredKecamatanList: KecamatanData[] = [];
 
+  /**
+   * Daftar penyakit yang tersedia untuk filter
+   * @type {Array<{label: string, value: string}>}
+   */
   daftarPenyakit = [
     { label: 'Total Penderita', value: 'total' },
     { label: 'Diabetes', value: 'diabetes' },
@@ -50,14 +89,23 @@ export class KecamatanComponent implements OnInit {
     { label: 'Kolesterol', value: 'kolesterol' },
   ];
 
+  /**
+   * Lifecycle hook yang dipanggil setelah component diinisialisasi
+   * Mengatur tanggal/waktu dan memuat data kecamatan
+   */
   ngOnInit(): void {
     this.updateDateTime();
     this.loadKecamatanData();
+    // Update waktu setiap 1 menit
     setInterval(() => {
       this.updateDateTime();
     }, 60000);
   }
 
+  /**
+   * Memperbarui tanggal dan waktu saat ini
+   * @private
+   */
   private updateDateTime(): void {
     const now = new Date();
     this.tanggalHariIni = now.toLocaleDateString('id-ID', {
@@ -72,89 +120,132 @@ export class KecamatanComponent implements OnInit {
     });
   }
 
-  private loadKecamatanData(): void {
-    this.kecamatanList = [
-      { id: 1, nama: 'Ampelgading', totalPenderita: 245, diabetes: 45, kardiovaskular:38, obesitas: 52, hipertensi: 67, kolesterol: 43 },
-      { id: 2, nama: 'Bantur', totalPenderita: 189, diabetes: 32, kardiovaskular:29, obesitas: 41, hipertensi: 54, kolesterol: 33 },
-      { id:3, nama: 'Bululawang', totalPenderita: 312, diabetes: 58, kardiovaskular:47, obesitas: 68, hipertensi: 89, kolesterol: 50 },
-      { id: 4, nama: 'Dampit', totalPenderita: 276, diabetes: 51, kardiovaskular:42, obesitas: 59, hipertensi: 76, kolesterol: 48 },
-      { id: 5, nama: 'Dau', totalPenderita: 298, diabetes: 55, kardiovaskular:45, obesitas: 63, hipertensi: 82, kolesterol: 53 },
-      { id: 6, nama: 'Donomulyo', totalPenderita: 167, diabetes: 28, kardiovaskular:25, obesitas: 36, hipertensi: 48, kolesterol: 30 },
-      { id: 7, nama: 'Gedangan', totalPenderita: 234, diabetes: 43, kardiovaskular:35, obesitas: 49, hipertensi: 65, kolesterol: 42 },
-      { id:8, nama: 'Gondanglegi', totalPenderita: 289, diabetes: 53, kardiovaskular:44, obesitas: 61, hipertensi: 79, kolesterol: 52 },
-      { id: 9, nama: 'Jabung', totalPenderita: 201, diabetes: 37, kardiovaskular:31, obesitas: 44, hipertensi: 58, kolesterol: 31 },
-      { id: 10, nama: 'Kalipare', totalPenderita: 178, diabetes: 31, kardiovaskular:27, obesitas: 38, hipertensi: 51, kolesterol: 31 },
-      { id:11, nama: 'Karangploso', totalPenderita: 256, diabetes: 47, kardiovaskular:39, obesitas: 55, hipertensi: 71, kolesterol: 44 },
-      { id:12, nama: 'Kasembon', totalPenderita: 145, diabetes: 26, kardiovaskular:22, obesitas: 31, hipertensi: 42, kolesterol: 24 },
-      { id: 13, nama: 'Kepanjen', totalPenderita: 345, diabetes: 64, kardiovaskular:52, obesitas: 74, hipertensi: 95, kolesterol: 60 },
-      { id: 14, nama: 'Kromengan', totalPenderita: 198, diabetes: 36, kardiovaskular:30, obesitas: 43, hipertensi: 57, kolesterol: 32 },
-      { id:15, nama: 'Lawang', totalPenderita: 267, diabetes: 49, kardiovaskular:40, obesitas: 57, hipertensi: 73, kolesterol: 48 },
-      { id:16, nama: 'Ngajum', totalPenderita: 223, diabetes: 41, kardiovaskular:33, obesitas: 47, hipertensi: 62, kolesterol: 40 },
-      { id: 17, nama: 'Ngantang', totalPenderita: 189, diabetes: 34, kardiovaskular:28, obesitas: 40, hipertensi: 54, kolesterol: 33 },
-      { id: 18, nama: 'Pagak', totalPenderita: 156, diabetes: 28, kardiovaskular:24, obesitas: 34, hipertensi: 46, kolesterol: 24 },
-      { id: 19, nama: 'Pagelaran', totalPenderita: 212, diabetes: 39, kardiovaskular:32, obesitas: 45, hipertensi: 60, kolesterol: 36 },
-      { id: 20, nama: 'Pakis', totalPenderita: 278, diabetes: 51, kardiovaskular:42, obesitas: 59, hipertensi: 76, kolesterol: 50 },
-      { id: 21, nama: 'Pakisaji', totalPenderita: 245, diabetes: 45, kardiovaskular:37, obesitas: 52, hipertensi: 68, kolesterol: 43 },
-      { id: 22, nama: 'Poncokusumo', totalPenderita: 167, diabetes: 30, kardiovaskular:25, obesitas: 36, hipertensi: 48, kolesterol: 28 },
-      { id: 23, nama: 'Pujon', totalPenderita: 134, diabetes: 24, kardiovaskular:20, obesitas: 29, hipertensi: 39, kolesterol: 22 },
-      { id:24, nama: 'Sumbermanjing Wetan', totalPenderita: 189, diabetes: 34, kardiovaskular:28, obesitas: 40, hipertensi: 54, kolesterol: 33 },
-      { id:25, nama: 'Singosari', totalPenderita: 312, diabetes: 58, kardiovaskular:47, obesitas: 68, hipertensi: 89, kolesterol: 50 },
-      { id: 26, nama: 'Sumberpucung', totalPenderita: 201, diabetes: 37, kardiovaskular:31, obesitas: 44, hipertensi: 58, kolesterol: 31 },
-      { id: 27, nama: 'Tajinan', totalPenderita: 234, diabetes: 43, kardiovaskular:35, obesitas: 49, hipertensi: 65, kolesterol: 42 },
-      { id:28, nama: 'Tirtoyudo', totalPenderita: 178, diabetes: 32, kardiovaskular:27, obesitas: 38, hipertensi: 51, kolesterol: 30 },
-      { id: 29, nama: 'Tumpang', totalPenderita: 245, diabetes: 45, kardiovaskular:37, obesitas: 52, hipertensi: 68, kolesterol: 43 },
-      { id: 30, nama: 'Turen', totalPenderita: 267, diabetes: 49, kardiovaskular:40, obesitas: 57, hipertensi: 73, kolesterol: 48 },
-      { id: 31, nama: 'Wagir', totalPenderita: 198, diabetes: 36, kardiovaskular:30, obesitas: 43, hipertensi: 57, kolesterol: 32 },
-      { id: 32, nama: 'Wajak', totalPenderita: 223, diabetes: 41, kardiovaskular:33, obesitas: 47, hipertensi: 62, kolesterol: 40 },
-      { id: 33, nama: 'Wonosari', totalPenderita: 156, diabetes: 28, kardiovaskular:24, obesitas: 34, hipertensi: 46, kolesterol: 24 }
-    ];
-    this.calculateTotalKeseluruhan();
-    this.updateFilteredList();
-    this.loading = false;
+  /**
+   * Memuat data kecamatan dari library indonesia-nodejs
+   * dan generate data dummy untuk setiap kecamatan
+   * @private
+   * @returns {Promise<void>}
+   */
+  private async loadKecamatanData(): Promise<void> {
+    try {
+      // Ambil data kecamatan dari indonesia-nodejs
+      const allDistricts = await getAllDistricts();
+      // Filter hanya kecamatan di Kabupaten Malang (city_code: 3507)
+      const malangDistricts = allDistricts.filter(district => district.city_code === 3507);
+
+      // Generate data dummy untuk setiap kecamatan
+      this.kecamatanList = malangDistricts.map((district, index) => {
+        // Generate angka acak yang masuk akal untuk data PTM
+        const diabetes = Math.floor(Math.random() * 50) + 20;      // Range: 20-70
+        const kardiovaskular = Math.floor(Math.random() * 40) + 15; // Range: 15-55
+        const obesitas = Math.floor(Math.random() * 60) + 25;       // Range: 25-85
+        const hipertensi = Math.floor(Math.random() * 80) + 30;     // Range: 30-110
+        const kolesterol = Math.floor(Math.random() * 45) + 20;     // Range: 20-65
+        const totalPenderita = diabetes + kardiovaskular + obesitas + hipertensi + kolesterol;
+
+        return {
+          id: index + 1,
+          nama: district.name,
+          totalPenderita,
+          diabetes,
+          kardiovaskular,
+          obesitas,
+          hipertensi,
+          kolesterol
+        };
+      });
+
+      this.calculateTotalKeseluruhan();
+      this.updateFilteredList();
+      this.loading = false;
+    } catch (error) {
+      console.error('Error loading kecamatan data:', error);
+      this.loading = false;
+    }
   }
 
+  /**
+   * Menghitung total keseluruhan penderita dari semua kecamatan
+   * @private
+   */
   private calculateTotalKeseluruhan(): void {
     this.totalKeseluruhan = this.kecamatanList.reduce((total, kecamatan) => {
       return total + kecamatan.totalPenderita;
     }, 0);
   }
 
+  /**
+   * Event handler ketika penyakit yang dipilih berubah
+   * Memperbarui list yang difilter
+   */
   onPenyakitChange(): void {
     this.updateFilteredList();
   }
 
+  /**
+   * Toggle urutan sorting antara ascending dan descending
+   * Memperbarui list yang difilter
+   */
   toggleSortOrder(): void {
     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     this.updateFilteredList();
   }
 
+  /**
+   * Memperbarui list kecamatan yang difilter dan diurutkan
+   * @private
+   */
   updateFilteredList(): void {
     const penyakit = this.penyakitDipilih;
     let list = [...this.kecamatanList];
+
+    // Filter berdasarkan penyakit yang dipilih (kecuali 'total')
     if (penyakit !== 'total') {
       list = list.filter(k => Number(k[penyakit as keyof KecamatanData]) > 0);
     }
+
+    // Sort berdasarkan jumlah penderita
     list.sort((a, b) => {
       const valA = this.getJumlahPenderita(a);
       const valB = this.getJumlahPenderita(b);
       return this.sortOrder === 'asc' ? valA - valB : valB - valA;
     });
+
     this.filteredKecamatanList = list;
   }
 
+  /**
+   * Mendapatkan jumlah penderita berdasarkan penyakit yang dipilih
+   * @param {KecamatanData} kecamatan - Data kecamatan
+   * @returns {number} Jumlah penderita
+   */
   getJumlahPenderita(kecamatan: KecamatanData): number {
     if (this.penyakitDipilih === 'total') return kecamatan.totalPenderita;
     return kecamatan[this.penyakitDipilih as keyof KecamatanData] as number;
   }
 
+  /**
+   * Menghitung persentase dari suatu nilai terhadap total
+   * @param {number} value - Nilai yang akan dihitung persentasenya
+   * @param {number} total - Total keseluruhan
+   * @returns {number} Persentase (0-100)
+   */
   getPercentage(value: number, total: number): number {
     return total > 0 ? Math.round((value / total) * 100) : 0;
   }
 
+  /**
+   * Event handler untuk melihat detail kecamatan
+   * @param {KecamatanData} kecamatan - Data kecamatan yang dipilih
+   */
   lihatDetail(kecamatan: KecamatanData): void {
     alert('Detail kecamatan: ' + kecamatan.nama);
   }
 
+  /**
+   * Mengunduh data kecamatan dalam format Excel (.xls)
+   * Membuat file HTML table yang dapat dibuka di Excel
+   */
   downloadExcel(): void {
     // Header dengan semua kolom
     const headers = [
