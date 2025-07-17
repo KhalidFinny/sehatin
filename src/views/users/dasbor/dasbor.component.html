@@ -1,9 +1,8 @@
-<!-- Sidebar pengguna (komponen shared) -->
-<shared-sidebar userType="user" />
+<shared-sidebar *ngIf="isSidebarOpen" (close)="toggleSidebar()" userType="user" />
 
-<!-- Bagian utama dasbor pengguna -->
-<main class="ml-64 cursor-default border-b border-gray-100 p-8">
-  <!-- Sambutan pengguna di bagian atas -->
+<!-- prettier-ignore -->
+<main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
+  <!-- Sambutan -->
   <section class="flex items-end justify-between pb-6">
     <div>
       <h1 class="mb-1 text-4xl font-light tracking-tight">Dasbor Pengguna</h1>

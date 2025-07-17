@@ -1,18 +1,26 @@
 <!-- prettier-ignore -->
-<aside class="fixed top-0 left-0 z-50 h-screen w-64 bg-white">
+<aside
+  [ngClass]="{ 'translate-x-0 lg:translate-x-0': isOpen, '-translate-x-full': !isOpen }"
+  class="fixed top-0 left-0 z-50 h-screen w-64 transform bg-white transition-transform duration-300"
+>
   <!-- User Info -->
-  <section class="bg-primary flex items-center space-x-3 px-6 py-8">
-    <div class="text-primary flex h-11 w-11 items-center justify-center rounded-lg bg-white text-base font-semibold">
-      {{ getCurrentConfig().userInitial }}
-    </div>
-    <div>
-      <h5 class="text-sm font-medium text-white">
-        {{ getCurrentConfig().userName }}
+  <section class="bg-primary relative flex items-center justify-between p-6">
+    <div class="flex items-center space-x-3">
+      <h5 class="text-primary flex h-11 w-11 items-center justify-center rounded-lg bg-white text-base font-semibold">
+        {{ getCurrentConfig().userInitial }}
       </h5>
-      <h6 class="mt-0.5 text-xs text-white opacity-80">
-        {{ getCurrentConfig().userEmail }}
-      </h6>
+      <span>
+        <h5 class="text-sm font-medium text-white">
+          {{ getCurrentConfig().userName }}
+        </h5>
+        <h6 class="mt-0.5 text-xs text-white opacity-80">
+          {{ getCurrentConfig().userEmail }}
+        </h6>
+      </span>
     </div>
+    <button (click)="closeSidebar()" class="cursor-pointer text-xl text-white transition-all duration-300 ease-in-out hover:opacity-80 focus:outline-none">
+      <i class="fas fa-times"></i>
+    </button>
   </section>
   <!-- End of User Info -->
   <!-- Logo -->
@@ -81,4 +89,3 @@
     </nav>
   </section>
 </aside>
-<div class="bg-opacity-20 sidebar-overlay fixed inset-0 z-40 hidden bg-black" (click)="closeSidebar()"></div>

@@ -10,6 +10,8 @@ import { DasborAdmin } from "@views/admin/dasbor/dasbor.component";
 import { KecamatanComponent } from "@views/admin/kecamatan/kecamatan.component";
 import { DasborPengguna } from "@views/users/dasbor/dasbor.component";
 import { RekapKesehatan } from "@views/users/rekap-kesehatan/rekap-kesehatan.component";
+import { TambahRekapKesehatan } from "@views/users/tambah-rekap-kesehatan/tambah-rekap-kesehatan.component";
+import { SkriningPtm } from "@views/users/skrining-ptm/skrining-ptm.component";
 
 export const routes: Routes = [
   /**
@@ -32,6 +34,8 @@ export const routes: Routes = [
    */
   { path: "pengguna/dasbor", component: DasborPengguna, canActivate: [AuthGuard] },
   { path: "pengguna/rekap-kesehatan", component: RekapKesehatan, canActivate: [AuthGuard] },
+  { path: "pengguna/rekap-kesehatan/tambah", component: TambahRekapKesehatan, canActivate: [AuthGuard] },
+  { path: "pengguna/skrining-ptm", component: SkriningPtm, canActivate: [AuthGuard] },
 
   /**
    * Perutean jika halaman tidak ditemukan.

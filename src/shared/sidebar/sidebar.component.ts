@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnDestroy } from "@angular/core";
+import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { AuthService } from "@services/auth.service";
 
@@ -22,6 +22,7 @@ type SidebarConfig = {
 @Component({
   selector: "shared-sidebar",
   imports: [CommonModule, RouterModule],
+  standalone: true,
   templateUrl: "./sidebar.component.html",
   styleUrl: "./sidebar.component.css",
 })
@@ -39,6 +40,8 @@ export class Sidebar implements OnDestroy {
    */
   @Input() userType: "admin" | "user" = "user";
 
+  @Output() close = new EventEmitter<boolean>();
+
   /**
    * @var openSubMenuId
    * ID sub-menu yang terbuka.
@@ -51,6 +54,8 @@ export class Sidebar implements OnDestroy {
    * NOTE: Jangan sesekali menggunakan any sebagai tipe data.
    */
   private closeTimeout: number = 0;
+
+  isOpen: boolean = true;
 
   constructor(private authService: AuthService) {}
 
@@ -123,30 +128,11 @@ export class Sidebar implements OnDestroy {
       link: "/pengguna/rekap-kesehatan",
     },
     {
-      id: "consultation",
-      label: "Konsultasi",
-      icon: "fas fa-comments",
-      subMenu: [
-        {
-          id: "chat-doctor",
-          label: "Chat Dokter",
-          icon: "fas fa-comment-medical",
-          link: "/pengguna/konsultasi/chat-dokter",
-        },
-        {
-          id: "video-call",
-          label: "Video Call",
-          icon: "fas fa-video",
-          link: "/pengguna/konsultasi/video-call",
-        },
-        {
-          id: "consultation-history",
-          label: "Riwayat Konsultasi",
-          icon: "fas fa-history",
-          link: "/pengguna/konsultasi/riwayat-konsultasi",
-        },
-      ],
-    },
+      id: "ncd-screening",
+      label: "Skrining PTM",
+      icon: "fa-solid fa-heart-pulse",
+      link: "/pengguna/skrining-ptm",
+    }
   ];
 
   /**
@@ -198,14 +184,20 @@ export class Sidebar implements OnDestroy {
    * Fungsi untuk menutup sidebar.
    */
   closeSidebar(): void {
-    const overlay = document.querySelector(".sidebar-overlay");
-    const sidebar = document.querySelector(".sidebar");
+    this.isOpen = false;
+    this.close.emit();
+  }
 
-    if (overlay && sidebar) {
-      overlay.classList.add("hidden");
-      sidebar.classList.remove("translate-x-0");
-      sidebar.classList.add("-translate-x-full");
-    }
+  /**
+   * @returns void
+   * Fungsi untuk membuka sidebar.
+   */
+  openSidebar(): void {
+    this.isOpen = true;
+  }
+
+  toggleSidebar():void {
+    this.isOpen = !this.isOpen;
   }
 
   /**
