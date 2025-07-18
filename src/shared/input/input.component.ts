@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, forwardRef } from "@angular/core";
+import { Component, EventEmitter, forwardRef, Input, Output } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
   selector: "form-input",
@@ -17,30 +17,56 @@ import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/f
   ],
 })
 export class InputComponent implements ControlValueAccessor {
+  /**
+   * @prop name, label, value, type, required, info, icon, placeholder, variant
+   * @type string
+   * @description Props untuk input.
+   */
   @Input() name!: string;
   @Input() label!: string;
   @Input() value: string = "";
-  @Input() type: string = "text";
+  @Input() type: "text" | "email" | "file" | "password" | "number" = "text";
   @Input() required: boolean = false;
   @Input() info?: string;
   @Input() icon?: string;
   @Input() placeholder?: string;
+  @Input() variant: "auth" | "form" = "form";
   @Output() valueChange = new EventEmitter<string>();
 
-  private onChange = (value: string) => {};
-  private onTouched = () => {};
+  /**
+   * @method onChange
+   * @method onTouched
+   * ControlValueAccessor hooks
+   */
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
 
-  showPassword = false;
+  /**
+   * @returns boolean
+   * @var showPassword
+   * @description Internal states
+   */
+  showPassword: boolean = false;
 
-  toggleShowPassword() {
+  // --- Getters ---
+  get labelString(): string {
+    if (typeof this.label === "string") return this.label;
+    return "[Label tidak valid]";
+  }
+
+  // --- Public Methods ---
+  toggleShowPassword(): void {
     this.showPassword = !this.showPassword;
   }
 
-  public handleInput(event: Event): void {
+  handleInput(event: Event): void {
     const input = event.target as HTMLInputElement;
 
-    if (this.type === "number") input.value = input.value.replace(/[^0-9.,]/g, "").replace(/(,.*?),/g, "$1");
-    else if (this.type === "text") input.value = input.value.replace(/[^a-zA-Z0-9\s.,?!:;'"\-()\/]/g, "");
+    if (this.type === "number") {
+      input.value = input.value.replace(/[^0-9.,]/g, "").replace(/(,.*?),/g, "$1");
+    } else if (this.type === "text") {
+      input.value = input.value.replace(/[^a-zA-Z0-9\s.,?!:;'"\-()\/]/g, "");
+    }
 
     this.value = input.value;
     this.onChange(this.value);
@@ -48,28 +74,23 @@ export class InputComponent implements ControlValueAccessor {
     this.valueChange.emit(this.value);
   }
 
-  public onWheel(event: WheelEvent): void {
+  onWheel(event: WheelEvent): void {
     if (this.type === "number") {
       event.preventDefault();
       (event.target as HTMLInputElement).blur();
     }
   }
 
+  // --- ControlValueAccessor ---
   writeValue(value: string): void {
     this.value = value;
   }
 
-  registerOnChange(fn: () => void): void {
+  registerOnChange(fn: (value: string) => void): void {
     this.onChange = fn;
   }
 
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
-  }
-
-  get labelString(): string {
-    if (typeof this.label === "string") return this.label;
-    if (this.label && typeof this.label === "object" && "text" in this.label) return (this.label as any).text;
-    return "[Label tidak valid]";
   }
 }

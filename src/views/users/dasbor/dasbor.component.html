@@ -1,131 +1,124 @@
 <shared-sidebar *ngIf="isSidebarOpen" (close)="toggleSidebar()" userType="user" />
 
-<!-- prettier-ignore -->
 <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
-  <!-- Sambutan -->
+  <!-- SECTION 1: Sambutan -->
   <section class="flex items-end justify-between pb-6">
     <div>
-      <h1 class="mb-1 text-4xl font-light tracking-tight">Dashboard Pengguna</h1>
+      <h1 class="mb-1 text-4xl font-light tracking-tight">
+        Dashboard Pengguna
+      </h1>
       <p class="text-text-secondary text-base font-normal">
         Selamat datang kembali di dashboard kesehatanmu!
       </p>
     </div>
-    <div class="text-right">
-      <!-- Tanggal dan waktu saat ini -->
-      <h2 class="text-sm font-medium text-gray-400">{{ currentDate }}</h2>
-      <h3 class="mt-1 text-xs text-gray-400">{{ currentTime }}</h3>
-    </div>
+    <aside class="text-right">
+      <time class="text-sm font-medium text-gray-400">{{ currentDate }}</time>
+      <time class="mt-1 block text-xs text-gray-400">{{ currentTime }}</time>
+    </aside>
   </section>
 
-  <!-- Layout utama bento: statistik, riwayat makanan, aktivitas, penyakit -->
+  <!-- SECTION 2: Konten Utama (Bento Layout) -->
   <section class="grid grid-cols-12 gap-4">
-    <!-- Kolom kiri: Statistik Pengguna -->
-    <div class="col-span-3 flex flex-col gap-4">
-      <!-- Statistik Pengguna (loop) -->
-      <ng-container *ngFor="let stats of statistics; let i = index">
-        <figure
-          class="relative w-full cursor-pointer overflow-hidden rounded-xl border border-gray-100 bg-white px-6 pt-8 pb-8 transition-all duration-300 ease-in-out lg:hover:border-gray-200 min-h-[180px]"
-        >
-          <section class="flex items-center justify-between gap-6 text-sm">
-            <h5 class="text-sm font-medium text-[#6b6b6b]">
-              {{ stats.title }}
-            </h5>
-            <span class="flex h-10 w-10 items-center justify-center rounded-full" [ngStyle]="{ 'background-color': stats.background, 'color': stats.color }">
-              <i class="{{ stats.icon }}"></i>
-            </span>
-          </section>
-          <h4 class="mt-2 mb-3 text-xl font-bold text-[#4f4f4f]">
-            {{ stats.total }}
-          </h4>
-          <h6 class="text-xs text-[#6b6b6b]">{{ stats.info }}</h6>
-        </figure>
-      </ng-container>
-      <!-- Akhir dari Statistik Pengguna -->
-    </div>
-
-    <!-- Kolom tengah: Riwayat Makanan -->
-    <div class="col-span-6 flex flex-col">
-      <!-- Riwayat Makanan Pengguna -->
-      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-8 transition-all duration-200 hover:border-gray-200 min-h-[500px]">
-        <figcaption class="mb-4 flex items-center justify-between">
-          <h2 class="text-heading text-lg font-medium">Riwayat Makanan</h2>
-          <div class="h-2 w-2 rounded-full bg-green-400"></div>
+    <!-- Column 1: Statistik -->
+    <div class="col-span-3 grid grid-rows-3 space-y-6">
+      <figure *ngFor="let stats of statistics" class="flex flex-col justify-between rounded-xl border border-gray-100 bg-white p-6 transition-all duration-300 ease-in-out hover:border-gray-200">
+        <figcaption class="mb-4 flex items-center justify-between gap-6 text-sm">
+          <h5 class="font-medium text-[#6b6b6b]">{{ stats.title }}</h5>
+          <span class="flex h-10 w-10 items-center justify-center rounded-full" [ngStyle]="{ 'background-color': stats.background, 'color': stats.color }">
+            <i class="{{ stats.icon }}"></i>
+          </span>
         </figcaption>
-        <!-- Daftar makanan jika ada -->
-        <ul *ngIf="makananList.length > 0; else makananKosong" class="flex flex-col gap-4">
-          <li *ngFor="let m of makananList" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background);">
-            <span class="flex h-10 w-10 items-center justify-center rounded-full text-xl" style="background: #e6f6fa; color: var(--color-heading);">
-              <i class="fa-solid fa-bowl-food"></i>
-            </span>
-            <div class="flex-1">
-              <div class="font-semibold" style="color: var(--color-text-primary);">{{ m.nama }}</div>
-              <div class="text-xs" style="color: var(--color-text-secondary);">{{ m.waktu }} &bull; {{ m.kalori }} kalori</div>
-            </div>
-          </li>
-        </ul>
-        <!-- Tampilkan pesan jika tidak ada riwayat makanan -->
-        <ng-template #makananKosong>
-          <h5 class="flex flex-1 items-center justify-center text-sm text-gray-400">
-            Belum ada riwayat makanan
-          </h5>
-        </ng-template>
+        <strong class="text-xl font-bold text-[#4f4f4f]">
+          {{ stats.total }}
+        </strong>
+        <small class="text-xs text-[#6b6b6b]">{{ stats.info }}</small>
       </figure>
     </div>
 
-    <!-- Kolom kanan: Riwayat Aktivitas dan Penyakit -->
-    <div class="col-span-3 flex flex-col gap-4">
-      <!-- Riwayat Aktivitas Pengguna -->
-      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-8 transition-all duration-200 hover:border-gray-200 min-h-[240px]">
+    <!-- Column 2: Riwayat Makanan -->
+    <figure class="col-span-5 flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-8 transition-all duration-200 hover:border-gray-200">
+      <figcaption class="mb-4 flex items-center justify-between">
+        <h2 class="text-heading text-lg font-medium">Riwayat Makanan</h2>
+        <span class="h-2 w-2 rounded-full bg-green-400"></span>
+      </figcaption>
+      <ul *ngIf="makananList.length > 0; else makananKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
+        <li *ngFor="let m of makananList" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background)">
+          <span class="flex h-10 w-10 items-center justify-center rounded-full text-xl" style="background: #e6f6fa; color: var(--color-heading)">
+            <i class="fa-solid fa-bowl-food"></i>
+          </span>
+          <article class="flex-1">
+            <h5 class="font-semibold" style="color: var(--color-text-primary)">
+              {{ m.nama }}
+            </h5>
+            <time class="text-xs" style="color: var(--color-text-secondary)">
+              {{ m.waktu }} &bull; {{ m.kalori }} kalori
+            </time>
+          </article>
+        </li>
+      </ul>
+      <ng-template #makananKosong>
+        <p class="flex flex-1 items-center justify-center text-sm text-gray-400">
+          Belum ada riwayat makanan
+        </p>
+      </ng-template>
+    </figure>
+
+    <!-- Column 3: Riwayat Aktivitas -->
+    <div class="col-span-4 space-y-6">
+      <figure class="flex flex-col rounded-2xl border border-gray-100 bg-white p-8 transition-all duration-200 hover:border-gray-200">
         <figcaption class="mb-4 flex items-center justify-between">
           <h2 class="text-heading text-lg font-medium">Riwayat Aktivitas</h2>
-          <div class="h-2 w-2 rounded-full bg-blue-400"></div>
+          <span class="h-2 w-2 rounded-full bg-blue-400"></span>
         </figcaption>
-        <!-- Daftar aktivitas jika ada -->
-        <ul *ngIf="aktivitasList.length > 0; else aktivitasKosong" class="flex flex-col gap-4">
-          <li *ngFor="let a of aktivitasList" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background);">
-            <span class="flex h-10 w-10 items-center justify-center rounded-full text-xl" style="background: #eaf7f1; color: var(--color-primary-alt);">
+        <ul *ngIf="aktivitasList.length > 0; else aktivitasKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
+          <li *ngFor="let a of aktivitasList" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background)">
+            <span class="flex h-10 w-10 items-center justify-center rounded-full text-xl" style="background: #eaf7f1; color: var(--color-primary-alt)">
               <i class="fa-solid fa-person-running"></i>
             </span>
-            <div class="flex-1">
-              <div class="font-semibold" style="color: var(--color-text-primary);">{{ a.nama }}</div>
-              <div class="text-xs" style="color: var(--color-text-secondary);">{{ a.waktu }} &bull; {{ a.kalori }} kalori</div>
-            </div>
+            <article class="flex-1">
+              <h5 class="text-primary font-semibold">
+                {{ a.nama }}
+              </h5>
+              <time class="text-xs" style="color: var(--color-text-secondary)">
+                {{ a.waktu }} &bull; {{ a.kalori }} kalori
+              </time>
+            </article>
           </li>
         </ul>
-        <!-- Tampilkan pesan jika tidak ada riwayat aktivitas -->
         <ng-template #aktivitasKosong>
-          <h5 class="flex flex-1 items-center justify-center text-sm text-gray-400">
+          <p class="flex flex-1 items-center justify-center text-sm text-gray-400">
             Belum ada riwayat aktivitas
-          </h5>
+          </p>
         </ng-template>
       </figure>
 
-      <!-- Riwayat Penyakit Pengguna -->
-      <figure class="flex-1 rounded-2xl border border-gray-100 bg-white p-8 transition-all duration-200 hover:border-gray-200 min-h-[240px]">
+      <!-- Column 3: Riwayat Penyakit -->
+      <figure class="flex flex-col rounded-2xl border border-gray-100 bg-white p-8 transition-all duration-200 hover:border-gray-200">
         <figcaption class="mb-4 flex items-center justify-between">
           <h2 class="text-heading text-lg font-medium">Riwayat Penyakit</h2>
-          <div class="h-2 w-2 rounded-full bg-red-400"></div>
+          <span class="h-2 w-2 rounded-full bg-red-400"></span>
         </figcaption>
-        <!-- Daftar penyakit jika ada -->
-        <ul *ngIf="penyakitList.length > 0; else penyakitKosong" class="flex flex-col gap-4">
-          <li *ngFor="let p of penyakitList" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background);">
-            <span class="flex h-10 w-10 items-center justify-center rounded-full text-xl" style="background: #fbe9ee; color: var(--color-secondary);">
+        <ul *ngIf="penyakitList.length > 0; else penyakitKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
+          <li *ngFor="let p of penyakitList" class="bg-background flex items-center gap-4 rounded-lg px-4 py-3">
+            <span class="text-secondary flex h-10 w-10 items-center justify-center rounded-full bg-[#fbe9ee] text-xl">
               <i class="fa-solid fa-notes-medical"></i>
             </span>
-            <div class="flex-1">
-              <div class="font-semibold" style="color: var(--color-text-primary);">{{ p.nama }}</div>
-              <div class="text-xs" style="color: var(--color-text-secondary);">{{ p.waktu }} &bull; {{ p.keterangan }}</div>
-            </div>
+            <article class="flex-1">
+              <h5 class="text-primary font-semibold">
+                {{ p.nama }}
+              </h5>
+              <p class="text-secondary text-xs">
+                {{ p.waktu }} &bull; {{ p.keterangan }}
+              </p>
+            </article>
           </li>
         </ul>
-        <!-- Tampilkan pesan jika tidak ada riwayat penyakit -->
         <ng-template #penyakitKosong>
-          <h5 class="flex flex-1 items-center justify-center text-sm text-gray-400">
+          <p class="flex flex-1 items-center justify-center text-sm text-gray-400">
             Belum ada riwayat penyakit
-          </h5>
+          </p>
         </ng-template>
       </figure>
     </div>
   </section>
-  <!-- Akhir dari Bento Layout -->
 </main>

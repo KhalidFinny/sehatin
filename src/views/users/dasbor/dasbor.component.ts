@@ -3,11 +3,10 @@ import { CommonModule } from "@angular/common";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Meta, Title } from "@angular/platform-browser";
 import { BasePage } from "@helpers/base-page";
-import { HamburgerMenu } from "@shared/hamburger-menu/hamburger-menu.component";
 
 @Component({
   selector: "pages-dasbor-pengguna",
-  imports: [CommonModule, HamburgerMenu, Sidebar],
+  imports: [CommonModule, Sidebar],
   standalone: true,
   styleUrl: "./dasbor.component.css",
   templateUrl: "./dasbor.component.html",

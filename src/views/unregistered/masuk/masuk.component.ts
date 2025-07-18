@@ -2,14 +2,14 @@ import { CommonModule } from "@angular/common";
 import { Component, ChangeDetectorRef } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { AuthService } from "@services/auth.service";
 import { InputComponent } from "@shared/input/input.component";
 import { BasePage } from "helpers/base-page";
 
 @Component({
   selector: "pages-masuk",
-  imports: [CommonModule, FormsModule, InputComponent],
+  imports: [CommonModule, FormsModule, InputComponent, RouterModule],
   templateUrl: "./masuk.component.html",
   styleUrl: "./masuk.component.css",
 })
@@ -40,7 +40,7 @@ export class Masuk {
       const success = this.authService.login(this.surel, this.kata_sandi);
 
       if (!success) {
-        this.showAlertMessage("Email atau kata_sandi salah!", "error");
+        this.showAlertMessage("Email atau kata sandi salah!", "error");
         this.isLoading = false;
         this.cdr.detectChanges();
         return;

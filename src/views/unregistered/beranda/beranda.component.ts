@@ -4,6 +4,7 @@ import { Meta, Title } from "@angular/platform-browser";
 import { interval } from "rxjs";
 import { takeWhile } from "rxjs/operators";
 import { BasePage } from "helpers/base-page";
+import { RouterModule } from "@angular/router";
 
 type Doctors = {
   image: string;
@@ -27,7 +28,7 @@ type Statistics = {
 @Component({
   selector: "pages-beranda",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: "./beranda.component.html",
   styleUrl: "./beranda.component.css",
 })

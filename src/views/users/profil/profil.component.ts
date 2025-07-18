@@ -1,19 +1,20 @@
+import { CommonModule } from "@angular/common";
 import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
-import { RouterModule } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
 
 @Component({
-  selector: "error-404",
-  imports: [RouterModule],
-  templateUrl: "./404.component.html",
-  styleUrl: "./404.component.css",
+  selector: "pages-profil",
+  imports: [CommonModule],
+  standalone: true,
+  templateUrl: "./profil.component.html",
+  styleUrl: "./profil.component.css",
 })
-export class Error404 {
+export class Profil {
   private pageAttributes: BasePage;
 
   constructor(private title: Title, private meta: Meta) {
     this.pageAttributes = new BasePage(title, meta);
-    this.pageAttributes.setTitleAndMeta("404 | SEHATIN", "");
+    this.pageAttributes.setTitleAndMeta("Profil | SEHATIN", "");
   }
 }

@@ -13,6 +13,7 @@ import { RekapKesehatan } from "@views/users/rekap-kesehatan/rekap-kesehatan.com
 import { TambahRekapKesehatan } from "@views/users/tambah-rekap-kesehatan/tambah-rekap-kesehatan.component";
 import { SkriningPtm } from "@views/users/skrining-ptm/skrining-ptm.component";
 import { DetailComponent } from '@views/admin/kecamatan/detail/detail.component';
+import { Profil } from "@views/users/profil/profil.component";
 
 export const routes: Routes = [
   /**
@@ -38,6 +39,7 @@ export const routes: Routes = [
   { path: "pengguna/rekap-kesehatan", component: RekapKesehatan, canActivate: [AuthGuard] },
   { path: "pengguna/rekap-kesehatan/tambah", component: TambahRekapKesehatan, canActivate: [AuthGuard] },
   { path: "pengguna/skrining-ptm", component: SkriningPtm, canActivate: [AuthGuard] },
+  { path: "pengguna/profil", component: Profil, canActivate: [AuthGuard] },
 
   /**
    * Perutean jika halaman tidak ditemukan.

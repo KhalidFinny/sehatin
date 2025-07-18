@@ -25,8 +25,8 @@ type Statistics = {
 export class RekapKesehatan {
   public isSidebarOpen: boolean = true;
   private pageAttributes: BasePage;
-  currentDate: string = '';
-  currentTime: string = '';
+  currentDate: string = "";
+  currentTime: string = "";
   private intervalId: any;
 
   constructor(private title: Title, private meta: Meta) {
@@ -42,11 +42,17 @@ export class RekapKesehatan {
 
   private updateDateTime() {
     const now = new Date();
-    this.currentDate = now.toLocaleDateString('id-ID', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+
+    this.currentDate = now.toLocaleDateString("id-ID", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
-    this.currentTime = now.toLocaleTimeString('id-ID', {
-      hour: '2-digit', minute: '2-digit',
+
+    this.currentTime = now.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
     });
   }
 

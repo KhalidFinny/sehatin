@@ -1,28 +1,70 @@
-<header class="fixed top-0 right-0 left-0 z-50 pt-8">
-  <div class="mx-auto w-[92%] max-w-7xl">
-    <section class="border-primary/20 flex w-full items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
-      <a href="/" class="group relative flex items-center gap-3">
+<ng-container *ngIf="!isAuthenticated; else authenticatedHeader">
+  <!-- Header untuk pengunjung (belum terautentikasi). -->
+  <header class="fixed top-0 right-0 left-0 z-50 container mx-auto pt-8">
+    <section class="border-primary/20 mx-auto flex w-[92%] items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
+      <a routerLink="/" class="group relative flex items-center gap-3">
         <img src="/images/sehatin.svg" alt="Logo" class="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
         <div class="bg-primary/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
       </a>
       <nav class="flex items-center gap-8 text-base">
-        <a href="/tentang-kami" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+        <a routerLink="/tentang-kami" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
           Tentang Kami
           <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a href="/artikel" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+        <a routerLink="/artikel" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
           Artikel
           <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a href="/masuk" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
-          Masuk
-          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
-        </a>
-        <a href="/daftar" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 font-semibold text-white transition-all duration-300">
-          Daftar
-        </a>
+        <ng-container *ngIf="!getLocalStorage">
+          <a routerLink="/masuk" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+            Masuk
+            <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a routerLink="/daftar" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 font-semibold text-white transition-all duration-300">
+            Daftar
+          </a>
+        </ng-container>
+        <ng-container *ngIf="getLocalStorage">
+          <a [routerLink]="profileRoute" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 font-semibold text-white transition-all duration-300">
+            Profil
+          </a>
+        </ng-container>
       </nav>
     </section>
-    <shared-hamburger-menu />
-  </div>
-</header>
+  </header>
+</ng-container>
+
+<!-- Header yang sudah terautentikasi. -->
+<ng-template #authenticatedHeader>
+  <header class="fixed top-0 right-0 left-0 z-50 bg-white/95 border-b border-[#d3d3d3] py-4 shadow-md backdrop-blur-lg transition-all duration-300 ease-in-out pl-84 px-10">
+    <section class="flex items-center justify-between">
+      <section class="flex items-center gap-6">
+        <i class="fa-solid fa-bars cursor-pointer text-[#2d2d2d] text-lg" (click)="toggleSidebar()"></i>
+        <h4 class="text-lg font-semibold text-[#2d2d2d] cursor-default">
+          {{ title }}
+        </h4>
+      </section>
+
+      <!-- Kanan: Info user + foto profil + dropdown -->
+      <figure class="relative flex items-center gap-4 cursor-pointer font-medium text-[#585858]" (mouseenter)="showMenu = true" (mouseleave)="showMenu = false">
+        <figcaption class="hidden sm:flex flex-col text-right text-sm tracking-wider">
+          {{ role }}
+          <br />
+          {{ email }}
+        </figcaption>
+        <img src="/images/default-profile.png" alt="Foto Profil" class="h-12 w-12 rounded-full object-cover" loading="lazy" />
+        <section *ngIf="showMenu" class="absolute top-14 right-0 z-50 flex flex-col gap-2.5 rounded border border-[#d3d3d3] bg-white px-5 py-3 text-sm shadow">
+          <a [routerLink]="profileRoute" class="flex items-center gap-3 transition-all duration-300 ease-in-out hover:text-blue-500">
+            <i class="fa-solid fa-user"></i>
+            <h6>Profil</h6>
+          </a>
+          <hr class="border border-[#cecece50]" />
+          <a routerLink="/keluar" class="flex items-center gap-3 transition-all duration-300 ease-in-out hover:text-red-500">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <h6>Keluar</h6>
+          </a>
+        </section>
+      </figure>
+    </section>
+  </header>
+</ng-template>
