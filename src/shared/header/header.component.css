@@ -1,0 +1,19 @@
+.letter-spacing-wide {
+  letter-spacing: 0.05em;
+}
+
+/* Optional: Add Helvetica-inspired typography if available */
+header {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Clean focus states following Swiss design principles */
+
+
+/* Ensure perfect alignment */
+section {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2rem;
+}

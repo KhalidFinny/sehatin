@@ -1,25 +1,9 @@
 <shared-sidebar *ngIf="isSidebarOpen" userType="user" />
-<shared-header title="Dasbor" />
+<shared-header title="Dashboard" />
 
 <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
-  <!-- SECTION 1: Sambutan -->
-  <section class="mt-20 flex items-end justify-between pb-6">
-    <div>
-      <h1 class="mb-1 text-4xl font-light tracking-tight">
-        Selamat Datang
-      </h1>
-      <p class="text-text-secondary text-base font-normal">
-        Hai! Siap jadi lebih sehat hari ini? Yuk, pantau bareng SEHATIN!
-      </p>
-    </div>
-    <div class="text-right">
-      <time class="text-sm font-medium text-gray-400">{{ currentDate }}</time>
-      <time class="mt-1 block text-xs text-gray-400">{{ currentTime }}</time>
-    </div>
-  </section>
-
   <!-- SECTION 2: Konten Utama (Bento Layout) -->
-  <section class="grid grid-cols-12 gap-4">
+  <section class="grid grid-cols-12 gap-4 mt-26">
     <!-- Column 1: Statistik -->
     <div class="col-span-3 grid grid-rows-3 space-y-6">
       <figure *ngFor="let stats of statistics" class="flex flex-col justify-between rounded-xl border border-gray-100 bg-white p-6 transition-all duration-300 ease-in-out hover:border-gray-200">

@@ -13,8 +13,7 @@ import { SidebarService } from "@services/sidebar.service";
 })
 export class Header implements OnInit {
   @Input() title: string | unknown;
-  public isAuthenticated = false;
-  public email: string = "";
+  public name: string = "";
   public role: "admin" | "user" = "user";
   public isSidebarOpen: boolean = false;
   public showMenu: boolean = false;
@@ -22,28 +21,42 @@ export class Header implements OnInit {
   constructor(private authService: AuthService, private router: Router, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
-    this.isAuthenticated = this.router.url.startsWith("/pengguna") || this.router.url.startsWith("/admin");
-
     const currentUser = this.authService.getCurrentUser();
     if (currentUser !== null) {
-      this.email = currentUser.email;
+      this.name = currentUser.name;
       this.role = currentUser.role;
     }
-
     this.sidebarService.sidebarOpen.subscribe((state) => {
       this.isSidebarOpen = state;
     });
   }
 
-  get getLocalStorage(): boolean {
+  get isAuthenticated(): boolean {
     return typeof window !== "undefined" && localStorage.getItem("currentUser") !== null;
+  }
+
+  get isDashboardPage(): boolean {
+    if (typeof window === "undefined") return false;
+    return window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/pengguna');
   }
 
   get profileRoute(): string {
     return this.role === "admin" ? '/admin/profil' : '/pengguna/profil';
   }
 
+  get dashboardRoute(): string {
+    return this.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
+  }
+
+  goToDashboard() {
+    this.router.navigate([this.dashboardRoute]);
+  }
+
   toggleSidebar() {
     this.sidebarService.toggleSidebar();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

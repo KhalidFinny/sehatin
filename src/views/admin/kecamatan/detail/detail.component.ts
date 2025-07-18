@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ChartData, ChartType, ChartOptions } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { Sidebar } from '@shared/sidebar/sidebar.component';
+import { Header as SharedHeader } from '@shared/header/header.component';
 import { getAllDistricts } from 'indonesia-nodejs';
 
 interface KecamatanData {
@@ -23,7 +24,7 @@ interface KecamatanData {
 @Component({
   selector: 'pages-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgChartsModule, Sidebar],
+  imports: [CommonModule, FormsModule, NgChartsModule, Sidebar, SharedHeader],
   templateUrl: './detail.component.html',
   styleUrl: './detail.component.css'
 })

@@ -2,26 +2,31 @@
   [ngClass]="{ 'translate-x-0 lg:translate-x-0': isOpen, '-translate-x-full': !isOpen }"
   class="fixed top-0 left-0 z-50 h-screen w-64 transform bg-white transition-transform duration-300"
 >
-  <!-- User Info -->
-  <section class="bg-primary relative flex items-center gap-3 px-6 py-8">
-    <h5 class="text-primary flex h-11 w-11 items-center justify-center rounded-lg bg-white text-base font-semibold">
-      {{ getCurrentConfig().userInitial }}
-    </h5>
-    <span>
-      <h5 class="text-sm font-medium text-white">
-        {{ getCurrentConfig().userName }}
+  <!-- User Info + Tombol Profil (vertikal, rapat) -->
+  <section class="bg-white relative flex flex-col items-center gap-3 px-6 py-8 mt-4">
+    <div class="flex items-center gap-3 w-full justify-center">
+      <h5 class="text-primary flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-xl font-bold">
+        {{ getCurrentConfig().userInitial }}
       </h5>
-      <h6 class="mt-0.5 text-xs text-white opacity-80">
-        {{ getCurrentConfig().userEmail }}
-      </h6>
-    </span>
+      <span>
+        <h5 class="text-base font-semibold text-primary">
+          {{ getCurrentConfig().userName }}
+        </h5>
+        <h6 class="mt-0.5 text-xs text-primary/70">
+          {{ getCurrentConfig().userEmail }}
+        </h6>
+      </span>
+    </div>
+    <button
+      [routerLink]="getCurrentConfig().userType === 'admin' ? '/admin/profil' : '/pengguna/profil'"
+      class="flex items-center gap-2 rounded bg-primary/10 px-2 py-2 text-sm font-semibold text-primary hover:bg-primary/20 hover:text-hov-blue transition-all duration-200 mt-2 w-[92%] justify-center"
+    >
+      <i class="fas fa-user text-base"></i>
+      Profil
+    </button>
   </section>
-  <!-- End of User Info -->
-  <!-- Logo -->
-  <section class="flex justify-center border-b border-gray-50 px-6 py-6">
-    <img src="/images/sehatin.svg" alt="Sehatin Logo" class="h-auto w-32" />
-  </section>
-  <!-- End of Logo -->
+  <!-- Divider setelah profil+button -->
+  <div class="border-b border-gray-100 mx-6 mt-2"></div>
   <!-- Navigation Menu -->
   <section class="px-4 pb-6">
     <nav class="relative space-y-1">
@@ -46,6 +51,9 @@
             <a
               [routerLink]="item.link"
               class="group hover:text-primary relative flex w-full cursor-pointer items-center rounded-lg px-4 py-3 text-gray-600 transition-all duration-200 hover:bg-gray-50"
+              [ngClass]="{
+                'bg-primary/20 text-primary font-bold': item.link && router.url.startsWith(item.link)
+              }"
               (click)="onMenuClick(item)"
             >
               <span class="bg-primary absolute top-0 bottom-0 left-0 w-1 rounded-r-full opacity-0 transition-opacity duration-200 group-hover:opacity-40"></span>
@@ -59,6 +67,9 @@
             *ngFor="let sub of item.subMenu"
             [routerLink]="sub.link || '#'"
             class="hover:text-primary flex items-center rounded px-3 py-2 text-sm text-gray-500 transition-all duration-200 hover:bg-gray-100"
+            [ngClass]="{
+              'bg-primary/20 text-primary font-bold': sub.link && router.url.startsWith(sub.link)
+            }"
             (click)="onMenuClick(sub)"
           >
             <i [class]="sub.icon + ' mr-2 text-xs'"></i>
@@ -73,6 +84,15 @@
         <span class="h-px w-3 bg-gray-200"></span>
       </div>
       <!-- End of Divider / Spacer -->
+      <!-- Tombol ke Landing Page -->
+      <a
+        routerLink="/"
+        class="group hover:text-primary relative flex w-full cursor-pointer items-center rounded-lg px-4 py-3 text-gray-600 transition-all duration-200 hover:bg-blue-50"
+      >
+        <span class="bg-primary absolute top-0 bottom-0 left-0 w-1 rounded-r-full opacity-0 transition-opacity duration-200 group-hover:opacity-40"></span>
+        <i class="fas fa-home mr-3 text-sm"></i>
+        <span class="text-sm font-medium">Beranda</span>
+      </a>
       <!-- Logout -->
       <button type="button" class="group hover:text-secondary relative flex w-full cursor-pointer items-center rounded-lg px-4 py-3 text-gray-500 transition-all duration-200 hover:bg-red-50" (click)="onLogout()">
         <span class="bg-secondary absolute top-0 bottom-0 left-0 w-1 rounded-r-full opacity-0 transition-opacity duration-200 group-hover:opacity-40"></span>
@@ -82,4 +102,10 @@
       <!-- End of Logout -->
     </nav>
   </section>
+  <!-- Divider atas logo -->
+  <div class="border-t border-gray-100 mx-6"></div>
+  <!-- Logo di paling bawah -->
+  <div class="flex justify-center absolute bottom-0 w-full items-center py-6 mt-auto">
+    <img src="/images/sehatin.svg" alt="Logo Sehatin" class="h-10 w-auto" />
+  </div>
 </aside>

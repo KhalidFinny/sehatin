@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from "@angular/core";
+import { RouterModule, Router } from "@angular/router";
 import { AuthService } from "@services/auth.service";
 
 export type SidebarMenuItem = {
@@ -26,7 +26,7 @@ export type SidebarConfig = {
   templateUrl: "./sidebar.component.html",
   styleUrl: "./sidebar.component.css",
 })
-export class Sidebar implements OnDestroy {
+export class Sidebar implements OnDestroy, OnInit {
   @Input() config: SidebarConfig = {
     userType: "user",
     userName: "User Name",
@@ -57,7 +57,7 @@ export class Sidebar implements OnDestroy {
 
   isOpen: boolean = true;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, public router: Router) {}
 
   /**
    * @var adminMenuItems
@@ -122,6 +122,16 @@ export class Sidebar implements OnDestroy {
    */
   ngOnDestroy(): void {
     if (this.closeTimeout) clearTimeout(this.closeTimeout);
+  }
+
+  ngOnInit(): void {
+    // Buka sub menu jika ada sub menu yang selected
+    for (const item of this.menuItems) {
+      if (item.subMenu && item.subMenu.some(sub => this.router.url.startsWith(sub.link!))) {
+        this.openSubMenuId = item.id;
+        break;
+      }
+    }
   }
 
   /**

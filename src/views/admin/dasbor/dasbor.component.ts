@@ -6,6 +6,7 @@ import { ChartConfiguration, ChartData, ChartOptions, ChartType } from "chart.js
 import { getAllDistricts } from "indonesia-nodejs";
 import { NgChartsModule } from "ng2-charts";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
+import { Header as SharedHeader } from "@shared/header/header.component";
 
 /**
  * Component untuk menampilkan dasbor admin dengan berbagai grafik
@@ -20,7 +21,7 @@ import { Sidebar } from "@shared/sidebar/sidebar.component";
 @Component({
   selector: "halaman-admin-dasbor",
   standalone: true,
-  imports: [CommonModule, Sidebar, NgChartsModule, FormsModule],
+  imports: [CommonModule, Sidebar, NgChartsModule, FormsModule, SharedHeader],
   templateUrl: "./dasbor.component.html",
   styleUrl: "./dasbor.component.css",
 })
