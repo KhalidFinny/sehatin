@@ -1,20 +1,21 @@
-<shared-sidebar *ngIf="isSidebarOpen" (close)="toggleSidebar()" userType="user" />
+<shared-sidebar *ngIf="isSidebarOpen" userType="user" />
+<shared-header title="Dasbor" />
 
 <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
   <!-- SECTION 1: Sambutan -->
-  <section class="flex items-end justify-between pb-6">
+  <section class="mt-20 flex items-end justify-between pb-6">
     <div>
       <h1 class="mb-1 text-4xl font-light tracking-tight">
-        Dashboard Pengguna
+        Selamat Datang
       </h1>
       <p class="text-text-secondary text-base font-normal">
-        Selamat datang kembali di dashboard kesehatanmu!
+        Hai! Siap jadi lebih sehat hari ini? Yuk, pantau bareng SEHATIN!
       </p>
     </div>
-    <aside class="text-right">
+    <div class="text-right">
       <time class="text-sm font-medium text-gray-400">{{ currentDate }}</time>
       <time class="mt-1 block text-xs text-gray-400">{{ currentTime }}</time>
-    </aside>
+    </div>
   </section>
 
   <!-- SECTION 2: Konten Utama (Bento Layout) -->

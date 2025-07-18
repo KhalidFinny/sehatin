@@ -1,10 +1,13 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
+import { SidebarService } from "@services/sidebar.service";
+import { Header } from "@shared/header/header.component";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Table } from "@shared/table/table.component";
+import { Subscription } from "rxjs";
 
 type Statistics = {
   background: string;
@@ -17,19 +20,21 @@ type Statistics = {
 
 @Component({
   selector: "pages-rekap-kesehatan",
-  imports: [CommonModule, Table, RouterModule, Sidebar],
+  imports: [CommonModule, Header, RouterModule, Sidebar, Table],
   templateUrl: "./rekap-kesehatan.component.html",
   standalone: true,
   styleUrl: "./rekap-kesehatan.component.css",
 })
-export class RekapKesehatan {
+export class RekapKesehatan implements OnDestroy, OnInit {
   public isSidebarOpen: boolean = true;
+  private sidebarSubcription!: Subscription;
   private pageAttributes: BasePage;
+  private intervalId: NodeJS.Timeout;
+
   currentDate: string = "";
   currentTime: string = "";
-  private intervalId: any;
 
-  constructor(private title: Title, private meta: Meta) {
+  constructor(private title: Title, private meta: Meta, private sidebarService: SidebarService) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Rekap Kesehatan | SEHATIN", "");
     this.updateDateTime();
@@ -38,6 +43,11 @@ export class RekapKesehatan {
 
   ngOnDestroy() {
     if (this.intervalId) clearInterval(this.intervalId);
+    if (this.sidebarSubcription) this.sidebarSubcription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.sidebarSubcription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
   }
 
   private updateDateTime() {
@@ -90,8 +100,4 @@ export class RekapKesehatan {
       info: "Cukup Aktif",
     },
   ];
-
-  toggleSidebar(): void {
-    this.isSidebarOpen = !this.isSidebarOpen;
-  }
 }

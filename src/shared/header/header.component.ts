@@ -2,6 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
 import { AuthService } from "@services/auth.service";
+import { SidebarService } from "@services/sidebar.service";
 
 @Component({
   imports: [CommonModule, RouterModule],
@@ -11,13 +12,14 @@ import { AuthService } from "@services/auth.service";
   styleUrls: ["./header.component.css"],
 })
 export class Header implements OnInit {
-  @Input() title: string = "";
+  @Input() title: string | unknown;
   public isAuthenticated = false;
   public email: string = "";
   public role: "admin" | "user" = "user";
+  public isSidebarOpen: boolean = false;
   public showMenu: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
     this.isAuthenticated = this.router.url.startsWith("/pengguna") || this.router.url.startsWith("/admin");
@@ -27,6 +29,10 @@ export class Header implements OnInit {
       this.email = currentUser.email;
       this.role = currentUser.role;
     }
+
+    this.sidebarService.sidebarOpen.subscribe((state) => {
+      this.isSidebarOpen = state;
+    });
   }
 
   get getLocalStorage(): boolean {
@@ -38,6 +44,6 @@ export class Header implements OnInit {
   }
 
   toggleSidebar() {
-
+    this.sidebarService.toggleSidebar();
   }
 }

@@ -9,7 +9,7 @@ export class SidebarService {
   getSidebarConfig(): SidebarConfig {
     const currentUser = this.authService.getCurrentUser();
 
-    if (!currentUser) {
+    if (currentUser === null) {
       return {
         userType: "user",
         userName: "User Name",

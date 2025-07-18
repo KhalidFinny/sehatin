@@ -36,35 +36,12 @@
 
 <!-- Header yang sudah terautentikasi. -->
 <ng-template #authenticatedHeader>
-  <header class="fixed top-0 right-0 left-0 z-50 bg-white/95 border-b border-[#d3d3d3] py-4 shadow-md backdrop-blur-lg transition-all duration-300 ease-in-out pl-84 px-10">
-    <section class="flex items-center justify-between">
-      <section class="flex items-center gap-6">
-        <i class="fa-solid fa-bars cursor-pointer text-[#2d2d2d] text-lg" (click)="toggleSidebar()"></i>
-        <h4 class="text-lg font-semibold text-[#2d2d2d] cursor-default">
-          {{ title }}
-        </h4>
-      </section>
-
-      <!-- Kanan: Info user + foto profil + dropdown -->
-      <figure class="relative flex items-center gap-4 cursor-pointer font-medium text-[#585858]" (mouseenter)="showMenu = true" (mouseleave)="showMenu = false">
-        <figcaption class="hidden sm:flex flex-col text-right text-sm tracking-wider">
-          {{ role }}
-          <br />
-          {{ email }}
-        </figcaption>
-        <img src="/images/default-profile.png" alt="Foto Profil" class="h-12 w-12 rounded-full object-cover" loading="lazy" />
-        <section *ngIf="showMenu" class="absolute top-14 right-0 z-50 flex flex-col gap-2.5 rounded border border-[#d3d3d3] bg-white px-5 py-3 text-sm shadow">
-          <a [routerLink]="profileRoute" class="flex items-center gap-3 transition-all duration-300 ease-in-out hover:text-blue-500">
-            <i class="fa-solid fa-user"></i>
-            <h6>Profil</h6>
-          </a>
-          <hr class="border border-[#cecece50]" />
-          <a routerLink="/keluar" class="flex items-center gap-3 transition-all duration-300 ease-in-out hover:text-red-500">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <h6>Keluar</h6>
-          </a>
-        </section>
-      </figure>
+  <header [ngClass]="[isSidebarOpen ? 'pl-72' : 'pl-8', 'fixed top-0 right-0 left-0 z-20 bg-white/95 border-b border-[#d3d3d3] py-6 shadow-md backdrop-blur-lg transition-all duration-300 ease-in-out px-10']">
+    <section class="flex items-center gap-6">
+      <i class="fa-solid fa-bars cursor-pointer text-[#2d2d2d] text-lg" (click)="toggleSidebar()"></i>
+      <h4 class="text-lg font-semibold text-[#2d2d2d] cursor-default">
+        {{ title }}
+      </h4>
     </section>
   </header>
 </ng-template>

@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, Output } from "@angular/core
 import { RouterModule } from "@angular/router";
 import { AuthService } from "@services/auth.service";
 
-type SidebarMenuItem = {
+export type SidebarMenuItem = {
   id: string;
   label: string;
   icon: string;
@@ -12,7 +12,7 @@ type SidebarMenuItem = {
   subMenu?: SidebarMenuItem[];
 }
 
-type SidebarConfig = {
+export type SidebarConfig = {
   userType: "admin" | "user";
   userName: string;
   userEmail: string;
@@ -66,7 +66,7 @@ export class Sidebar implements OnDestroy {
   private adminMenuItems: SidebarMenuItem[] = [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: "Dasbor",
       icon: "fas fa-tachometer-alt",
       link: "/admin/dasbor",
     },
@@ -98,7 +98,7 @@ export class Sidebar implements OnDestroy {
   private userMenuItems: SidebarMenuItem[] = [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: "Dasbor",
       icon: "fas fa-tachometer-alt",
       link: "/pengguna/dasbor",
     },
