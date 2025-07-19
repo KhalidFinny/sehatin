@@ -1,18 +1,9 @@
 <!-- Sidebar component untuk navigasi admin -->
 <shared-sidebar userType="admin"></shared-sidebar>
+<shared-header title="Daftar Kecamatan" />
 
 <!-- Main content area dengan layout responsive -->
-<main class="ml-64 bg-gray-50 border-b border-gray-100 min-h-screen p-8">
-  <!-- Header section dengan judul dan deskripsi -->
-  <section class="pb-8">
-    <div>
-      <h1 class="mb-1 text-4xl font-light tracking-tight">Analitik Kecamatan</h1>
-      <p class="text-text-secondary text-base font-normal">
-        Rekap data penderita Penyakit Tidak Menular (PTM) di seluruh kecamatan Malang
-      </p>
-    </div>
-  </section>
-
+<main class="ml-64 bg-gray-50 border-b border-gray-100 min-h-screen p-8 mt-26">
   <!-- Loading state - ditampilkan saat data sedang dimuat -->
   <section *ngIf="loading" class="flex items-center justify-center h-64">
     <div class="text-center">

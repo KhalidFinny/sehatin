@@ -5,10 +5,11 @@ import { Meta, Title } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
+import { Header as SharedHeader } from "@shared/header/header.component";
 
 @Component({
   selector: "pages-tambah-rekap-kesehatan",
-  imports: [CommonModule, FormsModule, RouterModule, Sidebar],
+  imports: [CommonModule, FormsModule, RouterModule, Sidebar, SharedHeader],
   templateUrl: "./tambah-rekap-kesehatan.component.html",
   styleUrl: "./tambah-rekap-kesehatan.component.css",
 })

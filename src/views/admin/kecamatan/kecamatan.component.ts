@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Meta, Title } from '@angular/platform-browser';
 import { Sidebar } from '@shared/sidebar/sidebar.component';
+import { Header as SharedHeader } from '@shared/header/header.component';
 import { getAllDistricts } from 'indonesia-nodejs';
 import { Router } from '@angular/router';
 
@@ -56,7 +57,7 @@ interface KecamatanData {
  */
 @Component({
   selector: 'app-kecamatan',
-  imports: [CommonModule, FormsModule, Sidebar],
+  imports: [CommonModule, FormsModule, Sidebar, SharedHeader],
   templateUrl: './kecamatan.component.html',
   styleUrl: './kecamatan.component.css'
 })

@@ -1,47 +1,73 @@
-<ng-container *ngIf="!isAuthenticated; else authenticatedHeader">
-  <!-- Header untuk pengunjung (belum terautentikasi). -->
+<ng-container *ngIf="isDashboardPage && isAuthenticated; else publicHeader">
+  <header
+    [ngClass]="[
+      isSidebarOpen ? 'pl-72' : 'pl-8',
+      'fixed top-0 left-0 right-0 z-20 bg-slate-50 border-b border-slate-200 py-6 px-16 transition-all duration-300 ease-in-out backdrop-blur-sm bg-opacity-95']">
+    <section class="flex items-center justify-between w-full">
+      <!-- Left side: Page Title -->
+      <div class="flex items-center gap-12">
+        <div class="flex items-center gap-8">
+          <button
+            class="text-neutral-900 text-xl focus:outline-none hover:text-primary transition-colors duration-150"
+            (click)="toggleSidebar()"
+            aria-label="Toggle Sidebar">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="relative">
+            <h1 class="text-4xl text-slate-800 tracking-wide leading-none uppercase">
+              {{ title }}
+            </h1>
+            <div class="absolute -bottom-1 left-0 w-12 h-0.5 bg-cyan-600"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Right side: User Info -->
+      <div class="text-right leading-relaxed">
+        <div class="flex flex-col items-end gap-1">
+          <span class="text-lg  text-cyan-600 tracking-wide uppercase ">
+            Hai, {{ name || 'Pengguna' }}!
+          </span>
+          <span class="text-sm text-slate-500 font-light tracking-wide">
+            Selamat datang di dashboard
+          </span>
+        </div>
+      </div>
+    </section>
+  </header>
+</ng-container>
+
+<ng-template #publicHeader>
+  <!-- Header untuk pengunjung (belum terautentikasi) dan halaman publik -->
   <header class="fixed top-0 right-0 left-0 z-50 container mx-auto pt-8">
     <section class="border-primary/20 mx-auto flex w-[92%] items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
       <a routerLink="/" class="group relative flex items-center gap-3">
         <img src="/images/sehatin.svg" alt="Logo" class="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
         <div class="bg-primary/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
       </a>
-      <nav class="flex items-center gap-8 text-base">
-        <a routerLink="/tentang-kami" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+      <nav class="flex items-center gap-8 ">
+        <a routerLink="/tentang-kami" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
           Tentang Kami
           <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a routerLink="/artikel" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+        <a routerLink="/artikel" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
           Artikel
           <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <ng-container *ngIf="!getLocalStorage">
-          <a routerLink="/masuk" class="text-text-primary hover:text-primary group relative font-medium transition-colors duration-200">
+        <ng-container *ngIf="!isAuthenticated">
+          <a routerLink="/masuk" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
             Masuk
             <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
           </a>
-          <a routerLink="/daftar" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 font-semibold text-white transition-all duration-300">
+          <a routerLink="/daftar" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
             Daftar
           </a>
         </ng-container>
-        <ng-container *ngIf="getLocalStorage">
-          <a [routerLink]="profileRoute" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 font-semibold text-white transition-all duration-300">
-            Profil
-          </a>
+        <ng-container *ngIf="isAuthenticated">
+          <button (click)="goToDashboard()" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
+            Dashboard
+          </button>
         </ng-container>
       </nav>
-    </section>
-  </header>
-</ng-container>
-
-<!-- Header yang sudah terautentikasi. -->
-<ng-template #authenticatedHeader>
-  <header [ngClass]="[isSidebarOpen ? 'pl-72' : 'pl-8', 'fixed top-0 right-0 left-0 z-20 bg-white/95 border-b border-[#d3d3d3] py-6 shadow-md backdrop-blur-lg transition-all duration-300 ease-in-out px-10']">
-    <section class="flex items-center gap-6">
-      <i class="fa-solid fa-bars cursor-pointer text-[#2d2d2d] text-lg" (click)="toggleSidebar()"></i>
-      <h4 class="text-lg font-semibold text-[#2d2d2d] cursor-default">
-        {{ title }}
-      </h4>
     </section>
   </header>
 </ng-template>

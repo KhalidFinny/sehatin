@@ -1,18 +1,9 @@
 <shared-sidebar [userType]="'admin'"></shared-sidebar>
-<main class="ml-64 bg-gray-50 min-h-screen">
-  <!-- Header Section -->
-  <section class="p-8">
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="mb-1 text-4xl font-light tracking-tight">Analitik Kecamatan</h1>
-        <p class="text-text-secondary text-base font-normal">Detail data kecamatan</p>
-      </div>
-    </div>
-  </section>
-
+<shared-header title="Detail Kecamatan" />
+<main class="ml-64  min-h-screen">
   <!-- Content Section -->
   <section class="px-8 pb-8">
-    <div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto mt-36">
       <ng-container *ngIf="kecamatan; else notFound">
         <!-- Kecamatan Overview Card -->
         <figure class="rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200 mb-6 flex flex-col">

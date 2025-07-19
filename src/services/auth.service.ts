@@ -46,7 +46,10 @@ export class AuthService {
     if (!user || user === null) return false;
 
     this.currentUser = user;
-    if (isPlatformBrowser(this.platformId)) localStorage.setItem("currentUser", JSON.stringify(user));
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem("currentUser", JSON.stringify(user));
+      localStorage.setItem("loginTimestamp", Date.now().toString());
+    }
 
     this.authStateChanged.next();
     return true;
@@ -76,7 +79,10 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
-    if (isPlatformBrowser(this.platformId)) localStorage.removeItem("currentUser");
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("loginTimestamp");
+    }
     this.authStateChanged.next();
     this.router.navigate(["/"]);
   }

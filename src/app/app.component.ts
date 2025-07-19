@@ -19,6 +19,25 @@ export class AppComponent implements OnDestroy, OnInit {
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
+    // Session timeout: 30 menit (1800000 ms)
+    const SESSION_TIMEOUT = 30 * 60 * 1000;
+    if (typeof window !== 'undefined') {
+      const user = localStorage.getItem('currentUser');
+      const ts = localStorage.getItem('loginTimestamp');
+      if (user && ts) {
+        const now = Date.now();
+        const loginTime = parseInt(ts, 10);
+        if (now - loginTime > SESSION_TIMEOUT) {
+          localStorage.removeItem('currentUser');
+          localStorage.removeItem('loginTimestamp');
+        }
+      }
+      // Reset login jika di halaman utama dan session sudah expired
+      if (window.location.pathname === '/' && (!user || !ts || (ts && Date.now() - parseInt(ts, 10) > SESSION_TIMEOUT))) {
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('loginTimestamp');
+      }
+    }
     this.authSubscription = this.authService.fetchLocalStorage.subscribe((ready) => {
       if (ready) this.authInitialized = true;
     });
