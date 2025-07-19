@@ -1,43 +1,37 @@
 <ng-container *ngIf="isDashboardPage && isAuthenticated; else publicHeader">
   <header
-    [ngClass]="[
-      isSidebarOpen ? 'pl-72' : 'pl-8',
-      'fixed top-0 left-0 right-0 z-20 bg-slate-50 border-b border-slate-200 py-6 px-16 transition-all duration-300 ease-in-out backdrop-blur-sm bg-opacity-95']">
-    <section class="flex items-center justify-between w-full">
-      <!-- Left side: Page Title -->
-      <div class="flex items-center gap-12">
-        <div class="flex items-center gap-8">
-          <button
-            class="text-neutral-900 text-xl focus:outline-none hover:text-primary transition-colors duration-150"
-            (click)="toggleSidebar()"
-            aria-label="Toggle Sidebar">
-            <i class="fa-solid fa-bars"></i>
-          </button>
-          <div class="relative">
-            <h1 class="text-4xl text-slate-800 tracking-wide leading-none uppercase">
-              {{ title }}
-            </h1>
-            <div class="absolute -bottom-1 left-0 w-12 h-0.5 bg-cyan-600"></div>
-          </div>
-        </div>
+    [ngClass]="[isSidebarOpen ? 'pl-72' : 'pl-8', 'bg-opacity-95 fixed top-0 right-0 left-0 z-20 border-b border-slate-200 bg-slate-50 px-16 py-6 backdrop-blur-sm transition-all duration-300 ease-in-out']"
+    class="flex items-center justify-between"
+  >
+    <section class="flex items-center gap-8">
+      <button
+        class="hover:text-primary cursor-pointer text-xl text-neutral-900 transition-colors duration-150 focus:outline-none"
+        (click)="toggleSidebar()"
+        aria-label="Toggle Sidebar"
+      >
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="relative cursor-default">
+        <h1 class="text-3xl leading-none tracking-wide text-slate-800 uppercase">
+          {{ title }}
+        </h1>
+        <div class="absolute -bottom-1 left-0 h-0.5 w-12 bg-cyan-600"></div>
       </div>
-      <!-- Right side: User Info -->
-      <div class="text-right leading-relaxed">
-        <div class="flex flex-col items-end gap-1">
-          <span class="text-lg  text-cyan-600 tracking-wide uppercase ">
-            Hai, {{ name || 'Pengguna' }}!
-          </span>
-          <span class="text-sm text-slate-500 font-light tracking-wide">
-            Selamat datang di dashboard
-          </span>
-        </div>
-      </div>
+    </section>
+    <section class="flex cursor-default flex-col items-end gap-1 text-right leading-relaxed">
+      <h5 class="text-lg tracking-wide text-cyan-600 uppercase">
+        Hai, {{ name || "Pengguna" }}!
+      </h5>
+      <h5 class="text-sm font-light tracking-wide text-slate-500">
+        Selamat datang di dashboard
+      </h5>
     </section>
   </header>
 </ng-container>
 
+<!-- Header untuk pengunjung (belum terautentikasi) dan halaman publik -->
+<!-- prettier-ignore -->
 <ng-template #publicHeader>
-  <!-- Header untuk pengunjung (belum terautentikasi) dan halaman publik -->
   <header class="fixed top-0 right-0 left-0 z-50 container mx-auto pt-8">
     <section class="border-primary/20 mx-auto flex w-[92%] items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
       <a routerLink="/" class="group relative flex items-center gap-3">

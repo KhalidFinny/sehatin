@@ -3,7 +3,7 @@ import { getAllDistricts } from "indonesia-nodejs";
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: "admin/kecamatan/:id",
+    path: "admin/analitik/kecamatan/:id",
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
       const allDistricts = await getAllDistricts();
