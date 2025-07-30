@@ -40,6 +40,10 @@ export class Sidebar implements OnDestroy, OnInit {
    */
   @Input() userType: "admin" | "user" = "user";
 
+  /**
+   * @var close
+   * Mengirimkan nilai boolean yang menunjukkan status penutupan.
+   */
   @Output() close = new EventEmitter<boolean>();
 
   /**
@@ -77,13 +81,13 @@ export class Sidebar implements OnDestroy, OnInit {
       subMenu: [
         {
           id: "kecamatan-analytics",
-          label: "Analitik Kecamatan",
+          label: "Kecamatan",
           icon: "fas fa-chart-line",
-          link: "/admin/kecamatan",
+          link: "/admin/analitik/kecamatan",
         },
         {
           id: "analytics-pengguna",
-          label: "Analitik Pengguna",
+          label: "Pengguna",
           icon: "fas fa-user-doctor",
           link: "/admin/analitik/pengguna",
         },

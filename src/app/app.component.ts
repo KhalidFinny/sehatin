@@ -8,52 +8,80 @@ import { AuthService } from "@services/auth.service";
 
 @Component({
   selector: "app-root",
+  standalone: true,
   imports: [CommonModule, RouterOutlet, Header, Footer],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
 })
-export class AppComponent implements OnDestroy, OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   private authSubscription?: Subscription;
   authInitialized = false;
+  readonly SESSION_TIMEOUT = 30 * 60 * 1000;
 
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    // Session timeout: 30 menit (1800000 ms)
-    const SESSION_TIMEOUT = 30 * 60 * 1000;
-    if (typeof window !== 'undefined') {
-      const user = localStorage.getItem('currentUser');
-      const ts = localStorage.getItem('loginTimestamp');
-      if (user && ts) {
-        const now = Date.now();
-        const loginTime = parseInt(ts, 10);
-        if (now - loginTime > SESSION_TIMEOUT) {
-          localStorage.removeItem('currentUser');
-          localStorage.removeItem('loginTimestamp');
-        }
-      }
-      // Reset login jika di halaman utama dan session sudah expired
-      if (window.location.pathname === '/' && (!user || !ts || (ts && Date.now() - parseInt(ts, 10) > SESSION_TIMEOUT))) {
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('loginTimestamp');
-      }
+    if (this.isBrowser()) {
+      this.handleSessionTimeout();
+      this.clearSessionIfAtRoot();
     }
+
     this.authSubscription = this.authService.fetchLocalStorage.subscribe((ready) => {
       if (ready) this.authInitialized = true;
     });
   }
 
   ngOnDestroy() {
-    if (this.authSubscription !== undefined) this.authSubscription.unsubscribe();
+    this.authSubscription?.unsubscribe();
   }
 
   isAuthenticatedPage(): boolean {
-    const url = this.router.url.split("?")[0];
-    return url.startsWith("/admin") || url.startsWith("/pengguna");
+    const path = this.router.url.split("?")[0];
+    return path.startsWith("/admin") || path.startsWith("/pengguna");
   }
 
   isGuestOnlyPage(): boolean {
-    const authRoutes = ["/daftar", "/lupa-kata-sandi", "/masuk", "/ubah-kata-sandi"];
-    return authRoutes.includes(this.router.url.split("?")[0]);
+    const guestRoutes = ["/daftar", "/lupa-kata-sandi", "/masuk", "/ubah-kata-sandi"];
+    const path = this.router.url.split("?")[0];
+    return guestRoutes.includes(path);
+  }
+
+  // ===========================
+  // ===== Helper Methods ======
+  // ===========================
+
+  private isBrowser(): boolean {
+    return typeof window !== "undefined";
+  }
+
+  private getSessionInfo() {
+    const user = localStorage.getItem("currentUser");
+    const timestamp = localStorage.getItem("loginTimestamp");
+    const loginTime = timestamp ? parseInt(timestamp, 10) : null;
+    return { user, loginTime };
+  }
+
+  private hasSessionExpired(loginTime: number | null): boolean {
+    return loginTime !== null && (Date.now() - loginTime > this.SESSION_TIMEOUT);
+  }
+
+  private clearSession() {
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("loginTimestamp");
+  }
+
+  private handleSessionTimeout() {
+    const { user, loginTime } = this.getSessionInfo();
+    if (user && this.hasSessionExpired(loginTime)) {
+      this.clearSession();
+    }
+  }
+
+  private clearSessionIfAtRoot() {
+    const path = window.location.pathname;
+    const { user, loginTime } = this.getSessionInfo();
+    if (path === "/" && (!user || loginTime === null || this.hasSessionExpired(loginTime))) {
+      this.clearSession();
+    }
   }
 }
