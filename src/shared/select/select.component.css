@@ -1,8 +1,0 @@
-.select-items {
-  max-height: 15rem;
-  overflow-y: auto;
-}
-
-.select-selected {
-  min-height: 2.5rem;
-}
