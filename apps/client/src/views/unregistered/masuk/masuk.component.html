@@ -16,23 +16,23 @@
     <form (ngSubmit)="onLogin()" class="flex flex-col space-y-6">
       <form-input
         icon="fa-solid fa-envelope"
-        name="surel"
         label="Email"
+        name="surel"
+        placeholder="Masukkan email Anda"
         type="email"
+        variant="auth"
         [(ngModel)]="surel"
         [required]="true"
-        placeholder="Masukkan email Anda"
-        variant="auth"
       />
       <form-input
         icon="fa-solid fa-lock"
-        name="kata_sandi"
         label="Kata Sandi"
+        name="kata_sandi"
+        placeholder="Masukkan kata sandi Anda"
         type="password"
+        variant="auth"
         [(ngModel)]="kata_sandi"
         [required]="true"
-        placeholder="Masukkan kata sandi Anda"
-        variant="auth"
       />
       <button
         type="submit"

@@ -9,7 +9,7 @@
       class="cursor-pointer hover:underline"
       (click)="onClick(menu)"
     >
-      <h5>{{ menu }}</h5>
+      <h5>{{ truncateText(menu) }}</h5>
     </a>
     <h5 class="text-gray-500/50" *ngIf="!last">/</h5>
   </ng-container>

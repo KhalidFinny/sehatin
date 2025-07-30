@@ -48,4 +48,15 @@
     -webkit-appearance: none;
     margin: 0;
   }
+  ::ng-deep .cdk-overlay-container {
+    z-index: 1000 !important;
+  }
+  ::ng-deep .mat-tab-body-content {
+    overflow: visible !important;
+    position: relative !important;
+  }
+  .mat-tab-body-content {
+    overflow: visible !important;
+    position: relative !important;
+  }
 }

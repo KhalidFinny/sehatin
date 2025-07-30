@@ -5,9 +5,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Seeder {
+    private final Admin admin;
+    private final Resident resident;
     private final Users users;
 
-    public Seeder(Users users) {
+    public Seeder(Admin admin, Resident resident, Users users) {
+        this.admin = admin;
+        this.resident = resident;
         this.users = users;
     }
 
@@ -15,5 +19,7 @@ public class Seeder {
     public void run() {
         System.out.println("[Seeder] Running seed...");
         users.seed();
+        admin.seed();
+        resident.seed();
     }
 }

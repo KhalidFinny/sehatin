@@ -4,12 +4,12 @@ import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
 import { AuthService } from "@services/auth.service";
-import { InputComponent } from "@shared/input/input.component";
+import { Input } from "@shared/input/input.component";
 import { BasePage } from "helpers/base-page";
 
 @Component({
   selector: "pages-masuk",
-  imports: [CommonModule, FormsModule, InputComponent, RouterModule],
+  imports: [CommonModule, FormsModule, Input, RouterModule],
   templateUrl: "./masuk.component.html",
   styleUrl: "./masuk.component.css",
 })

@@ -18,6 +18,16 @@ export class Breadcrumb {
   constructor(private router: Router) {
     this.setBaseRoute();
   }
+  
+  public onClick(menu: string): void {
+    const slug = menu.toLowerCase().replace(/\s+/g, "-");
+    this.router.navigate([`${this.baseRoute}/${slug}`]);
+  }
+
+  public truncateText(text: string): string {
+    if (text.length > 10 && window.innerWidth < 768) text = text.substring(0, 7) + "...";
+    return text;
+  }
 
   private setBaseRoute(): void {
     const data = localStorage.getItem("currentUser");
@@ -37,10 +47,5 @@ export class Breadcrumb {
       console.warn("Format currentUser tidak sesuai JSON: ", err);
       throw err;
     }
-  }
-
-  onClick(menu: string): void {
-    const slug = menu.toLowerCase().replace(/\s+/g, "-");
-    this.router.navigate([`${this.baseRoute}/${slug}`]);
   }
 }

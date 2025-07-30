@@ -1,6 +1,7 @@
 package sehatin.seed;
 
 import java.lang.Exception;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,15 +25,13 @@ public class Users {
 
     public void seed() {
         try {
-            if (usersRepositories.count() == 0) {
+            if (usersRepositories.findAllById(Arrays.asList(1, 2)).isEmpty()) {
                 UsersModel admin = new UsersModel();
-                admin.setFullName("Admin");
                 admin.setEmail("admin@sehatin.com");
                 admin.setPassword(Aes.encrypt(encryptionKey, "admin123"));
                 admin.setRole("admin");
 
                 UsersModel user = new UsersModel();
-                user.setFullName("User");
                 user.setEmail("user@sehatin.com");
                 user.setPassword(Aes.encrypt(encryptionKey, "user123"));
                 user.setRole("user");
@@ -41,6 +40,8 @@ public class Users {
                 usersRepositories.save(user);
 
                 logger.info("Users seeded successfully.");
+            } else {
+                logger.warn("Users already seeded.");
             }
         } catch (Exception e) {
             logger.error("Error seeding users: {}", e.getMessage(), e);

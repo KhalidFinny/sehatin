@@ -26,8 +26,10 @@
       [attr.step]="type === 'number' ? 'any' : null"
       (input)="handleInput($event)"
       (wheel)="type === 'number' ? onWheel($event) : null"
-      class="box-border w-full rounded-[0.7rem] border-[1.5px] border-[#d1d5db] bg-white py-4 text-[#222] shadow-[0_1px_4px_rgba(60,60,60,0.04)] transition-all duration-200 outline-none placeholder:text-[1.02rem] placeholder:text-[#b0b8c1] placeholder:opacity-100 focus:border-[#22b6d1] focus:shadow-[0_2px_8px_0_#22b6d122]"
+      class="box-border w-full rounded-[0.7rem] border-[1.5px] border-[#d1d5db] bg-white py-4 text-[#222] shadow-[0_1px_4px_rgba(60,60,60,0.04)] transition-all duration-200 outline-none placeholder:text-[#b0b8c1] placeholder:opacity-100 focus:border-[#22b6d1] focus:shadow-[0_2px_8px_0_#22b6d122]"
       [ngClass]="{
+        'text-[1.02rem]': variant === 'auth',
+        'text-sm': variant === 'form',
         'py-2.5 pl-14': type !== 'file',
         'pr-12': type === 'password',
         'pr-4': type !== 'password',

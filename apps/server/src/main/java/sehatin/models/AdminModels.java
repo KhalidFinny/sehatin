@@ -15,21 +15,24 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "pengguna")
-public class UsersModel {
+@Table(name = "admin")
+public class AdminModels {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_pengguna", nullable = false, updatable = false)
+    @Column(name = "id_admin", nullable = false, updatable = false)
+    private int idAdmin;
+
+    @Column(name = "id_pengguna")
     private int idUser;
 
-    @Column(name = "surel", unique = true)
-    private String email;
+    @Column(name = "nama_lengkap")
+    private String fullName;
 
-    @Column(name = "kata_sandi")
-    private String password;
+    @Column(name = "nip")
+    private String employeeIdNumber;
 
-    @Column(name = "peran")
-    private String role;
+    @Column(name = "jabatan")
+    private String position;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -39,6 +42,14 @@ public class UsersModel {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    public int getIdAdmin() {
+        return idAdmin;
+    }
+
+    public void setIdAdmin(int idAdmin) {
+        this.idAdmin = idAdmin;
+    }
+
     public int getIdUser() {
         return idUser;
     }
@@ -47,28 +58,28 @@ public class UsersModel {
         this.idUser = idUser;
     }
 
-    public String getEmail() {
-        return email;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmployeeIdNumber() {
+        return employeeIdNumber;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEmployeeIdNumber(String employeeIdNumber) {
+        this.employeeIdNumber = employeeIdNumber;
     }
 
-    public String getRole() {
-        return role;
+    public String getPosition() {
+        return position;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public Instant getCreatedAt() {
@@ -83,7 +94,7 @@ public class UsersModel {
         return updatedAt;
     }
 
-    public void setUpdatedAt() {
+    public void setUpdatedAt(LocalDateTime localDateTime) {
         this.updatedAt = LocalDateTime.now();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, Output } from "@angular/core";
+import { Component, EventEmitter, forwardRef, Input as InputCore, Output } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
@@ -11,26 +11,26 @@ import { CommonModule } from "@angular/common";
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => InputComponent),
+      useExisting: forwardRef(() => Input),
       multi: true,
     },
   ],
 })
-export class InputComponent implements ControlValueAccessor {
+export class Input implements ControlValueAccessor {
   /**
    * @prop name, label, value, type, required, info, icon, placeholder, variant
    * @type string
    * @description Props untuk input.
    */
-  @Input() name!: string;
-  @Input() label!: string;
-  @Input() value: string = "";
-  @Input() type: "text" | "email" | "file" | "password" | "number" = "text";
-  @Input() required: boolean = false;
-  @Input() info?: string;
-  @Input() icon?: string;
-  @Input() placeholder?: string;
-  @Input() variant: "auth" | "form" = "form";
+  @InputCore() name!: string;
+  @InputCore() label!: string;
+  @InputCore() value?: string = "";
+  @InputCore() type: "text" | "email" | "file" | "password" | "number" = "text";
+  @InputCore() required: boolean = false;
+  @InputCore() info?: string;
+  @InputCore() icon?: string;
+  @InputCore() placeholder?: string;
+  @InputCore() variant: "auth" | "form" = "form";
   @Output() valueChange = new EventEmitter<string>();
 
   /**

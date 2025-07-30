@@ -3,13 +3,13 @@ import { Component, ElementRef, HostListener, Input, OnInit } from "@angular/cor
 import { FormsModule } from "@angular/forms";
 
 @Component({
-  selector: "shared-select",
+  selector: "form-select",
   imports: [CommonModule, FormsModule],
   templateUrl: "./select.component.html",
   styleUrls: ["./select.component.css"],
   standalone: true,
 })
-export class SelectComponent implements OnInit {
+export class Select implements OnInit {
   @Input() label?: string;
   @Input() name: string = "";
   @Input() options: Array<string | { value: string; label: string }> = [];

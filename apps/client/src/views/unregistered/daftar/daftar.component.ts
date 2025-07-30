@@ -4,12 +4,12 @@ import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
-import { InputComponent } from "@shared/input/input.component";
+import { Input } from "@shared/input/input.component";
 
 @Component({
   selector: "pages-daftar",
   standalone: true,
-  imports: [CommonModule, FormsModule, InputComponent, RouterModule],
+  imports: [CommonModule, FormsModule, Input, RouterModule],
   templateUrl: "./daftar.component.html",
   styleUrl: "./daftar.component.css",
 })

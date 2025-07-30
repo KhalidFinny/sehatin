@@ -18,44 +18,54 @@
         Formulir untuk pendaftaran akun baru
       </span>
       <form-input
-        name="email"
+        icon="fa-solid fa-envelope"
         label="Alamat Email"
+        name="email"
+        placeholder="Masukkan email Anda"
         type="email"
+        variant="auth"
         [(ngModel)]="surel"
         [required]="true"
-        placeholder="Masukkan email Anda"
       />
       <form-input
-        name="nama_lengkap"
+        icon="fa-solid fa-user"
         label="Nama Lengkap"
+        name="nama_lengkap"
+        placeholder="Masukkan nama lengkap Anda"
         type="text"
+        variant="auth"
         [(ngModel)]="nama_lengkap"
         [required]="true"
-        placeholder="Masukkan nama lengkap Anda"
       />
       <form-input
-        name="nik"
+        icon="fa-solid fa-id-card"
         label="NIK"
+        name="nik"
+        placeholder="Masukkan NIK Anda"
         type="text"
+        variant="auth"
         [(ngModel)]="nik"
         [required]="true"
-        placeholder="Masukkan NIK Anda"
       />
       <form-input
-        name="kata_sandi"
+        icon="fa-solid fa-lock"
         label="Password"
+        name="kata_sandi"
+        placeholder="Masukkan password"
         type="password"
+        variant="auth"
         [(ngModel)]="kata_sandi"
         [required]="true"
-        placeholder="Masukkan password"
       />
       <form-input
-        name="konfirmasi_kata_sandi"
+        icon="fa-solid fa-check-double"
         label="Konfirmasi Kata Sandi"
+        name="konfirmasi_kata_sandi"
+        placeholder="Ulangi kata sandi Anda"
         type="password"
+        variant="auth"
         [(ngModel)]="konfirmasi_kata_sandi"
         [required]="true"
-        placeholder="Ulangi kata sandi Anda"
       />
       <p class="text-text-secondary mt-8 text-center text-sm">
         Sudah punya akun?

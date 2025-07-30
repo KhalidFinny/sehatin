@@ -4,32 +4,86 @@
 <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
   <section class="mt-20 flex w-auto flex-col rounded-xl bg-white p-6">
     <shared-breadcrumb [menus]="['Rekap Kesehatan', 'Tambah Rekap Kesehatan']" />
-    <mat-tab-group class="mt-4 text-sm">
-      <mat-tab label="Profil">
-        <form action="">
+    <form (ngSubmit)="submitData()">
+      <mat-tab-group class="relative mt-6 text-sm">
+        <mat-tab label="Profil">
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden pb-41 lg:grid-cols-2">
+            <form-input
+              icon="fa-solid fa-user"
+              label="Usia"
+              name="usia"
+              placeholder="Cth. 30"
+              type="number"
+              variant="form"
+              [(ngModel)]="usia"
+              [required]="true"
+            />
+            <form-select
+              label="Jenis Kelamin"
+              name="jenis_kelamin"
+              placeholder="Cth. Laki-laki"
+              variant="form"
+              [options]="genderOptions"
+              [(ngModel)]="jenis_kelamin"
+              [required]="true"
+            />
+            <form-input
+              icon="fa-solid fa-weight-scale"
+              label="Berat Badan"
+              name="berat_badan"
+              placeholder="Cth. 60 (Gunakan Bilangan Bulat)"
+              type="number"
+              variant="form"
+              [(ngModel)]="berat_badan"
+              [required]="true"
+            />
+            <form-input
+              icon="fa-solid fa-ruler-vertical"
+              label="Tinggi Badan"
+              name="tinggi_badan"
+              placeholder="Cth. 170 (Gunakan Bilangan Bulat)"
+              type="number"
+              variant="form"
+              [(ngModel)]="tinggi_badan"
+              [required]="true"
+            />
+            <form-select
+              icon="fa-solid fa-dumbbell"
+              label="Tingkat Aktivitas Fisik"
+              name="tingkat_aktivitas_fisik"
+              placeholder="Cth. Sedang"
+              variant="form"
+              [options]="activityLevelOptions"
+              [(ngModel)]="tingkat_aktivitas_fisik"
+              [required]="true"
+            />
+            <form-select
+              label="Tujuan Kesehatan"
+              name="tujuan_kesehatan"
+              placeholder="Pilih Tujuan"
+              variant="form"
+              [options]="[
+                { label: 'Menurunkan Berat Badan', value: 'Menurunkan Berat Badan' },
+                { label: 'Meningkatkan Massa Otot', value: 'Meningkatkan Massa Otot' },
+                { label: 'Menjaga Kesehatan Umum', value: 'Menjaga Kesehatan Umum' },
+              ]"
+              [(ngModel)]="tujuan_kesehatan"
+              [required]="true"
+            />
+          </div>
+        </mat-tab>
+        <mat-tab label="Makanan">
           <!-- Add something here. -->
-        </form>
-      </mat-tab>
-      <mat-tab label="Makanan">
-        <form action="">
-          <!-- Add something here. -->
-        </form>
-      </mat-tab>
-      <mat-tab label="Penyakit">
-        <form action="">
-          <!-- Add something here. -->
-        </form>
-      </mat-tab>
-      <mat-tab label="Alergi">
-        <form action="">
-          <!-- Add something here. -->
-        </form>
-      </mat-tab>
-      <mat-tab label="Gaya Hidup">
-        <form action="">
-          <!-- Add something here. -->
-        </form>
-      </mat-tab>
-    </mat-tab-group>
+        </mat-tab>
+        <mat-tab label="Penyakit"> </mat-tab>
+        <mat-tab label="Alergi"> </mat-tab>
+        <mat-tab label="Gaya Hidup"> </mat-tab>
+      </mat-tab-group>
+      <div class="flex items-center justify-end">
+        <button type="submit" class="bg-primary hover:bg-primary/80 mt-6 w-fit cursor-pointer self-end rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors duration-300">
+          <i class="fa-solid fa-plus mr-3"></i> Tambah Rekap Kesehatan
+        </button>
+      </div>
+    </form>
   </section>
 </main>

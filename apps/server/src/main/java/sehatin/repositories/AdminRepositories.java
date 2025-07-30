@@ -2,6 +2,6 @@ package sehatin.repositories;
 
 import java.lang.Integer;
 import org.springframework.data.jpa.repository.JpaRepository;
-import sehatin.models.UsersModel;
+import sehatin.models.AdminModels;
 
-public interface UsersRepositories extends JpaRepository<UsersModel, Integer> {}
+public interface AdminRepositories extends JpaRepository<AdminModels, Integer> {}
