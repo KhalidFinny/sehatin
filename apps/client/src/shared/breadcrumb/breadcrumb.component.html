@@ -1,0 +1,16 @@
+<span class="flex items-center gap-2 text-sm">
+  <a routerLink="/" class="flex items-center gap-2">
+    <i class="fa-solid fa-home"></i>
+    <h5>Dasbor</h5>
+  </a>
+  <h5 class="text-gray-500/50">/</h5>
+  <ng-container *ngFor="let menu of menus; let last = last; let i = index">
+    <a
+      class="cursor-pointer hover:underline"
+      (click)="onClick(menu)"
+    >
+      <h5>{{ menu }}</h5>
+    </a>
+    <h5 class="text-gray-500/50" *ngIf="!last">/</h5>
+  </ng-container>
+</span>

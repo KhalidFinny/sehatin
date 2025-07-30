@@ -1,0 +1,85 @@
+<a routerLink="/" class="bg-primary lg:hover:bg-primary/90 absolute top-6 left-6 z-30 flex cursor-pointer items-center gap-2 rounded-lg px-5 py-3 text-slate-50 transition-all duration-300 ease-in-out">
+  <i class="fa-solid fa-arrow-left mr-2" aria-label="Kembali ke halaman sebelumnya"></i>
+  <h5 class="text-sm font-bold">Kembali</h5>
+</a>
+<main class="mt-20 grid min-h-screen grid-cols-1 items-center bg-gradient-to-br from-[#f4f8fb] to-[#e0f2fe] px-6 py-16 lg:grid-cols-2 lg:px-32 lg:py-20">
+  <section class="mx-auto flex w-full max-w-lg flex-col justify-center">
+    <h1 class="text-text-primary mb-3 cursor-default text-4xl font-bold">
+      Masuk ke <span class="text-primary font-bold">Sehatin</span>
+    </h1>
+    <p class="text-text-secondary mb-8 cursor-default">
+      Sistem Edukasi dan Pemantauan Kesehatan Terintegrasi Nasional
+    </p>
+    <div *ngIf="showAlert" class="mb-6 rounded-lg p-4 text-center" [ngClass]="alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+      {{ alertMessage }}
+    </div>
+    <form (ngSubmit)="onLogin()" class="flex flex-col space-y-6">
+      <form-input
+        icon="fa-solid fa-envelope"
+        name="surel"
+        label="Email"
+        type="email"
+        [(ngModel)]="surel"
+        [required]="true"
+        placeholder="Masukkan email Anda"
+        variant="auth"
+      />
+      <form-input
+        icon="fa-solid fa-lock"
+        name="kata_sandi"
+        label="Kata Sandi"
+        type="password"
+        [(ngModel)]="kata_sandi"
+        [required]="true"
+        placeholder="Masukkan kata sandi Anda"
+        variant="auth"
+      />
+      <button
+        type="submit"
+        class="bg-primary hover:bg-primary/90 mt-2 w-full cursor-pointer rounded-xl py-4 font-semibold text-white transition-all duration-300 ease-in-out disabled:cursor-not-allowed disabled:opacity-60"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading">Masuk</span>
+        <span *ngIf="isLoading">Memproses...</span>
+      </button>
+    </form>
+    <div class="mt-8 text-center" aria-label="Navigasi ke halaman daftar">
+      <p class="cursor-default">
+        Belum punya akun?
+        <a (click)="onRegister()" class="text-primary hover:text-primary-dark cursor-pointer font-semibold transition-colors">
+          Daftar di sini
+        </a>
+      </p>
+    </div>
+    <figure class="border-primary mt-10 rounded-xl border-l-4 bg-white/80 p-5 shadow-sm">
+      <h2 class="mb-2 text-lg font-semibold text-gray-700">
+        Demo Credentials:
+      </h2>
+      <p class="mb-1 text-sm">
+        <strong>Admin:</strong> admin&#64;sehatin.com / admin123
+      </p>
+      <p class="text-sm">
+        <strong>User:</strong> user&#64;sehatin.com / user123
+      </p>
+    </figure>
+  </section>
+  <aside class="relative hidden h-full items-center justify-center lg:flex" aria-hidden="true">
+    <figure class="relative h-80 w-80">
+      <img
+        src="/images/apr-3.jpg"
+        alt="Ilustrasi 1"
+        class="absolute bottom-60 left-8 z-10 h-70 w-70 rotate-[-8deg] rounded-2xl border-4 border-white object-cover shadow-xl"
+      />
+      <img
+        src="/images/apr-2.jpg"
+        alt="Ilustrasi 2"
+        class="absolute left-20 z-20 h-70 w-70 rotate-6 rounded-2xl border-4 border-white object-cover shadow-xl"
+      />
+      <img
+        src="/images/apr-1.webp"
+        alt="Ilustrasi 3"
+        class="absolute top-50 left-12 z-30 h-70 w-70 rotate-2 rounded-2xl border-4 border-white object-cover shadow-xl"
+      />
+    </figure>
+  </aside>
+</main>

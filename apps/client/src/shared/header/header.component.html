@@ -1,0 +1,54 @@
+<ng-container *ngIf="isDashboardPage && isAuthenticated; else publicHeader">
+  <header [ngClass]="[isSidebarOpen ? 'pl-72' : 'pl-8', 'bg-opacity-95 fixed top-0 right-0 left-0 z-20 flex items-center gap-6 border-b border-slate-200 bg-slate-50 px-16 py-7 backdrop-blur-sm transition-all duration-300 ease-in-out']">
+    <button
+      class="hover:text-primary cursor-pointer text-lg text-neutral-900 transition-colors duration-150 focus:outline-none"
+      (click)="toggleSidebar()"
+      aria-label="Toggle Sidebar"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <span class="relative cursor-default">
+      <h1 class="text-2xl leading-none tracking-wide text-slate-800 uppercase">
+        {{ title }}
+      </h1>
+      <div class="absolute -bottom-1 left-0 h-0.5 w-12 bg-cyan-600"></div>
+    </span>
+  </header>
+</ng-container>
+
+<!-- Header untuk pengunjung (belum terautentikasi) dan halaman publik -->
+<!-- prettier-ignore -->
+<ng-template #publicHeader>
+  <header class="fixed top-0 right-0 left-0 z-50 container mx-auto pt-8">
+    <section class="border-primary/20 mx-auto flex w-[92%] items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
+      <a routerLink="/" class="group relative flex items-center gap-3">
+        <img src="/images/sehatin.svg" alt="Logo" class="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
+        <div class="bg-primary/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
+      </a>
+      <nav class="flex items-center gap-8 ">
+        <a routerLink="/tentang-kami" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+          Tentang Kami
+          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+        <a routerLink="/artikel" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+          Artikel
+          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+        <ng-container *ngIf="!isAuthenticated">
+          <a routerLink="/masuk" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+            Masuk
+            <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+          </a>
+          <a routerLink="/daftar" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
+            Daftar
+          </a>
+        </ng-container>
+        <ng-container *ngIf="isAuthenticated">
+          <button (click)="goToDashboard()" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
+            Dashboard
+          </button>
+        </ng-container>
+      </nav>
+    </section>
+  </header>
+</ng-template>

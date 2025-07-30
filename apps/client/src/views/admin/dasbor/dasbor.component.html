@@ -1,0 +1,148 @@
+<shared-sidebar userType="admin" />
+<shared-header title="Dashboard Admin" />
+
+<main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-4'" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
+  <section class="grid grid-cols-12 gap-4 mt-24">
+    <!-- Grafik Batang: Full Lebar -->
+    <figure class="col-span-12 flex flex-col rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+      <figcaption class="mb-4 flex items-center justify-between">
+        <h2 class="text-primary text-lg font-medium">
+          Statistik Penyakit Tidak Menular per Kecamatan
+        </h2>
+        <div class="flex items-center gap-2">
+          <fieldset class="relative">
+            <select
+              class="focus:ring-primary appearance-none rounded-md border border-gray-300 py-1 pr-10 pl-2 text-sm transition focus:ring-2 focus:outline-none"
+              [(ngModel)]="penyakitDipilih"
+              (change)="ubahPenyakit()"
+            >
+              <option *ngFor="let p of daftarPenyakit" [value]="p.value">
+                {{ p.label }}
+              </option>
+            </select>
+            <i class="fas fa-caret-down absolute top-1/2 right-2.5 -translate-y-1/2 text-sm text-gray-400"></i>
+          </fieldset>
+          <fieldset class="relative">
+            <select
+              class="focus:ring-primary appearance-none rounded-md border border-gray-300 py-1 pr-10 pl-2 text-sm transition focus:ring-2 focus:outline-none"
+              [(ngModel)]="tahunDipilih"
+              (change)="perbaruiGrafikBatang()"
+            >
+              <option *ngFor="let tahun of tahunTersedia" [value]="tahun">
+                {{ tahun }}
+              </option>
+            </select>
+            <i class="fas fa-caret-down absolute top-1/2 right-2.5 -translate-y-1/2 text-sm text-gray-400"></i>
+          </fieldset>
+        </div>
+      </figcaption>
+      <div class="h-80 w-full" *ngIf="dataGrafikBatang">
+        <canvas baseChart [data]="dataGrafikBatang" [options]="opsiGrafikBatang" [type]="tipeGrafikBatang"></canvas>
+      </div>
+    </figure>
+    <!-- Grafik Pie -->
+    <figure class="col-span-4 flex flex-col rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+      <figcaption class="mb-4">
+        <h2 class="text-primary text-lg font-medium">
+          Proporsi Kasus Penyakit Tidak Menular
+        </h2>
+      </figcaption>
+      <div class="flex h-64 w-full items-center justify-center">
+        <canvas baseChart [data]="dataGrafikLingkaran" [options]="opsiGrafikLingkaran" [type]="'pie'"></canvas>
+      </div>
+    </figure>
+    <!-- Grafik Garis / Tren Tahunan -->
+    <figure class="col-span-8 flex flex-col rounded-2xl border border-gray-100 bg-white p-6 transition-all duration-200 hover:border-gray-200">
+      <figcaption class="mb-4">
+        <h2 class="text-primary text-lg font-medium">
+          Tren Kasus Penyakit Tidak Menular per Tahun
+        </h2>
+      </figcaption>
+      <div class="flex h-64 w-full items-center justify-center">
+        <canvas baseChart [data]="dataGrafikGaris" [options]="opsiGrafikGaris" [type]="'line'"></canvas>
+      </div>
+    </figure>
+  </section>
+</main>
+
+<!-- Modal Tambah Data -->
+<section *ngIf="tampilkanModalUji" class="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+  <figure class="mx-4 w-full max-w-md rounded-lg bg-white p-6">
+    <div class="mb-4 flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900">Tambah Data Uji</h3>
+      <button (click)="tutupModalUji()" class="text-gray-400 transition-colors hover:text-gray-600">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <form (ngSubmit)="tambahDataUji()" class="space-y-4">
+      <fieldset>
+        <label class="mb-2 block text-sm font-medium text-gray-700">
+          Kecamatan
+        </label>
+        <select
+          [(ngModel)]="dataBaru.kecamatan"
+          name="kecamatan"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="">Pilih Kecamatan</option>
+          <option *ngFor="let kec of daftarKecamatan" [value]="kec">
+            {{ kec }}
+          </option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <label class="mb-2 block text-sm font-medium text-gray-700">
+          Penyakit
+        </label>
+        <select
+          [(ngModel)]="dataBaru.penyakit"
+          name="penyakit"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option value="kolesterol">Kolesterol</option>
+          <option value="hipertensi">Hipertensi</option>
+          <option value="diabetes">Diabetes</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        <label class="mb-2 block text-sm font-medium text-gray-700">
+          Jumlah Kasus
+        </label>
+        <input
+          type="number"
+          [(ngModel)]="dataBaru.jumlah"
+          name="jumlah"
+          min="0"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          placeholder="Masukkan jumlah kasus"
+        />
+      </fieldset>
+      <fieldset>
+        <label class="mb-2 block text-sm font-medium text-gray-700">
+          Tahun
+        </label>
+        <select
+          [(ngModel)]="dataBaru.tahun"
+          name="tahun"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        >
+          <option *ngFor="let tahun of tahunTersedia" [value]="tahun">
+            {{ tahun }}
+          </option>
+        </select>
+      </fieldset>
+      <fieldset class="flex gap-3 pt-4">
+        <button
+          type="button"
+          (click)="tutupModalUji()"
+          class="flex-1 rounded-lg bg-gray-300 px-4 py-2 text-gray-700 transition-colors duration-200 hover:bg-gray-400"
+        >
+          Batal
+        </button>
+        <button type="submit" class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors duration-200 hover:bg-blue-700">
+          Tambah Data
+        </button>
+      </fieldset>
+    </form>
+  </figure>
+</section>
