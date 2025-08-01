@@ -1,14 +1,12 @@
 package sehatin.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import sehatin.enums.Gender;
+import sehatin.enums.HealthGoal;
+
+import java.time.*;
+import java.util.List;
+
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,23 +14,28 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "penduduk")
-public class ResidentModels {
+public class ResidentModel {
     @Id
-    @Column(name = "id_penduduk", nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_penduduk", nullable = false, updatable = false)
     private int idResident;
 
-    @Column(name = "id_pengguna", nullable = false, updatable = false)
-    private int idUser;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pengguna", referencedColumnName = "id_pengguna", nullable = false, unique = true)
+    private UsersModel idUser;
 
-    @Column(name = "nik", nullable = false)
+    @Column(name = "nik", unique = true)
     private String nationalIdNumber;
 
     @Column(name = "nama_lengkap", nullable = false)
     private String fullName;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "jenis_kelamin")
-    private String gender;
+    private Gender gender;
+
+    @Column(name = "usia")
+    private int age;
 
     @Column(name = "berat_badan")
     private int weight;
@@ -40,14 +43,12 @@ public class ResidentModels {
     @Column(name = "tinggi_badan")
     private int height;
 
-    @Column(name = "usia")
-    private int age;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tujuan_kesehatan")
+    private HealthGoal healthGoal;
 
     @Column(name = "tingkat_aktivitas_fisik")
     private String physicalActivityLevel;
-
-    @Column(name = "tujuan_kesehatan")
-    private String healthGoal;
 
     @CreatedBy
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -57,6 +58,9 @@ public class ResidentModels {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "idResident", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<FoodConsumptionModel> foodConsumptions;
+
     public int getIdResident() {
         return idResident;
     }
@@ -65,11 +69,11 @@ public class ResidentModels {
         this.idResident = idResident;
     }
 
-    public int getIdUser() {
+    public UsersModel getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(UsersModel idUser) {
         this.idUser = idUser;
     }
 
@@ -89,12 +93,20 @@ public class ResidentModels {
         this.fullName = fullName;
     }
 
-    public String getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public int getWeight() {
@@ -113,12 +125,12 @@ public class ResidentModels {
         this.height = height;
     }
 
-    public int getAge() {
-        return age;
+    public HealthGoal getHealthGoal() {
+        return healthGoal;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setHealthGoal(HealthGoal healthGoal) {
+        this.healthGoal = healthGoal;
     }
 
     public String getPhysicalActivityLevel() {
@@ -127,14 +139,6 @@ public class ResidentModels {
 
     public void setPhysicalActivityLevel(String physicalActivityLevel) {
         this.physicalActivityLevel = physicalActivityLevel;
-    }
-
-    public String getHealthGoal() {
-        return healthGoal;
-    }
-
-    public void setHealthGoal(String healthGoal) {
-        this.healthGoal = healthGoal;
     }
 
     public Instant getCreatedAt() {
@@ -149,7 +153,7 @@ public class ResidentModels {
         return updatedAt;
     }
 
-    public void setUpdatedAt() {
-        this.updatedAt = LocalDateTime.now();
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

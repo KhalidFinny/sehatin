@@ -1,14 +1,7 @@
 package sehatin.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import java.time.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -16,19 +9,20 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "admin")
-public class AdminModels {
+public class AdminModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_admin", nullable = false, updatable = false)
     private int idAdmin;
 
-    @Column(name = "id_pengguna")
-    private int idUser;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pengguna", referencedColumnName = "id_pengguna", nullable = false, unique = true)
+    private UsersModel idUser;
 
     @Column(name = "nama_lengkap")
     private String fullName;
 
-    @Column(name = "nip")
+    @Column(name = "nip", unique = true)
     private String employeeIdNumber;
 
     @Column(name = "jabatan")
@@ -50,11 +44,11 @@ public class AdminModels {
         this.idAdmin = idAdmin;
     }
 
-    public int getIdUser() {
+    public UsersModel getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(UsersModel idUser) {
         this.idUser = idUser;
     }
 
@@ -94,7 +88,7 @@ public class AdminModels {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime localDateTime) {
-        this.updatedAt = LocalDateTime.now();
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

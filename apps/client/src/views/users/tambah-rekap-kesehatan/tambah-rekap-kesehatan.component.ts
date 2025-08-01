@@ -12,16 +12,20 @@ import { Header } from "@shared/header/header.component";
 import { Input } from "@shared/input/input.component";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Select } from "@shared/select/select.component";
+import { MedicalHistory } from "enums/medical-history";
+import { Table } from "@shared/table/table.component";
 
 @Component({
   selector: "pages-tambah-rekap-kesehatan",
   standalone: true,
-  imports: [Breadcrumb, CommonModule, FormsModule, Header, Input, MatTabsModule, RouterModule, Select, Sidebar],
+  imports: [Breadcrumb, CommonModule, FormsModule, Header, Input, MatTabsModule, RouterModule, Select, Sidebar, Table],
   templateUrl: "./tambah-rekap-kesehatan.component.html",
   styleUrl: "./tambah-rekap-kesehatan.component.css",
 })
 export class TambahRekapKesehatan implements OnDestroy, OnInit {
   public isSidebarOpen: boolean = true;
+  public listOfDiseases: string[] = [];
+  public listOfFoods: string[][] = [];
 
   private pageAttributes: BasePage;
   private sidebarSubscription!: Subscription;
@@ -33,6 +37,13 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   @InputCore() tinggi_badan: number | null = null;
   @InputCore() tingkat_aktivitas_fisik: string = "";
   @InputCore() tujuan_kesehatan: string = "";
+  @InputCore() jenis_makanan: string = "";
+  @InputCore() jumlah: string = "";
+  @InputCore() frekuensi_konsumsi: string = "";
+  @InputCore() kondisi_kesehatan: MedicalHistory | null = null;
+  @InputCore() tanggal_diagnosis: Date | null = null;
+  @InputCore() pengobatan_saat_ini: string = "";
+  @InputCore() kondisi_khusus: string = "";
 
   activityLevelOptions: Array<{ label: string; value: string }> = [
     { label: "Sedentari (minim aktivitas fisik)", value: "Sedentari (minim aktivitas fisik)" },
@@ -56,14 +67,15 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this.listOfDiseases = Object.values(MedicalHistory);
     this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
   }
 
   submitData(): void {
     try {
+      this.validateForm();
     } catch (err) {
-      if (err instanceof Error) return console.warn(err.message);
-      else return console.error(err);
+      console.error(`Terjadi kesalahan saat menambah rekap kesehatan Anda: ${err}`)
       throw err;
     }
   }

@@ -21,7 +21,6 @@
             <form-select
               label="Jenis Kelamin"
               name="jenis_kelamin"
-              placeholder="Cth. Laki-laki"
               variant="form"
               [options]="genderOptions"
               [(ngModel)]="jenis_kelamin"
@@ -51,7 +50,6 @@
               icon="fa-solid fa-dumbbell"
               label="Tingkat Aktivitas Fisik"
               name="tingkat_aktivitas_fisik"
-              placeholder="Cth. Sedang"
               variant="form"
               [options]="activityLevelOptions"
               [(ngModel)]="tingkat_aktivitas_fisik"
@@ -60,12 +58,11 @@
             <form-select
               label="Tujuan Kesehatan"
               name="tujuan_kesehatan"
-              placeholder="Pilih Tujuan"
               variant="form"
               [options]="[
-                { label: 'Menurunkan Berat Badan', value: 'Menurunkan Berat Badan' },
-                { label: 'Meningkatkan Massa Otot', value: 'Meningkatkan Massa Otot' },
-                { label: 'Menjaga Kesehatan Umum', value: 'Menjaga Kesehatan Umum' },
+                { label: 'Menurunkan Berat Badan', value: 'menuturunkan_berat_badan' },
+                { label: 'Meningkatkan Massa Otot', value: 'meningkatkan_massa_otot' },
+                { label: 'Menjaga Kesehatan Umum', value: 'menjaga_kesehatan_umum' },
               ]"
               [(ngModel)]="tujuan_kesehatan"
               [required]="true"
@@ -73,9 +70,95 @@
           </div>
         </mat-tab>
         <mat-tab label="Makanan">
-          <!-- Add something here. -->
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3">
+            <form-select
+              label="Jenis Makanan"
+              name="jenis_makanan"
+              variant="form"
+              [options]="[
+                { label: 'Makanan Sehat', value: 'makanan_sehat' }
+              ]"
+              [(ngModel)]="jenis_makanan"
+              [required]="true"
+            />
+            <form-select
+              label="Jumlah/Porsi"
+              name="jumlah"
+              variant="form"
+              [options]="[
+                { label: 'Gram', value: 'gram' },
+                { label: 'Porsi', value: 'porsi' },
+                { label: 'Sendok', value: 'sendok' },
+              ]"
+              [(ngModel)]="jumlah"
+              [required]="true"
+            />
+            <form-select
+              label="Frekuensi Konsumsi"
+              name="jumlah"
+              variant="form"
+              [options]="[
+                { label: 'Sarapan', value: 'sarapan' },
+                { label: 'Makan Siang', value: 'makan_siang' },
+                { label: 'Makan Malam', value: 'makan_malam' },
+              ]"
+              [(ngModel)]="frekuensi_konsumsi"
+              [required]="true"
+            />
+            <shared-table
+              class="col-span-3"
+              [headers]="['Tanggal', 'Berat', 'Tekanan', 'Gula', 'Keterangan']"
+              [rows]="[]"
+              [sortable]="['Tanggal']"
+            />
+          </div>
         </mat-tab>
-        <mat-tab label="Penyakit"> </mat-tab>
+        <mat-tab label="Penyakit">
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden pb-41 lg:grid-cols-2">
+            <form-select
+              label="Kondisi Kesehatan"
+              name="kondisi_kesehatan"
+              variant="form"
+              [options]="listOfDiseases"
+              [(ngModel)]="kondisi_kesehatan"
+              [required]="true"
+            />
+            <form-input
+              icon="fa-solid fa-calendar-days"
+              label="Tanggal Diagnosis"
+              name="tanggal_diagnosis"
+              placeholder="Cth. 01/01/2023"
+              type="date"
+              variant="form"
+              [(ngModel)]="tanggal_diagnosis"
+              [required]="true"
+            />
+            <form-select
+              label="Pengobatan Saat Ini"
+              name="pengobatan_saat_ini"
+              variant="form"
+              [options]="[
+                { label: 'Insulin', value: 'insulin' },
+                { label: 'Diet', value: 'diet' },
+                { label: 'Obat', value: 'obat' },
+              ]"
+              [(ngModel)]="pengobatan_saat_ini"
+              [required]="true"
+            />
+            <form-select
+              label="Kondisi Khusus"
+              name="kondisi_khusus"
+              variant="form"
+              [options]="[
+                { label: 'Kehamilan', value: 'kehamilan' },
+                { label: 'Menyusui', value: 'menyusui' },
+                { label: 'Pascaoperasi', value: 'pascaoperasi' },
+              ]"
+              [(ngModel)]="kondisi_khusus"
+              [required]="true"
+            />
+          </div>
+        </mat-tab>
         <mat-tab label="Alergi"> </mat-tab>
         <mat-tab label="Gaya Hidup"> </mat-tab>
       </mat-tab-group>

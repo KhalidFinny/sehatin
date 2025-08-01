@@ -25,7 +25,7 @@ export class Input implements ControlValueAccessor {
   @InputCore() name!: string;
   @InputCore() label!: string;
   @InputCore() value?: string = "";
-  @InputCore() type: "text" | "email" | "file" | "password" | "number" = "text";
+  @InputCore() type: "text" | "date" | "email" | "file" | "password" | "number" = "text";
   @InputCore() required: boolean = false;
   @InputCore() info?: string;
   @InputCore() icon?: string;

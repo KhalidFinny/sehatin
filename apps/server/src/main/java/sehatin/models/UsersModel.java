@@ -1,14 +1,8 @@
 package sehatin.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.Instant;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import sehatin.enums.Roles;
+import java.time.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,8 +22,12 @@ public class UsersModel {
     @Column(name = "kata_sandi")
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "peran")
-    private String role;
+    private Roles role;
+
+    @Column(name = "token_reset_kata_sandi")
+    private String resetPasswordToken;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -63,12 +61,20 @@ public class UsersModel {
         this.password = password;
     }
 
-    public String getRole() {
+    public Roles getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Roles role) {
         this.role = role;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
     }
 
     public Instant getCreatedAt() {
@@ -83,7 +89,7 @@ public class UsersModel {
         return updatedAt;
     }
 
-    public void setUpdatedAt() {
-        this.updatedAt = LocalDateTime.now();
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

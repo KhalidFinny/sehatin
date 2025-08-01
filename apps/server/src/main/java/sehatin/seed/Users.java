@@ -1,25 +1,23 @@
 package sehatin.seed;
 
 import java.lang.Exception;
+import java.time.*;
 import java.util.Arrays;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
+import sehatin.enums.Roles;
 import sehatin.models.UsersModel;
 import sehatin.repositories.UsersRepositories;
-import sehatin.utils.Aes;
 
 @Component
 public class Users {
+    private final PasswordEncoder passwordEncoder;
     private final UsersRepositories usersRepositories;
     private static final Logger logger = LoggerFactory.getLogger(Users.class);
 
-    @Value("${encryption.key}")
-    private String encryptionKey;
-
-    public Users(UsersRepositories usersRepositories) {
+    public Users(PasswordEncoder passwordEncoder, UsersRepositories usersRepositories) {
+        this.passwordEncoder = passwordEncoder;
         this.usersRepositories = usersRepositories;
     }
 
@@ -28,13 +26,17 @@ public class Users {
             if (usersRepositories.findAllById(Arrays.asList(1, 2)).isEmpty()) {
                 UsersModel admin = new UsersModel();
                 admin.setEmail("admin@sehatin.com");
-                admin.setPassword(Aes.encrypt(encryptionKey, "admin123"));
-                admin.setRole("admin");
+                admin.setPassword(passwordEncoder.encode("admin123"));
+                admin.setRole(Roles.ADMIN);
+                admin.setCreatedAt(Instant.now());
+                admin.setUpdatedAt(LocalDateTime.now());
 
                 UsersModel user = new UsersModel();
                 user.setEmail("user@sehatin.com");
-                user.setPassword(Aes.encrypt(encryptionKey, "user123"));
-                user.setRole("user");
+                user.setPassword(passwordEncoder.encode("user123"));
+                user.setRole(Roles.PENGGUNA);
+                user.setCreatedAt(Instant.now());
+                user.setUpdatedAt(LocalDateTime.now());
 
                 usersRepositories.save(admin);
                 usersRepositories.save(user);
