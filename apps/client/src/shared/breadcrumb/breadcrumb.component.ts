@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
+import { Text } from "@helpers/text";
 
 @Component({
   selector: "shared-breadcrumb",
@@ -13,6 +14,8 @@ export class Breadcrumb {
   @Input() menus: string[] = [];
 
   public dashboardLink: string = "/";
+  public truncateText = Text.truncateText;
+
   private baseRoute: string = "/";
 
   constructor(private router: Router) {
@@ -22,11 +25,6 @@ export class Breadcrumb {
   public onClick(menu: string): void {
     const slug = menu.toLowerCase().replace(/\s+/g, "-");
     this.router.navigate([`${this.baseRoute}/${slug}`]);
-  }
-
-  public truncateText(text: string): string {
-    if (text.length > 10 && window.innerWidth < 768) text = text.substring(0, 7) + "...";
-    return text;
   }
 
   private setBaseRoute(): void {

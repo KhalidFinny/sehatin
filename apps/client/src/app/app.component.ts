@@ -9,7 +9,7 @@ import { AuthService } from "@services/auth.service";
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [CommonModule, RouterOutlet, Header, Footer],
+  imports: [CommonModule, Footer, Header, RouterOutlet],
   templateUrl: "./app.component.html",
   styleUrl: "./app.component.css",
 })
@@ -21,13 +21,20 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
-    if (this.isBrowser()) {
-      this.handleSessionTimeout();
-      this.clearSessionIfAtRoot();
+    if (typeof window === "undefined") return;
+
+    const { user, loginTime } = this.getSessionInfo();
+
+    if (user && window.location.pathname === "/" && this.hasSessionExpired(loginTime)) {
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("loginTimestamp");
     }
+
+    this.updateBodyClass();
 
     this.authSubscription = this.authService.fetchLocalStorage.subscribe((ready) => {
       if (ready) this.authInitialized = true;
+      this.updateBodyClass();
     });
   }
 
@@ -50,10 +57,6 @@ export class AppComponent implements OnInit, OnDestroy {
   // ===== Helper Methods ======
   // ===========================
 
-  private isBrowser(): boolean {
-    return typeof window !== "undefined";
-  }
-
   private getSessionInfo() {
     const user = localStorage.getItem("currentUser");
     const timestamp = localStorage.getItem("loginTimestamp");
@@ -65,23 +68,9 @@ export class AppComponent implements OnInit, OnDestroy {
     return loginTime !== null && (Date.now() - loginTime > this.SESSION_TIMEOUT);
   }
 
-  private clearSession() {
-    localStorage.removeItem("currentUser");
-    localStorage.removeItem("loginTimestamp");
-  }
-
-  private handleSessionTimeout() {
-    const { user, loginTime } = this.getSessionInfo();
-    if (user && this.hasSessionExpired(loginTime)) {
-      this.clearSession();
-    }
-  }
-
-  private clearSessionIfAtRoot() {
-    const path = window.location.pathname;
-    const { user, loginTime } = this.getSessionInfo();
-    if (path === "/" && (!user || loginTime === null || this.hasSessionExpired(loginTime))) {
-      this.clearSession();
-    }
+  private updateBodyClass() {
+    const isAuthPage = window.location.pathname.startsWith("/admin") || window.location.pathname.startsWith("/pengguna");
+    document.body.classList.remove("container");
+    if (!isAuthPage) document.body.classList.add("container");
   }
 }

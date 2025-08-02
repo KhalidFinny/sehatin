@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
+import { Text } from "@helpers/text";
 import { AuthService } from "@services/auth.service";
 import { SidebarService } from "@services/sidebar.service";
 
@@ -12,11 +13,11 @@ import { SidebarService } from "@services/sidebar.service";
   styleUrls: ["./header.component.css"],
 })
 export class Header implements OnInit {
-  @Input() title: string | unknown;
+  @Input() title: string = "";
   public name: string = "";
   public role: "admin" | "user" = "user";
   public isSidebarOpen: boolean = false;
-  public showMenu: boolean = false;
+  public truncateText = Text.truncateText;
 
   constructor(private authService: AuthService, private router: Router, private sidebarService: SidebarService) {}
 
@@ -26,6 +27,7 @@ export class Header implements OnInit {
       this.name = currentUser.name;
       this.role = currentUser.role;
     }
+
     this.sidebarService.sidebarOpen.subscribe((state) => {
       this.isSidebarOpen = state;
     });
@@ -44,12 +46,8 @@ export class Header implements OnInit {
     return this.role === "admin" ? '/admin/profil' : '/pengguna/profil';
   }
 
-  get dashboardRoute(): string {
-    return this.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
-  }
-
   goToDashboard() {
-    this.router.navigate([this.dashboardRoute]);
+    this.router.navigate([this.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor"]);
   }
 
   toggleSidebar() {
