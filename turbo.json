@@ -5,7 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".angular/**", "!.angular/cache/**"]
+      "outputs": ["dist/sehatin/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]

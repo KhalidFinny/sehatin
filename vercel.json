@@ -1,0 +1,11 @@
+{
+  "builds": [
+    {
+      "src": "apps/client/angular.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/sehatin"
+      }
+    }
+  ]
+}
