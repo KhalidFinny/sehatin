@@ -1,20 +1,37 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
+import { Subscription } from "rxjs";
 import { BasePage } from "@helpers/base-page";
+import { SidebarService } from "@services/sidebar.service";
+import { Header } from "@shared/header/header.component";
+import { Sidebar } from "@shared/sidebar/sidebar.component";
 
 @Component({
   selector: "pages-profil",
-  imports: [CommonModule],
+  imports: [CommonModule, Header, Sidebar],
   standalone: true,
   templateUrl: "./profil.component.html",
   styleUrl: "./profil.component.css",
 })
-export class Profil {
-  private pageAttributes: BasePage;
+export class Profil implements OnDestroy, OnInit {
+  public isSidebarOpen: boolean = true;
 
-  constructor(title: Title, meta: Meta) {
+  private pageAttributes: BasePage;
+  private sidebarSubscription!: Subscription;
+
+  constructor(title: Title, meta: Meta, private sidebarService: SidebarService) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Profil | SEHATIN", "");
+  }
+
+  ngOnDestroy(): void {
+    if (this.sidebarSubscription) this.sidebarSubscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => {
+      return this.isSidebarOpen = state;
+    });
   }
 }

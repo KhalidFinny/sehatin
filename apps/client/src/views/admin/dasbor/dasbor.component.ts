@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
-import { ChartConfiguration, ChartData, ChartOptions, ChartType } from "chart.js";
+import { ChartData, ChartOptions, ChartType } from "chart.js";
 import { getAllDistricts } from "indonesia-nodejs";
 import { NgChartsModule } from "ng2-charts";
 import { Sidebar } from "@shared/sidebar/sidebar.component";

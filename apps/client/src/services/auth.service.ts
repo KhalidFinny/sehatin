@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { isPlatformBrowser } from "@angular/common";
 import { BehaviorSubject, Subject } from "rxjs";
 
-type User = {
+export type User = {
   id: number;
   email: string;
   password: string;
@@ -41,18 +41,20 @@ export class AuthService {
     this.fetchLocalStorage.next(true);
   }
 
-  login(email: string, password: string): boolean {
-    const user = this.users.find((u) => u.email === email && u.password === password);
-    if (!user || user === null) return false;
+  login(email: string, password: string): Promise<{ success: boolean; message: string }> {
+    return new Promise((resolve) => {
+      const user = this.users.find((u) => u.email === email && u.password === password);
+      if (!user) return resolve({ success: false, message: "Email atau kata sandi salah!" });
 
-    this.currentUser = user;
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      localStorage.setItem("loginTimestamp", Date.now().toString());
-    }
+      this.currentUser = user;
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        localStorage.setItem("loginTimestamp", Date.now().toString());
+      }
 
-    this.authStateChanged.next();
-    return true;
+      this.authStateChanged.next();
+      resolve({ success: true, message: "Berhasil masuk akun Anda!" });
+    });
   }
 
   redirectToDashboard(): void {
@@ -79,10 +81,12 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem("currentUser");
       localStorage.removeItem("loginTimestamp");
     }
+
     this.authStateChanged.next();
     this.router.navigate(["/"]);
   }

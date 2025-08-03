@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, HostListener, Input, OnInit } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { Component, ElementRef, forwardRef, HostListener, Input, OnInit } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 @Component({
   selector: "form-select",
@@ -8,8 +8,15 @@ import { FormsModule } from "@angular/forms";
   templateUrl: "./select.component.html",
   styleUrls: ["./select.component.css"],
   standalone: true,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => Select),
+      multi: true,
+    },
+  ],
 })
-export class Select implements OnInit {
+export class Select implements ControlValueAccessor, OnInit {
   @Input() label?: string;
   @Input() name: string = "";
   @Input() options: Array<string | { value: string; label: string }> = [];
@@ -20,6 +27,14 @@ export class Select implements OnInit {
   searchText: string = "";
   dropdownOpen: boolean = false;
   selectedLabel: string = "";
+
+  /**
+   * @method onChange
+   * @method onTouched
+   * ControlValueAccessor hooks
+   */
+  private onChange: (value: string) => void = () => {};
+  private onTouched: () => void = () => {};
 
   constructor(private eRef: ElementRef) {}
 
@@ -59,5 +74,18 @@ export class Select implements OnInit {
   @HostListener("document:click", ["$event"])
   clickOutside(event: MouseEvent): void {
     if (!this.eRef.nativeElement.contains(event.target)) this.dropdownOpen = false;
+  }
+
+  // --- ControlValueAccessor ---
+  writeValue(value: string): void {
+    this.value = value;
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
   }
 }

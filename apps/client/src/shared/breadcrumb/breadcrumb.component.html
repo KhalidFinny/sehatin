@@ -5,12 +5,16 @@
   </a>
   <h5 class="text-gray-500/50">/</h5>
   <ng-container *ngFor="let menu of menus; let last = last; let i = index">
-    <a
-      class="cursor-pointer hover:underline"
-      (click)="onClick(menu)"
-    >
-      <h5>{{ truncateText(menu) }}</h5>
-    </a>
+    <ng-container *ngIf="!last">
+      <a class="cursor-pointer hover:underline" (click)="onClick(menu)">
+        <h5>{{ truncateText(menu) }}</h5>
+      </a>
+    </ng-container>
+    <ng-container *ngIf="last">
+      <h5 class="cursor-default">
+        {{ menu }}
+      </h5>
+    </ng-container>
     <h5 class="text-gray-500/50" *ngIf="!last">/</h5>
   </ng-container>
 </span>

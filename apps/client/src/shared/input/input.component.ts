@@ -22,14 +22,14 @@ export class Input implements ControlValueAccessor {
    * @type string
    * @description Props untuk input.
    */
-  @InputCore() name!: string;
-  @InputCore() label!: string;
-  @InputCore() value?: string = "";
-  @InputCore() type: "text" | "date" | "email" | "file" | "password" | "number" = "text";
-  @InputCore() required: boolean = false;
-  @InputCore() info?: string;
   @InputCore() icon?: string;
+  @InputCore() info?: string;
+  @InputCore() label!: string;
+  @InputCore() name!: string;
   @InputCore() placeholder?: string;
+  @InputCore() required: boolean = false;
+  @InputCore() type: "text" | "date" | "email" | "file" | "password" | "number" = "text";
+  @InputCore() value: string = "";
   @InputCore() variant: "auth" | "form" = "form";
   @Output() valueChange = new EventEmitter<string>();
 
@@ -38,8 +38,8 @@ export class Input implements ControlValueAccessor {
    * @method onTouched
    * ControlValueAccessor hooks
    */
-  private onChange: (value: string) => void = () => {};
-  private onTouched: () => void = () => {};
+  public onChange: (value: string) => void = () => {};
+  public onTouched: () => void = () => {};
 
   /**
    * @returns boolean

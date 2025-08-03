@@ -33,13 +33,13 @@ export class Daftar {
 
   onRegister(): void {
     if (!this.surel || !this.nama_lengkap || !this.nik || !this.kata_sandi || !this.konfirmasi_kata_sandi) {
-      this.showAlertMessage("Semua field harus diisi!", "error");
+      this.showAlertMessage("Semua bidang harus diisi!", "error");
       return;
     } else if (this.kata_sandi !== this.konfirmasi_kata_sandi) {
-      this.showAlertMessage("Password dan konfirmasi kata_sandi tidak cocok!", "error");
+      this.showAlertMessage("Kata sandi dan konfirmasi kata sandi tidak cocok!", "error");
       return;
     } else if (this.kata_sandi.length < 6) {
-      this.showAlertMessage("Password minimal 6 karakter!", "error");
+      this.showAlertMessage("Kata sandi minimal 6 karakter!", "error");
       return;
     } else if (this.nik.length < 8) {
       this.showAlertMessage("NIK minimal 8 karakter!", "error");

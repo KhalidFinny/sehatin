@@ -59,11 +59,7 @@
               label="Tujuan Kesehatan"
               name="tujuan_kesehatan"
               variant="form"
-              [options]="[
-                { label: 'Menurunkan Berat Badan', value: 'menuturunkan_berat_badan' },
-                { label: 'Meningkatkan Massa Otot', value: 'meningkatkan_massa_otot' },
-                { label: 'Menjaga Kesehatan Umum', value: 'menjaga_kesehatan_umum' },
-              ]"
+              [options]="healthGoal"
               [(ngModel)]="tujuan_kesehatan"
               [required]="true"
             />
@@ -159,8 +155,73 @@
             />
           </div>
         </mat-tab>
-        <mat-tab label="Alergi"> </mat-tab>
-        <mat-tab label="Gaya Hidup"> </mat-tab>
+        <mat-tab label="Alergi">
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3">
+            <form-select
+              label="Jenis Alergi"
+              name="jenis_alergi"
+              variant="form"
+              [options]="kindOfAllergies"
+              [(ngModel)]="jenis_alergi"
+              [required]="true"
+            />
+            <form-select
+              label="Tingkat Keparahan"
+              name="tingkat_keparahan"
+              variant="form"
+              [options]="severityOfAllergies"
+              [(ngModel)]="tingkat_keparahan"
+              [required]="true"
+            />
+            <form-textarea
+              label="Riwayat Reaksi Alergi"
+              name="riwayat_reaksi_alergi"
+              placeholder="Ceritakan kapan dan bagaimana reaksi alergi terjadi ..."
+              [(ngModel)]="riwayat_reaksi_alergi"
+            />
+            <shared-table
+              class="lg:col-span-3"
+              [headers]="['Tanggal', 'Jenis Alergi', 'Tingkat Keparahan', 'Riwayat Reaksi Alergi']"
+              [rows]="[]"
+              [sortable]="['Tanggal']"
+            />
+          </div>
+        </mat-tab>
+        <mat-tab label="Gaya Hidup">
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-2">
+            <form-select
+              label="Kebiasaan Olah Raga"
+              name="kebiasaan_olah_raga"
+              variant="form"
+              [options]="[]"
+              [(ngModel)]="kebiasaan_olah_raga"
+              [required]="true"
+            />
+            <form-input
+              icon="fa-solid fa-clock"
+              label="Pola Tidur"
+              name="pola_tidur"
+              placeholder="Cth. 1 jam"
+              type="text"
+              variant="form"
+              [(ngModel)]="pola_tidur"
+              [required]="true"
+            />
+            <form-checkbox
+              [(ngModel)]="kebiasaan_lain"
+              [ngModelOptions]="{ standalone: true }"
+              [label]="'Kebiasaan Lain'"
+              [options]="['Merokok', 'Minum Alkohol', 'Kurang Tidur']"
+              [required]="true"
+            />
+            <shared-table
+              class="lg:col-span-2"
+              [headers]="['Tanggal', 'Kebiasaan Olah Raga', 'Pola Tidur', 'Kebiasaan Lain']"
+              [rows]="[]"
+              [sortable]="['Tanggal']"
+            />
+          </div>
+        </mat-tab>
       </mat-tab-group>
       <div class="flex items-center justify-end">
         <button type="submit" class="bg-primary hover:bg-primary/80 mt-6 w-fit cursor-pointer self-end rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors duration-300">

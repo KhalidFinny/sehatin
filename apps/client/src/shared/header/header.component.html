@@ -54,7 +54,10 @@
 
 <!-- Ini merupakan menu ketika hamburger icon ditekan. -->
 <ng-container *ngIf="!isDashboardPage || !isAuthenticated">
-  <nav *ngIf="isSidebarOpen" class="fixed right-0 z-[999] flex h-screen w-1/2 translate-x-0 transform flex-col items-start gap-4 bg-white/90 p-6 text-slate-900 shadow-lg backdrop-blur-md transition-transform duration-300">
+  <nav
+    class="fixed right-0 z-[999] flex h-screen w-1/2 transform flex-col items-start gap-4 bg-white/90 p-6 text-slate-900 shadow-lg backdrop-blur-md transition-transform duration-300 ease-in-out lg:hidden"
+    [ngClass]="{ 'translate-x-0': isSidebarOpen, 'translate-x-full': !isSidebarOpen }"
+  >
     <i class="fa-solid fa-xmark mb-4 cursor-pointer text-2xl" (click)="toggleSidebar()"></i>
     <a routerLink="/tentang-kami" (click)="toggleSidebar()">Tentang Kami</a>
     <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />

@@ -1,0 +1,18 @@
+<fieldset class="flex flex-wrap gap-3">
+  <legend class="mb-4 text-sm font-medium text-gray-700">
+    <ng-container *ngIf="required; else labelTemplate">
+      {{ label }} <span class="text-red-500">*</span>
+    </ng-container>
+    <ng-template #labelTemplate>
+      {{ label }}
+    </ng-template>
+  </legend>
+  <label
+    *ngFor="let item of options"
+    class="cursor-pointer rounded-lg border px-4 py-2 text-sm transition-all duration-200"
+    [ngClass]="{ 'border-[#22b6d1] bg-[#22b6d1] text-white': name.includes(item), 'border-gray-300 hover:border-[#22b6d1]': !name.includes(item) }"
+  >
+    <input type="checkbox" class="peer hidden" [value]="item" [checked]="name.includes(item)" (change)="toggleChoices(item)" />
+    {{ item }}
+  </label>
+</fieldset>

@@ -4,8 +4,11 @@
       "src": "apps/client/angular.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/sehatin"
+        "distDir": "dist/sehatin/browser"
       }
     }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

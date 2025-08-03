@@ -3,7 +3,7 @@ import { Component, ChangeDetectorRef } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { Router, RouterModule } from "@angular/router";
-import { AuthService } from "@services/auth.service";
+import { AuthService, User } from "@services/auth.service";
 import { Input } from "@shared/input/input.component";
 import { BasePage } from "helpers/base-page";
 
@@ -30,39 +30,23 @@ export class Masuk {
 
   onLogin(): void {
     if (!this.surel || !this.kata_sandi) {
-      this.showAlertMessage("Email dan kata_sandi harus diisi!", "error");
-      return;
+      return this.showAlertMessage("Email dan kata sandi harus diisi!", "error");
     }
 
     this.isLoading = true;
     this.cdr.detectChanges();
-    setTimeout(() => {
-      const success = this.authService.login(this.surel, this.kata_sandi);
 
-      if (!success) {
-        this.showAlertMessage("Email atau kata sandi salah!", "error");
-        this.isLoading = false;
-        this.cdr.detectChanges();
-        return;
-      }
-
-      this.showAlertMessage("Login berhasil!", "success");
+    this.authService.login(this.surel, this.kata_sandi).then((response) => {
       this.isLoading = false;
+      this.showAlertMessage(response.message, response.success ? "success" : "error");
       this.cdr.detectChanges();
 
-      // Redirect manual dengan delay untuk memastikan state ter-update
-      setTimeout(() => {
-        const user = this.authService.getCurrentUser();
-        if (user === null) {
-          this.showAlertMessage("Pengguna tidak ditemukan!", "error");
-          return;
-        } else if (user.role === "admin") {
-          window.location.href = "/admin/dasbor";
-        } else {
-          window.location.href = "/pengguna/dasbor";
-        }
-      }, 1000);
-    }, 1000);
+      if (response.success) {
+        const user = this.authService.getCurrentUser() as User;
+        const redirect = user.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
+        setTimeout(() => this.router.navigate([redirect]), 1000);
+      }
+    });
   }
 
   onGoogleLogin(): void {
@@ -77,7 +61,8 @@ export class Masuk {
     this.alertMessage = message;
     this.alertType = type;
     this.showAlert = true;
-    this.cdr.detectChanges(); // Force change detection
+    this.cdr.detectChanges();
+
     setTimeout(() => {
       this.showAlert = false;
       this.cdr.detectChanges();

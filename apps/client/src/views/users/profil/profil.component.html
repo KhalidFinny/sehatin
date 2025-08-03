@@ -1,1 +1,5 @@
-<main></main>
+<shared-sidebar *ngIf="isSidebarOpen" userType="user" />
+<shared-header title="Profil" />
+
+<main [ngClass]="isSidebarOpen ? 'ml-64' : ''" class="cursor-default border-b border-gray-100 p-8 transition-all duration-300 ease-in-out">
+</main>

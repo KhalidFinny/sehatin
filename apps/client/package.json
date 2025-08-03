@@ -6,7 +6,7 @@
   },
   "scripts": {
     "ng": "ng",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "dev": "ng serve",
     "test": "ng test",
     "watch": "ng build --watch --configuration development",

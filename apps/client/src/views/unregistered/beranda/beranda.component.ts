@@ -33,6 +33,8 @@ type Statistics = {
   styleUrl: "./beranda.component.css",
 })
 export class Beranda implements OnInit {
+  public animatedStats: number[] = [];
+
   private pageAttributes: BasePage;
 
   constructor(title: Title, meta: Meta, @Inject(PLATFORM_ID) private platformId: Object) {
@@ -40,7 +42,7 @@ export class Beranda implements OnInit {
     this.pageAttributes.setTitleAndMeta("Beranda | SEHATIN", "");
   }
 
-  statistics: Statistics[] = [
+  public statistics: Statistics[] = [
     {
       color: "blue",
       icon: "fa-solid fa-user-group",
@@ -71,7 +73,7 @@ export class Beranda implements OnInit {
     },
   ];
 
-  doctors: Doctors[] = [
+  public doctors: Doctors[] = [
     {
       image: "/images/rafi.svg",
       name: "Dr. Rafi Abiyyu Airlangga",
@@ -104,12 +106,11 @@ export class Beranda implements OnInit {
     },
   ];
 
-  animatedStats: number[] = [];
   ngOnInit() {
     this.animateAllStats(1500); // durasi 1.5 detik
   }
 
-  animateAllStats(duration: number = 1000) {
+  public animateAllStats(duration: number = 1000) {
     if (!isPlatformBrowser(this.platformId)) {
       this.animatedStats = this.statistics.map((stat) => stat.value);
       return;
@@ -120,13 +121,10 @@ export class Beranda implements OnInit {
     let frame = 0;
     this.animatedStats = this.statistics.map(() => 0);
 
-    const sub = interval(1000 / frameRate)
-      .pipe(takeWhile(() => frame <= totalFrame))
-      .subscribe(() => {
-        frame++;
-        const progress = frame / totalFrame;
-        this.animatedStats = this.statistics.map((stat, i) => frame >= totalFrame ? stat.value : Math.round(progress * stat.value));
-        if (frame >= totalFrame) sub.unsubscribe();
-      });
+    const sub = interval(1000 / frameRate).pipe(takeWhile(() => frame <= totalFrame)).subscribe(() => {
+      frame++;
+      this.animatedStats = this.statistics.map((stat, i) => frame >= totalFrame ? stat.value : Math.round(frame / totalFrame * stat.value));
+      if (frame >= totalFrame) sub.unsubscribe();
+    });
   }
 }
