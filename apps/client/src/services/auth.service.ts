@@ -13,23 +13,21 @@ export type User = {
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
-  private currentUser: User | null = null;
-  private users: User[] = [
-    {
-      id: 1,
-      email: "admin@sehatin.com",
-      password: "admin123",
-      name: "Administrator",
-      role: "admin",
-    },
-    {
-      id: 2,
-      email: "user@sehatin.com",
-      password: "user123",
-      name: "User Test",
-      role: "user",
-    },
-  ];
+  private user: User | null = null;
+  private listOfUsers: User[] = [{
+    id: 1,
+    email: "admin@sehatin.com",
+    password: "admin123",
+    name: "Administrator",
+    role: "admin",
+  },
+  {
+    id: 2,
+    email: "user@sehatin.com",
+    password: "user123",
+    name: "User Test",
+    role: "user",
+  }];
 
   public authStateChanged = new Subject<void>();
   public fetchLocalStorage = new BehaviorSubject<boolean>(false);
@@ -37,16 +35,20 @@ export class AuthService {
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     if (!isPlatformBrowser(this.platformId)) return;
     const savedUser = localStorage.getItem("currentUser");
-    if (savedUser) this.currentUser = JSON.parse(savedUser);
+    if (savedUser) this.user = JSON.parse(savedUser);
     this.fetchLocalStorage.next(true);
+  }
+
+  get currentUser(): User | null {
+    return this.user;
   }
 
   login(email: string, password: string): Promise<{ success: boolean; message: string }> {
     return new Promise((resolve) => {
-      const user = this.users.find((u) => u.email === email && u.password === password);
+      const user = this.listOfUsers.find((u) => u.email === email && u.password === password);
       if (!user) return resolve({ success: false, message: "Email atau kata sandi salah!" });
 
-      this.currentUser = user;
+      this.user = user;
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem("currentUser", JSON.stringify(user));
         localStorage.setItem("loginTimestamp", Date.now().toString());
@@ -57,30 +59,24 @@ export class AuthService {
     });
   }
 
-  redirectToDashboard(): void {
-    if (!this.currentUser) return;
-    const route = this.currentUser.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
-    this.router.navigate([route]);
-  }
-
   register(email: string, password: string, name: string): boolean {
-    const userExists = this.users.some((u) => u.email === email);
+    const userExists = this.listOfUsers.some((u) => u.email === email);
     if (userExists) return false;
 
     const newUser: User = {
-      id: this.users.length + 1,
+      id: this.listOfUsers.length + 1,
       email,
       password,
       name,
       role: "user",
     };
 
-    this.users.push(newUser);
+    this.listOfUsers.push(newUser);
     return true;
   }
 
   logout(): void {
-    this.currentUser = null;
+    this.user = null;
 
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem("currentUser");
@@ -89,23 +85,5 @@ export class AuthService {
 
     this.authStateChanged.next();
     this.router.navigate(["/"]);
-  }
-
-  getCurrentUser(): User | null {
-    return this.currentUser;
-  }
-
-  isLoggedIn(): boolean {
-    return this.currentUser !== null;
-  }
-
-  isAdmin(): boolean {
-    if (this.currentUser === null) return false;
-    return this.currentUser.role === "admin";
-  }
-
-  isUser(): boolean {
-    if (this.currentUser === null) return false;
-    return this.currentUser.role === "user";
   }
 }

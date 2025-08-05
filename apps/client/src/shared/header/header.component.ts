@@ -22,7 +22,8 @@ export class Header implements OnInit {
   constructor(private authService: AuthService, private router: Router, private sidebarService: SidebarService) {}
 
   ngOnInit(): void {
-    const currentUser = this.authService.getCurrentUser();
+    const currentUser = this.authService.currentUser;
+
     if (currentUser !== null) {
       this.name = currentUser.name;
       this.role = currentUser.role;
@@ -42,19 +43,11 @@ export class Header implements OnInit {
     return window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/pengguna');
   }
 
-  get profileRoute(): string {
-    return this.role === "admin" ? '/admin/profil' : '/pengguna/profil';
-  }
-
   goToDashboard() {
     this.router.navigate([this.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor"]);
   }
 
   toggleSidebar() {
-    this.sidebarService.toggleSidebar();
-  }
-
-  logout() {
-    this.authService.logout();
+    this.sidebarService.sidebarOpenSubject.next(!this.sidebarService.isSidebarOpen);
   }
 }

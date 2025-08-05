@@ -26,47 +26,15 @@ export type Statistics = {
   styleUrl: "./rekap-kesehatan.component.css",
 })
 export class RekapKesehatan implements OnDestroy, OnInit {
+  public currentDate: string = "";
+  public currentTime: string = "";
   public isSidebarOpen: boolean = true;
+
   private sidebarSubscription!: Subscription;
   private pageAttributes: BasePage;
   private intervalId: NodeJS.Timeout;
 
-  currentDate: string = "";
-  currentTime: string = "";
-
-  constructor(title: Title, meta: Meta, private sidebarService: SidebarService) {
-    this.pageAttributes = new BasePage(title, meta);
-    this.pageAttributes.setTitleAndMeta("Rekap Kesehatan | SEHATIN", "");
-    this.updateDateTime();
-    this.intervalId = setInterval(() => this.updateDateTime(), 60000);
-  }
-
-  ngOnDestroy() {
-    if (this.intervalId) clearInterval(this.intervalId);
-    if (this.sidebarSubscription) this.sidebarSubscription.unsubscribe();
-  }
-
-  ngOnInit(): void {
-    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
-  }
-
-  private updateDateTime() {
-    const now = new Date();
-
-    this.currentDate = now.toLocaleDateString("id-ID", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
-    this.currentTime = now.toLocaleTimeString("id-ID", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }
-
-  statistics: Statistics[] = [
+  public statistics: Statistics[] = [
     {
       background: "#dbeafe",
       color: "#155dfc",
@@ -100,4 +68,36 @@ export class RekapKesehatan implements OnDestroy, OnInit {
       info: "Cukup Aktif",
     },
   ];
+
+  constructor(title: Title, meta: Meta, private sidebarService: SidebarService) {
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Rekap Kesehatan | SEHATIN", "");
+    this.updateDateTime();
+    this.intervalId = setInterval(() => this.updateDateTime(), 60000);
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) clearInterval(this.intervalId);
+    if (this.sidebarSubscription) this.sidebarSubscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
+  }
+
+  private updateDateTime() {
+    const now = new Date();
+
+    this.currentDate = now.toLocaleDateString("id-ID", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    this.currentTime = now.toLocaleTimeString("id-ID", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
 }

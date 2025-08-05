@@ -42,19 +42,11 @@ export class Masuk {
       this.cdr.detectChanges();
 
       if (response.success) {
-        const user = this.authService.getCurrentUser() as User;
+        const user = this.authService.currentUser as User;
         const redirect = user.role === "admin" ? "/admin/dasbor" : "/pengguna/dasbor";
         setTimeout(() => this.router.navigate([redirect]), 1000);
       }
     });
-  }
-
-  onGoogleLogin(): void {
-    this.showAlertMessage("Fitur masuk dengan Google akan segera hadir!", "error");
-  }
-
-  onRegister(): void {
-    this.router.navigate(["/daftar"]);
   }
 
   private showAlertMessage(message: string, type: "success" | "error"): void {

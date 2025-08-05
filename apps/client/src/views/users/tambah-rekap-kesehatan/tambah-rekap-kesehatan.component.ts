@@ -21,6 +21,7 @@ import { Select } from "@shared/select/select.component";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Table } from "@shared/table/table.component";
 import { Textarea } from "@shared/textarea/textarea.component";
+import { EnumOptions } from "@helpers/enum-options";
 
 @Component({
   selector: "pages-tambah-rekap-kesehatan",
@@ -78,29 +79,12 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.activityLevelOptions = Object.entries(ActivityLevel).map(([key, value]) => {
-      return { label: value, value: key };
-    });
-
-    this.healthGoal = Object.entries(HealthGoal).map(([key, value]) => {
-      return { label: value, value: key };
-    });
-
-    this.kindOfAllergies = Object.entries(KindOfAllergies).map(([key, value]) => {
-      return { label: value, value: key };
-    });
-
-    this.listOfDiseases = Object.entries(MedicalHistory).map(([key, value]) => {
-      return { label: value, value: key };
-    });
-
-    this.genderOptions = Object.entries(Gender).map(([key, value]) => {
-      return { label: value, value: key };
-    });
-
-    this.severityOfAllergies = Object.entries(SeverityOfAllergy).map(([key, value]) => {
-      return { label: value, value: key };
-    });
+    this.activityLevelOptions = EnumOptions.fromEnum(ActivityLevel);
+    this.healthGoal = EnumOptions.fromEnum(HealthGoal);
+    this.kindOfAllergies = EnumOptions.fromEnum(KindOfAllergies);
+    this.listOfDiseases = EnumOptions.fromEnum(MedicalHistory);
+    this.genderOptions = EnumOptions.fromEnum(Gender);
+    this.severityOfAllergies = EnumOptions.fromEnum(SeverityOfAllergy);
 
     this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => {
       return this.isSidebarOpen = state;

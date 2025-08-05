@@ -1,15 +1,17 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
-import { Header as SharedHeader } from "@shared/header/header.component";
+import { Header } from "@shared/header/header.component";
 import { getAllDistricts } from "indonesia-nodejs";
 import { Router } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
 import * as XLSX from "xlsx";
+import { SidebarService } from "@services/sidebar.service";
+import { Subscription } from "rxjs";
 
-type KecamatanData = {
+type DataKecamatan = {
   id: number;
   nama: string;
   totalPenderita: number;
@@ -21,19 +23,23 @@ type KecamatanData = {
 }
 
 @Component({
-  selector: "shared-analitik-kecamatan",
+  selector: "pages-analitik-kecamatan",
   standalone: true,
-  imports: [CommonModule, FormsModule, Sidebar, SharedHeader],
+  imports: [CommonModule, FormsModule, Header, Sidebar],
   templateUrl: "./analitik-kecamatan.component.html",
   styleUrl: "./analitik-kecamatan.component.css",
 })
-export class AnalitikKecamatan implements OnInit {
+export class AnalitikKecamatan implements OnDestroy, OnInit {
+  public isSidebarOpen: boolean = true;
+  private pageAttributes: BasePage;
+  private sidebarSubscription!: Subscription;
+
   tanggalHariIni = "";
   waktuSekarang = "";
-  kecamatanList: KecamatanData[] = [];
-  filteredKecamatanList: KecamatanData[] = [];
+  kecamatanList: DataKecamatan[] = [];
+  filteredKecamatanList: DataKecamatan[] = [];
   penyakitDipilih = "total";
-  sortOrder: "asc" | "desc" = "desc";
+  jenisSortir: "asc" | "desc" = "desc";
   loading = true;
 
   readonly daftarPenyakit = [
@@ -45,14 +51,17 @@ export class AnalitikKecamatan implements OnInit {
     { label: "Kolesterol", value: "kolesterol" },
   ];
 
-  private pageAttributes: BasePage
-
-  constructor(title: Title, meta: Meta, private router: Router) {
+  constructor(public title: Title, public meta: Meta, public sidebarService: SidebarService, private router: Router) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Analitik Kecamatan | SEHATIN", "");
   }
 
+  ngOnDestroy(): void {
+    if (this.sidebarSubscription) this.sidebarSubscription.unsubscribe();
+  }
+
   ngOnInit(): void {
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
     this.updateDateTime();
     this.loadKecamatanData();
     setInterval(() => this.updateDateTime(), 60000);
@@ -80,7 +89,7 @@ export class AnalitikKecamatan implements OnInit {
       const malangDistricts = allDistricts.filter((d) => d.city_code === 3507);
 
       this.kecamatanList = malangDistricts.map((d, i) => {
-        const s = this.hash(d.name);
+        const s = Math.abs([...d.name].reduce((h, c) => (h << 5) - h + c.charCodeAt(0), 0));
         const diabetes = this.seeded(s + 1, 20, 70);
         const kardiovaskular = this.seeded(s + 2, 15, 55);
         const obesitas = this.seeded(s + 3, 25, 85);
@@ -99,10 +108,6 @@ export class AnalitikKecamatan implements OnInit {
     }
   }
 
-  private hash(str: string): number {
-    return Math.abs([...str].reduce((h, c) => (h << 5) - h + c.charCodeAt(0), 0));
-  }
-
   private seeded(seed: number, min: number, max: number): number {
     const rand = Math.sin(seed) * 10000;
     return min + Math.floor((rand - Math.floor(rand)) * (max - min + 1));
@@ -113,64 +118,39 @@ export class AnalitikKecamatan implements OnInit {
   }
 
   toggleSortOrder(): void {
-    this.sortOrder = this.sortOrder === "asc" ? "desc" : "asc";
+    this.jenisSortir = this.jenisSortir === "asc" ? "desc" : "asc";
     this.updateFilteredList();
   }
 
   updateFilteredList(): void {
     const field = this.penyakitDipilih === "total" ? "totalPenderita" : this.penyakitDipilih;
-    const sorted = [...this.kecamatanList]
-      .filter((k) => Number(k[field as keyof KecamatanData]) > 0)
-      .sort((a, b) =>
-        this.sortOrder === "asc"
-          ? (a[field as keyof KecamatanData] as number) - (b[field as keyof KecamatanData] as number)
-          : (b[field as keyof KecamatanData] as number) - (a[field as keyof KecamatanData] as number),
-      );
+    const sorted = [...this.kecamatanList].filter((k) => Number(k[field as keyof DataKecamatan]) > 0).sort((a, b) =>
+      this.jenisSortir === "asc" ? (a[field as keyof DataKecamatan] as number) - (b[field as keyof DataKecamatan] as number) : (b[field as keyof DataKecamatan] as number) - (a[field as keyof DataKecamatan] as number),
+    );
+
     this.filteredKecamatanList = sorted;
   }
 
-  getJumlahPenderita(k: KecamatanData): number {
-    return this.penyakitDipilih === "total" ? k.totalPenderita : Number(k[this.penyakitDipilih as keyof KecamatanData] || 0);
+  getJumlahPenderita(k: DataKecamatan): number {
+    return this.penyakitDipilih === "total" ? k.totalPenderita : Number(k[this.penyakitDipilih as keyof DataKecamatan] || 0);
   }
 
-  lihatDetail(kecamatan: KecamatanData): void {
+  lihatDetail(kecamatan: DataKecamatan): void {
     this.router.navigate(["/admin/analitik/kecamatan", kecamatan.id]);
   }
 
   downloadExcel(): void {
     const headers = ["No", "Kecamatan", "Total Penderita", "Diabetes", "Kardiovaskular", "Obesitas", "Hipertensi", "Kolesterol"];
-
-    const rows = this.filteredKecamatanList.map((k, i) => [
-      i + 1,
-      k.nama,
-      Number(k.totalPenderita),
-      Number(k.diabetes),
-      Number(k.kardiovaskular),
-      Number(k.obesitas),
-      Number(k.hipertensi),
-      Number(k.kolesterol),
-    ]);
-
-    const sumField = (f: keyof KecamatanData) => this.filteredKecamatanList.reduce((s, k) => s + Number(k[f]), 0);
-
-    const totalRow = [
-      "",
-      "TOTAL",
-      sumField("totalPenderita"),
-      sumField("diabetes"),
-      sumField("kardiovaskular"),
-      sumField("obesitas"),
-      sumField("hipertensi"),
-      sumField("kolesterol"),
-    ];
-
+    const rows = this.filteredKecamatanList.map((k, i) => [i + 1, k.nama, Number(k.totalPenderita), Number(k.diabetes), Number(k.kardiovaskular), Number(k.obesitas), Number(k.hipertensi), Number(k.kolesterol)]);
+    const sumField = (f: keyof DataKecamatan) => this.filteredKecamatanList.reduce((s, k) => s + Number(k[f]), 0);
+    const totalRow = ["", "TOTAL", sumField("totalPenderita"), sumField("diabetes"), sumField("kardiovaskular"), sumField("obesitas"), sumField("hipertensi"), sumField("kolesterol")];
     const data = [headers, ...rows, totalRow];
     const worksheet = XLSX.utils.aoa_to_sheet(data);
 
-    // ✅ Buat kolom width otomatis berdasarkan data terpanjang di setiap kolom
+    // Buat kolom width otomatis berdasarkan data terpanjang di setiap kolom
     const columnWidths = headers.map((_, colIdx) => {
       const maxLen = data.reduce((max, row) => Math.max(max, String(row[colIdx] ?? "").length), 10); // minimal width
-      return { wch: maxLen + 2 }; // padding 2
+      return { wch: maxLen + 2 };
     });
 
     worksheet["!cols"] = columnWidths;

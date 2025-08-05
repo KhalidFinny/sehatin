@@ -6,14 +6,16 @@ import { TentangKami } from "@views/unregistered/tentang-kami/tentang-kami.compo
 import { Kontak } from "@views/unregistered/kontak/kontak.component";
 import { Masuk } from "@views/unregistered/masuk/masuk.component";
 import { Daftar } from "@views/unregistered/daftar/daftar.component";
-import { DasborAdmin } from "@views/admin/dasbor/dasbor.component";
 import { AnalitikKecamatan } from "@views/admin/analitik-kecamatan/analitik-kecamatan.component";
+import { AnalitikPengguna } from "@views/admin/analitik-pengguna/analitik-pengguna.component";
+import { DasborAdmin } from "@views/admin/dasbor/dasbor.component";
 import { DetailAnalitikKecamatan } from '@views/admin/detail-analitik-kecamatan/detail-analitik-kecamatan.component';
+import { Profil as ProfilAdmin } from "@views/admin/profil/profil.component";
 import { DasborPengguna } from "@views/users/dasbor/dasbor.component";
 import { RekapKesehatan } from "@views/users/rekap-kesehatan/rekap-kesehatan.component";
+import { Profil as ProfilPengguna } from "@views/users/profil/profil.component";
 import { TambahRekapKesehatan } from "@views/users/tambah-rekap-kesehatan/tambah-rekap-kesehatan.component";
 import { SkriningPtm } from "@views/users/skrining-ptm/skrining-ptm.component";
-import { Profil } from "@views/users/profil/profil.component";
 
 export const routes: Routes = [
   /**
@@ -31,6 +33,8 @@ export const routes: Routes = [
   { path: "admin/dasbor", component: DasborAdmin, canActivate: [AuthGuard] },
   { path: "admin/analitik/kecamatan", component: AnalitikKecamatan, canActivate: [AuthGuard] },
   { path: "admin/analitik/kecamatan/:id", component: DetailAnalitikKecamatan, canActivate: [AuthGuard] },
+  { path: "admin/analitik/pengguna", component: AnalitikPengguna, canActivate: [AuthGuard] },
+  { path: "admin/profil", component: ProfilAdmin, canActivate: [AuthGuard] },
 
   /**
    * Perutean untuk pengguna.
@@ -39,7 +43,7 @@ export const routes: Routes = [
   { path: "pengguna/rekap-kesehatan", component: RekapKesehatan, canActivate: [AuthGuard] },
   { path: "pengguna/rekap-kesehatan/tambah", component: TambahRekapKesehatan, canActivate: [AuthGuard] },
   { path: "pengguna/skrining-ptm", component: SkriningPtm, canActivate: [AuthGuard] },
-  { path: "pengguna/profil", component: Profil, canActivate: [AuthGuard] },
+  { path: "pengguna/profil", component: ProfilPengguna, canActivate: [AuthGuard] },
 
   /**
    * Perutean jika halaman tidak ditemukan.

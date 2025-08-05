@@ -5,16 +5,16 @@ import { Meta, Title } from "@angular/platform-browser";
 import { ChartData, ChartOptions, ChartType } from "chart.js";
 import { getAllDistricts } from "indonesia-nodejs";
 import { NgChartsModule } from "ng2-charts";
-import { Sidebar } from "@shared/sidebar/sidebar.component";
-import { Header as SharedHeader } from "@shared/header/header.component";
-import { SidebarService } from "@services/sidebar.service";
 import { Subscription } from "rxjs";
+import { Sidebar } from "@shared/sidebar/sidebar.component";
+import { Header } from "@shared/header/header.component";
+import { SidebarService } from "@services/sidebar.service";
 import { BasePage } from "@helpers/base-page";
 
 @Component({
-  selector: "halaman-admin-dasbor",
+  selector: "pages-admin-dasbor",
   standalone: true,
-  imports: [CommonModule, Sidebar, NgChartsModule, FormsModule, SharedHeader],
+  imports: [CommonModule, FormsModule, Header, NgChartsModule, Sidebar],
   templateUrl: "./dasbor.component.html",
   styleUrl: "./dasbor.component.css",
 })
@@ -63,15 +63,13 @@ export class DasborAdmin implements OnDestroy, OnInit {
   labelGrafikPie = ["Diabetes", "Kardiovaskular", "Obesitas", "Hipertensi", "Kolesterol"];
   dataGrafikLingkaran: ChartData<"pie", number[], string> = {
     labels: this.labelGrafikPie,
-    datasets: [
-      {
-        data: [100, 80, 120, 150, 90],
-        backgroundColor: ["#0ea5e9", "#f59e42", "#22d3ee", "#10b981", "#8b5cf6"],
-        borderWidth: 2,
-        borderColor: "#fff",
-        hoverOffset: 8,
-      },
-    ],
+    datasets: [{
+      data: [100, 80, 120, 150, 90],
+      backgroundColor: ["#0ea5e9", "#f59e42", "#22d3ee", "#10b981", "#8b5cf6"],
+      borderWidth: 2,
+      borderColor: "#fff",
+      hoverOffset: 8,
+    }],
   };
 
   labelGrafikGaris = this.tahunTersedia.map(String);
@@ -101,17 +99,12 @@ export class DasborAdmin implements OnDestroy, OnInit {
 
   async ngOnInit() {
     this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
-
-    this.daftarKecamatan = (await getAllDistricts())
-      .filter(d => d.city_code === 3507)
-      .map(d => d.name)
-      .sort((a, b) => a.localeCompare(b));
+    this.daftarKecamatan = (await getAllDistricts()).filter(d => d.city_code === 3507).map(d => d.name).sort((a, b) => a.localeCompare(b));
+    this.dataGrafikBatang = this.bentukDataGrafikBatang();
 
     this.inisialisasiDataPertahun();
     this.ambilDataLokal();
     this.validasiDanPerbaikiData();
-
-    this.dataGrafikBatang = this.bentukDataGrafikBatang();
     this.perbaruiSemuaGrafik();
 
     setTimeout(() => this.perbaruiGrafikPie(), 100);
@@ -190,10 +183,9 @@ export class DasborAdmin implements OnDestroy, OnInit {
 
   perbaruiGrafikBatang() {
     const totalData = this.daftarKecamatan.map((_, i) => {
-      return this.penyakitDipilih === "total"
-        ? this.daftarPenyakit.slice(1).reduce((sum, p) => sum + (this.dataPenyakitAktif[p.value]?.[i] || 0), 0)
-        : this.dataPenyakitAktif[this.penyakitDipilih]?.[i] || 0;
+      return this.penyakitDipilih === "total" ? this.daftarPenyakit.slice(1).reduce((sum, p) => sum + (this.dataPenyakitAktif[p.value]?.[i] || 0), 0) : this.dataPenyakitAktif[this.penyakitDipilih]?.[i] || 0;
     });
+
     this.dataGrafikBatang.datasets[0].data = totalData;
   }
 
@@ -224,11 +216,7 @@ export class DasborAdmin implements OnDestroy, OnInit {
   }
 
   simpanKeLocalStorage() {
-    localStorage.setItem("dataDasbor", JSON.stringify({
-      dataPenyakitPertahun: this.dataPenyakitPertahun,
-      penyakitDipilih: this.penyakitDipilih,
-      tahunDipilih: this.tahunDipilih,
-    }));
+    localStorage.setItem("dataDasbor", JSON.stringify({ dataPenyakitPertahun: this.dataPenyakitPertahun, penyakitDipilih: this.penyakitDipilih, tahunDipilih: this.tahunDipilih }));
   }
 
   ambilDataLokal() {
@@ -246,9 +234,7 @@ export class DasborAdmin implements OnDestroy, OnInit {
       const data = this.dataPenyakitPertahun[tahun];
       if (!data) continue;
       for (const p of this.daftarPenyakit.slice(1)) {
-        if (!data[p.value] || data[p.value].length !== jumlah) {
-          data[p.value] = this.acakAngka(20, 70, jumlah);
-        }
+        if (!data[p.value] || data[p.value].length !== jumlah) data[p.value] = this.acakAngka(20, 70, jumlah);
       }
     }
   }
@@ -266,9 +252,7 @@ export class DasborAdmin implements OnDestroy, OnInit {
     const index = this.daftarKecamatan.indexOf(this.dataBaru.kecamatan);
     if (index === -1 || this.dataBaru.jumlah <= 0) return alert("Isian tidak valid.");
 
-    const tahunData = this.dataPenyakitPertahun[this.dataBaru.tahun] ||= {
-      diabetes: [], kardiovaskular: [], obesitas: [], hipertensi: [], kolesterol: []
-    };
+    const tahunData = this.dataPenyakitPertahun[this.dataBaru.tahun] ||= { diabetes: [], kardiovaskular: [], obesitas: [], hipertensi: [], kolesterol: [] };
     tahunData[this.dataBaru.penyakit][index] = this.dataBaru.jumlah;
 
     if (this.dataBaru.tahun === this.tahunDipilih) {

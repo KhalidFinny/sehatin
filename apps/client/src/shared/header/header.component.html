@@ -40,7 +40,7 @@
           </a>
         </ng-container>
         <ng-container *ngIf="isAuthenticated">
-          <button (click)="goToDashboard()" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
+          <button (click)="goToDashboard()" class="bg-primary hover:bg-primary/90 cursor-pointer rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
             Dasbor
           </button>
         </ng-container>
@@ -70,7 +70,7 @@
       <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />
     </ng-container>
     <ng-container *ngIf="isAuthenticated">
-      <a [href]="goToDashboard()" (click)="toggleSidebar()">Dasbor</a>
+      <a (click)="goToDashboard(); toggleSidebar()">Dasbor</a>
       <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />
     </ng-container>
   </nav>

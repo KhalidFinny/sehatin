@@ -1,7 +1,7 @@
-<shared-sidebar userType="admin" />
+<shared-sidebar *ngIf="isSidebarOpen" userType="admin" />
 <shared-header title="Daftar Kecamatan" />
 
-<main class="mt-24 ml-64 min-h-screen bg-gray-50 p-8">
+<main [ngClass]="isSidebarOpen ? 'ml-64 lg:ml-72' : 'lg:ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
   <section class="mb-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-gray-200 bg-white p-4">
     <!-- Kiri: Ikon dan jumlah kecamatan -->
     <div class="flex items-center gap-3">
@@ -31,7 +31,7 @@
       <button (click)="toggleSortOrder()" class="flex items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100">
         <i class="fas fa-sort text-gray-500"></i>
         <h5 class="pl-4">
-          {{ sortOrder === "desc" ? "Tertinggi" : "Terendah" }}
+          {{ jenisSortir === "desc" ? "Tertinggi" : "Terendah" }}
         </h5>
       </button>
       <span class="h-8 w-px bg-gray-200"></span>

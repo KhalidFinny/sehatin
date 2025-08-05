@@ -6,14 +6,6 @@ export class SidebarService {
   readonly sidebarOpenSubject = new BehaviorSubject<boolean>(this.isDashboardPage());
   readonly sidebarOpen = this.sidebarOpenSubject.asObservable();
 
-  toggleSidebar(): void {
-    this.sidebarOpenSubject.next(!this.sidebarOpenSubject.value);
-  }
-
-  setSidebarState(open: boolean): void {
-    this.sidebarOpenSubject.next(open);
-  }
-
   get isSidebarOpen(): boolean {
     return this.sidebarOpenSubject.value;
   }

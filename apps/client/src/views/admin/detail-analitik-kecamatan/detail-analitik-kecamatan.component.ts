@@ -7,6 +7,10 @@ import { NgChartsModule } from "ng2-charts";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Header as SharedHeader } from "@shared/header/header.component";
 import { getAllDistricts } from "indonesia-nodejs";
+import { Subscription } from "rxjs";
+import { BasePage } from "@helpers/base-page";
+import { Meta, Title } from "@angular/platform-browser";
+import { SidebarService } from "@services/sidebar.service";
 
 interface KecamatanData {
   id: number;
@@ -29,8 +33,11 @@ interface KecamatanData {
   styleUrl: "./detail-analitik-kecamatan.component.css",
 })
 export class DetailAnalitikKecamatan implements OnInit {
-  kecamatan?: KecamatanData;
+  public isSidebarOpen: boolean = true;
+  private pageAttributes: BasePage;
+  private sidebarSubscription!: Subscription;
 
+  kecamatan?: KecamatanData;
   tahunTrend = ["2020", "2021", "2022", "2023", "2024"];
 
   // Chart Data
@@ -45,9 +52,18 @@ export class DetailAnalitikKecamatan implements OnInit {
   chartLineOptions: ChartOptions<"line"> = this.getAxisOptions<"line">();
   chartBarOptions: ChartOptions<"bar"> = this.getAxisOptions<"bar">();
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(title: Title, meta: Meta, private sidebarService: SidebarService, private route: ActivatedRoute) {
+    this.pageAttributes = new BasePage(title, meta);
+    this.pageAttributes.setTitleAndMeta("Detail Kecamatan | SEHATIN", "");
+  }
+
+  ngOnDestroy(): void {
+    if (this.sidebarSubscription) this.sidebarSubscription.unsubscribe();
+  }
 
   async ngOnInit() {
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
+
     const id = Number(this.route.snapshot.paramMap.get("id"));
     const allDistricts = await getAllDistricts();
     const malangDistricts = allDistricts.filter((d) => d.city_code === 3507);

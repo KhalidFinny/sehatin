@@ -1,7 +1,7 @@
 <shared-sidebar *ngIf="isSidebarOpen" userType="user" />
 <shared-header title="Dasbor" />
 
-<main [ngClass]="isSidebarOpen ? 'ml-72' : 'ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
+<main [ngClass]="isSidebarOpen ? 'ml-64 lg:ml-72' : 'lg:ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
   <!-- SECTION 1: Konten Utama (Bento Layout) -->
   <section class="mt-24 grid grid-cols-1 gap-4 lg:grid-cols-12">
     <!-- Column 1: Statistik -->
@@ -26,8 +26,8 @@
         <h2 class="text-heading text-lg font-medium">Riwayat Makanan</h2>
         <span class="h-2 w-2 rounded-full bg-green-400"></span>
       </figcaption>
-      <ul *ngIf="makananList.length > 0; else makananKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
-        <li *ngFor="let m of makananList" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background)">
+      <ul *ngIf="listOfFoods.length > 0; else makananKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
+        <li *ngFor="let m of listOfFoods" class="flex items-center gap-4 rounded-lg px-4 py-3" style="background: var(--color-background)">
           <span class="text-heading flex h-10 w-10 items-center justify-center rounded-full bg-[#e6f6fa] text-xl">
             <i class="fa-solid fa-bowl-food"></i>
           </span>
@@ -55,8 +55,8 @@
           <h2 class="text-heading text-lg font-medium">Riwayat Aktivitas</h2>
           <span class="h-2 w-2 rounded-full bg-blue-400"></span>
         </figcaption>
-        <ul *ngIf="aktivitasList.length > 0; else aktivitasKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
-          <li *ngFor="let a of aktivitasList" class="bg-background flex items-center gap-4 rounded-lg px-4 py-3">
+        <ul *ngIf="listOfActivities.length > 0; else aktivitasKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
+          <li *ngFor="let a of listOfActivities" class="bg-background flex items-center gap-4 rounded-lg px-4 py-3">
             <span class="text-primary-alt flex h-10 w-10 items-center justify-center rounded-full bg-[#eaf7f1] text-xl">
               <i class="fa-solid fa-person-running"></i>
             </span>
@@ -83,8 +83,8 @@
           <h2 class="text-heading text-lg font-medium">Riwayat Penyakit</h2>
           <span class="h-2 w-2 rounded-full bg-red-400"></span>
         </figcaption>
-        <ul *ngIf="penyakitList.length > 0; else penyakitKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
-          <li *ngFor="let p of penyakitList" class="bg-background flex items-center gap-4 rounded-lg px-4 py-3">
+        <ul *ngIf="listOfDiseases.length > 0; else penyakitKosong" class="flex flex-1 flex-col gap-4 overflow-y-auto">
+          <li *ngFor="let p of listOfDiseases" class="bg-background flex items-center gap-4 rounded-lg px-4 py-3">
             <span class="text-secondary flex h-10 w-10 items-center justify-center rounded-full bg-[#fbe9ee] text-xl">
               <i class="fa-solid fa-notes-medical"></i>
             </span>

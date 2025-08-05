@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Meta, Title } from "@angular/platform-browser";
 import { Subscription } from "rxjs";
 import { BasePage } from "@helpers/base-page";
-import { Header } from "@shared/header/header.component";
 import { SidebarService } from "@services/sidebar.service";
+import { Header } from "@shared/header/header.component";
+import { Sidebar } from "@shared/sidebar/sidebar.component";
 
 @Component({
   selector: "pages-dasbor-pengguna",
@@ -22,45 +22,43 @@ export class DasborPengguna implements OnDestroy, OnInit {
   private pageAttributes: BasePage;
   private sidebarSubscription!: Subscription;
 
-  public statistics = [
-    {
-      title: "Berat Badan",
-      total: "65 kg",
-      info: "Normal",
-      icon: "fa-solid fa-camera",
-      background: "#e6f0fd", // Light Blue.
-      color: "#1976d2", // Regular Blue.
-    },
-    {
-      title: "Tekanan Darah",
-      total: "120/80 mmHg",
-      info: "Optimal",
-      icon: "fa-solid fa-heart-pulse",
-      background: "#fdeaea", // Pink.
-      color: "#e53935", // Regular Red.
-    },
-    {
-      title: "Gula Darah",
-      total: "95 mg/dL",
-      info: "Normal",
-      icon: "fa-solid fa-droplet",
-      background: "#fffbe6", // Light Yellow.
-      color: "#fbc02d", // Regular Yellow.
-    },
-  ];
+  public statistics = [{
+    title: "Berat Badan",
+    total: "65 kg",
+    info: "Normal",
+    icon: "fa-solid fa-camera",
+    background: "#e6f0fd", // Light Blue.
+    color: "#1976d2", // Regular Blue.
+  },
+  {
+    title: "Tekanan Darah",
+    total: "120/80 mmHg",
+    info: "Optimal",
+    icon: "fa-solid fa-heart-pulse",
+    background: "#fdeaea", // Pink.
+    color: "#e53935", // Regular Red.
+  },
+  {
+    title: "Gula Darah",
+    total: "95 mg/dL",
+    info: "Normal",
+    icon: "fa-solid fa-droplet",
+    background: "#fffbe6", // Light Yellow.
+    color: "#fbc02d", // Regular Yellow.
+  }];
 
-  public makananList = [
+  listOfFoods = [
     { nama: "Nasi Goreng", waktu: "07:00", kalori: 350 },
     { nama: "Ayam Bakar", waktu: "12:30", kalori: 400 },
     { nama: "Salad Buah", waktu: "19:00", kalori: 150 },
   ];
 
-  public aktivitasList = [
+  listOfActivities = [
     { nama: "Jalan Pagi", waktu: "06:00", kalori: 120 },
     { nama: "Bersepeda", waktu: "17:00", kalori: 200 },
   ];
 
-  public penyakitList = [
+  listOfDiseases = [
     { nama: "Flu", waktu: "2 hari lalu", keterangan: "Sudah sembuh" },
     { nama: "Alergi", waktu: "1 minggu lalu", keterangan: "Masih dalam pemantauan" },
   ];

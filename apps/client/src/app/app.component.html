@@ -1,4 +1,4 @@
-<ng-container *ngIf="isAuthenticatedPage() || isGuestOnlyPage(); else publicLayout" class="flex min-h-screen">
+<ng-container *ngIf="isAuthenticatedPage() || isAuthenticationPage(); else publicLayout" class="flex min-h-screen">
   <router-outlet />
 </ng-container>
 <ng-template #publicLayout>
