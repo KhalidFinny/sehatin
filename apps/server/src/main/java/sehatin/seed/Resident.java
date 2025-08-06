@@ -2,23 +2,17 @@ package sehatin.seed;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.*;
 import org.springframework.stereotype.Component;
-
-import sehatin.enums.Gender;
-import sehatin.enums.HealthGoal;
-import sehatin.models.ResidentModel;
-import sehatin.models.UsersModel;
-import sehatin.repositories.ResidentRepositories;
-import sehatin.repositories.UsersRepositories;
+import sehatin.enums.*;
+import sehatin.models.*;
+import sehatin.repositories.*;
 
 @Component
+@Slf4j
 public class Resident {
     private final ResidentRepositories residentRepositories;
     private final UsersRepositories usersRepositories;
-    private static final Logger logger = LoggerFactory.getLogger(Resident.class);
 
     public Resident(ResidentRepositories residentRepositories, UsersRepositories usersRepositories) {
         this.residentRepositories = residentRepositories;
@@ -45,12 +39,12 @@ public class Resident {
 
                 residentRepositories.save(resident);
 
-                logger.info("Resident seeded successfully.");
+                log.info("Resident seeded successfully.");
             } else {
-                logger.warn("Resident already seeded.");
+                log.warn("Resident already seeded.");
             }
         } catch (Exception e) {
-            logger.error("Error seeding resident: {}", e.getMessage());
+            log.error("Error seeding resident: {}", e.getMessage());
         }
     }
 }

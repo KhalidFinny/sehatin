@@ -1,9 +1,11 @@
 package sehatin.seed;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.*;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class Seeder {
     private final Admin admin;
     private final Resident resident;
@@ -17,7 +19,7 @@ public class Seeder {
 
     @PostConstruct
     public void run() {
-        System.out.println("[Seeder] Running seed...");
+        log.info("[Seeder] Running seed...");
         users.seed();
         admin.seed();
         resident.seed();

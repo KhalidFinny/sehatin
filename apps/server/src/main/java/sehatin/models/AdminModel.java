@@ -2,6 +2,7 @@ package sehatin.models;
 
 import jakarta.persistence.*;
 import java.time.*;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,6 +10,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "admin")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AdminModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,60 +40,4 @@ public class AdminModel {
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
-    public int getIdAdmin() {
-        return idAdmin;
-    }
-
-    public void setIdAdmin(int idAdmin) {
-        this.idAdmin = idAdmin;
-    }
-
-    public UsersModel getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(UsersModel idUser) {
-        this.idUser = idUser;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmployeeIdNumber() {
-        return employeeIdNumber;
-    }
-
-    public void setEmployeeIdNumber(String employeeIdNumber) {
-        this.employeeIdNumber = employeeIdNumber;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }

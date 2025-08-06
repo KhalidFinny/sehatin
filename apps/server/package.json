@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "./mvnw spring-boot:run",
-    "build": "mvn clean package"
+    "build": "mvn clean package",
+    "test": "./mvnw test"
   }
 }

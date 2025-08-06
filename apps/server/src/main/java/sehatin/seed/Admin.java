@@ -2,8 +2,7 @@ package sehatin.seed;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.*;
 import org.springframework.stereotype.Component;
 import sehatin.models.AdminModel;
 import sehatin.models.UsersModel;
@@ -11,10 +10,10 @@ import sehatin.repositories.AdminRepositories;
 import sehatin.repositories.UsersRepositories;
 
 @Component
+@Slf4j
 public class Admin {
     private final AdminRepositories adminRepositories;
     private final UsersRepositories usersRepositories;
-    private static final Logger logger = LoggerFactory.getLogger(Admin.class);
 
     public Admin(AdminRepositories adminRepositories, UsersRepositories usersRepositories) {
         this.adminRepositories = adminRepositories;
@@ -36,12 +35,12 @@ public class Admin {
 
                 adminRepositories.save(admin);
 
-                logger.info("Admin seeded successfully.");
+                log.info("Admin seeded successfully.");
             } else {
-                logger.warn("Admin already seeded.");
+                log.warn("Admin already seeded.");
             }
         } catch (Exception e) {
-            logger.error("Error seeding admin: {}", e.getMessage());
+            log.error("Error seeding admin: {}", e.getMessage());
         }
     }
 }
