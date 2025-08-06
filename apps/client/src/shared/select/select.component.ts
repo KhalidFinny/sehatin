@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, ElementRef, forwardRef, HostListener, Input, OnInit } from "@angular/core";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from "@angular/forms";
 
 @Component({
   selector: "form-select",
@@ -18,6 +18,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/f
 })
 export class Select implements ControlValueAccessor, OnInit {
   @Input() label?: string;
+  @Input() model!: NgModel;
   @Input() name: string = "";
   @Input() options: Array<string | { value: string; label: string }> = [];
   @Input() required: boolean = false;
@@ -48,9 +49,14 @@ export class Select implements ControlValueAccessor, OnInit {
   }
 
   selectOption(option: string | { value: string; label: string }): void {
-    this.selected = this.getOptionValue(option);
+    const value = this.getOptionValue(option);
+
+    this.selected = value;
     this.selectedLabel = this.getOptionLabel(option);
     this.dropdownOpen = false;
+
+    this.onChange(value);
+    this.onTouched();
   }
 
   getOptionLabel(option: string | { value: string; label: string }): string {
@@ -78,7 +84,8 @@ export class Select implements ControlValueAccessor, OnInit {
 
   // --- ControlValueAccessor ---
   writeValue(value: string): void {
-    this.value = value;
+    this.selected = value;
+    this.setSelectedLabel();
   }
 
   registerOnChange(fn: (value: string) => void): void {

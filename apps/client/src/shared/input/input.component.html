@@ -17,7 +17,8 @@
       <i [class]="icon"></i>
     </span>
     <input
-      [name]="name"
+      [id]="name"
+      [attr.name]="name"
       [type]="type === 'password' ? showPassword ? 'text' : 'password' : type || 'text'"
       [value]="type !== 'file' ? value : ''"
       [placeholder]="placeholder"
@@ -37,12 +38,14 @@
       }"
     />
     <span class="absolute top-1/2 right-3 flex w-6 -translate-y-1/2 items-center justify-center pr-4">
-      <i
-        *ngIf="type === 'password'"
-        (click)="toggleShowPassword()"
-        [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
-        class="cursor-pointer text-gray-500"
-      ></i>
+      <i *ngIf="type === 'password'" (click)="toggleShowPassword()" [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'" class="cursor-pointer text-gray-500"></i>
     </span>
+  </div>
+  <div *ngIf="model?.invalid && (model?.dirty || model?.touched)" class="text-red-500 text-sm">
+    <h5 *ngIf="model.errors?.['required']">Kolom ini wajib diisi.</h5>
+    <h5 *ngIf="model.errors?.['min']">Nilai tidak boleh kurang dari {{ model.errors?.['min'].min }}.</h5>
+    <h5 *ngIf="model.errors?.['max']">Nilai tidak boleh lebih dari {{ model.errors?.['max'].max }}.</h5>
+    <h5 *ngIf="model.errors?.['minlength']">Minimal {{ model.errors?.['minlength'].requiredLength }} karakter.</h5>
+    <h5 *ngIf="model.errors?.['maxlength']">Maksimal {{ model.errors?.['maxlength'].requiredLength }} karakter.</h5>
   </div>
 </fieldset>

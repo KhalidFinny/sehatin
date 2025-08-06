@@ -34,7 +34,7 @@ export class AuthService {
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     if (!isPlatformBrowser(this.platformId)) return;
-    const savedUser = localStorage.getItem("currentUser");
+    const savedUser = localStorage.getItem("current-user");
     if (savedUser) this.user = JSON.parse(savedUser);
     this.fetchLocalStorage.next(true);
   }
@@ -50,8 +50,8 @@ export class AuthService {
 
       this.user = user;
       if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem("currentUser", JSON.stringify(user));
-        localStorage.setItem("loginTimestamp", Date.now().toString());
+        localStorage.setItem("current-user", JSON.stringify(user));
+        localStorage.setItem("login-timestamp", Date.now().toString());
       }
 
       this.authStateChanged.next();
@@ -79,8 +79,8 @@ export class AuthService {
     this.user = null;
 
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem("currentUser");
-      localStorage.removeItem("loginTimestamp");
+      localStorage.removeItem("current-user");
+      localStorage.removeItem("login-timestamp");
     }
 
     this.authStateChanged.next();

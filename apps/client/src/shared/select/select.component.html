@@ -28,4 +28,7 @@
       </li>
     </ul>
   </div>
+  <div *ngIf="model?.invalid && (model?.dirty || model?.touched)" class="text-red-500 text-sm mt-1">
+    <h5 *ngIf="model.errors?.['required']">Kolom ini wajib diisi.</h5>
+  </div>
 </fieldset>

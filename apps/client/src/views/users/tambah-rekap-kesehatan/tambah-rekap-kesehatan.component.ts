@@ -12,7 +12,9 @@ import { KindOfAllergies } from "@enums/kind-of-allergies";
 import { MedicalHistory } from "@enums/medical-history";
 import { SeverityOfAllergy } from "@enums/severity-of-allergy";
 import { BasePage } from "@helpers/base-page";
+import { EnumOptions } from "@helpers/enum-options";
 import { SidebarService } from "@services/sidebar.service";
+import { HealthRecord } from "@services/health-record.service";
 import { Breadcrumb } from "@shared/breadcrumb/breadcrumb.component";
 import { Checkbox } from "@shared/checkbox/checkbox.component";
 import { Header } from "@shared/header/header.component";
@@ -21,7 +23,6 @@ import { Select } from "@shared/select/select.component";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Table } from "@shared/table/table.component";
 import { Textarea } from "@shared/textarea/textarea.component";
-import { EnumOptions } from "@helpers/enum-options";
 
 @Component({
   selector: "pages-tambah-rekap-kesehatan",
@@ -42,29 +43,37 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   public severityOfAllergies: Array<{ label: string; value: string }> = [];
 
   // Array dua dimensi yang nantinya akan jadi nested value.
-  public listOfAllergies: string[][] = [[]];
-  public listOfFoods: string[][] = [[]];
+  public daftar_alergi: string[][] = [];
+  public daftar_makanan: string[][] = [];
 
   private pageAttributes: BasePage;
   private sidebarSubscription!: Subscription;
 
-  // Inisialisasi untuk ngModel.
+  // Input untuk profil.
   @InputCore() usia: number | null = null;
   @InputCore() jenis_kelamin: Gender | null = null;
   @InputCore() berat_badan: number | null = null;
   @InputCore() tinggi_badan: number | null = null;
   @InputCore() tingkat_aktivitas_fisik: string = "";
   @InputCore() tujuan_kesehatan: string = "";
+
+  // Input untuk makanan.
   @InputCore() jenis_makanan: string = "";
-  @InputCore() jumlah: string = "";
+  @InputCore() jumlah_atau_porsi: string = "";
   @InputCore() frekuensi_konsumsi: string = "";
+
+  // Input untuk penyakit.
   @InputCore() kondisi_kesehatan: MedicalHistory | null = null;
   @InputCore() tanggal_diagnosis: Date | null = null;
   @InputCore() pengobatan_saat_ini: string = "";
   @InputCore() kondisi_khusus: string = "";
+
+  // Input untuk alergi.
   @InputCore() jenis_alergi: string = "";
   @InputCore() tingkat_keparahan: string = "";
   @InputCore() riwayat_reaksi_alergi: string = "";
+
+  // Input untuk gaya hidup.
   @InputCore() kebiasaan_olah_raga: string = ""
   @InputCore() pola_tidur: string = "";
   @InputCore() kebiasaan_lain: string[] = [];
@@ -79,6 +88,7 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    // Menginjeksi enum ke dropdown.
     this.activityLevelOptions = EnumOptions.fromEnum(ActivityLevel);
     this.healthGoal = EnumOptions.fromEnum(HealthGoal);
     this.kindOfAllergies = EnumOptions.fromEnum(KindOfAllergies);
@@ -86,34 +96,67 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
     this.genderOptions = EnumOptions.fromEnum(Gender);
     this.severityOfAllergies = EnumOptions.fromEnum(SeverityOfAllergy);
 
-    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => {
-      return this.isSidebarOpen = state;
+    // Logika sidebar agar menyesuaikan dengan tampilan.
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => this.isSidebarOpen = state);
+
+    // Mengambil data makanan dari localStorage()
+    HealthRecord.loadFromLocalStorage();
+    this.daftar_makanan = HealthRecord.daftarMakanan;
+  }
+
+  /**
+   * Getter untuk merender daftar makanan dalam bentuk array dengan index numerik di awal.
+   * Contoh output: [1, "Nasi", "2 porsi", "Makan Siang"]
+   */
+  public get rowsOfFood(): [number, ...string[]][] {
+    return this.daftar_makanan.map((row, i) => [i + 1, ...row]);
+  }
+
+  /**
+   * Menambahkan makanan ke dalam daftar.
+   * Memastikan semua field sudah diisi, menyimpan ke service, update localStorage, dan reset form input.
+   */
+  public addFoodToTheList() {
+    if (!this.jenis_makanan || !this.jumlah_atau_porsi || !this.frekuensi_konsumsi) {
+      console.warn("Semua bidang harus diisi.");
+      return;
+    }
+
+    // Add to service
+    HealthRecord.addFoods([this.jenis_makanan, this.jumlah_atau_porsi, this.frekuensi_konsumsi]);
+
+    // Update local array
+    this.daftar_makanan = HealthRecord.daftarMakanan;
+
+    // Reset fields
+    this.jenis_makanan = "";
+    this.jumlah_atau_porsi = "";
+    this.frekuensi_konsumsi = "";
+  }
+
+  public createHealthRecordData(): void {
+    HealthRecord.create({
+      usia: this.usia,
+      jenis_kelamin: this.jenis_kelamin,
+      berat_badan: this.berat_badan,
+      tinggi_badan: this.tinggi_badan,
+      tingkat_aktivitas_fisik: this.tingkat_aktivitas_fisik,
+      tujuan_kesehatan: this.tujuan_kesehatan,
+      jenis_makanan: this.jenis_makanan,
+      jumlah_atau_porsi: this.jumlah_atau_porsi,
+      frekuensi_konsumsi: this.frekuensi_konsumsi,
+      kondisi_kesehatan: this.kondisi_kesehatan,
+      tanggal_diagnosis: this.tanggal_diagnosis,
+      pengobatan_saat_ini: this.pengobatan_saat_ini,
+      kondisi_khusus: this.kondisi_khusus,
+      jenis_alergi: this.jenis_alergi,
+      tingkat_keparahan: this.tingkat_keparahan,
+      riwayat_reaksi_alergi: this.riwayat_reaksi_alergi,
+      kebiasaan_olah_raga: this.kebiasaan_olah_raga,
+      pola_tidur: this.pola_tidur,
+      kebiasaan_lain: this.kebiasaan_lain,
+      daftarAlergi: this.daftar_alergi,
+      daftarMakanan: this.daftar_makanan,
     });
   }
-
-  submitData(): void {
-    try {
-      this.validateForm();
-      localStorage.setItem("data", JSON.stringify({
-        usia: this.usia,
-        jenis_kelamin: this.jenis_kelamin,
-        berat_badan: this.berat_badan,
-        tinggi_badan: this.tinggi_badan,
-        tingkat_aktivitas_fisik: this.tingkat_aktivitas_fisik,
-        tujuan_kesehatan: this.tujuan_kesehatan,
-        jenis_makanan: this.jenis_makanan,
-        jumlah: this.jumlah,
-        frekuensi_konsumsi: this.frekuensi_konsumsi,
-        kondisi_kesehatan: this.kondisi_kesehatan,
-        tanggal_diagnosis: this.tanggal_diagnosis,
-        pengobatan_saat_ini: this.pengobatan_saat_ini,
-        kondisi_khusus: this.kondisi_khusus,
-      }));
-    } catch (err) {
-      console.error(`Terjadi kesalahan saat menambah rekap kesehatan Anda: ${err}`);
-      throw err;
-    }
-  }
-
-  private validateForm() {}
 }

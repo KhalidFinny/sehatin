@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, forwardRef, Input } from "@angular/core";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from "@angular/forms";
 
 @Component({
   selector: "form-checkbox",
@@ -17,8 +17,9 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/f
 })
 export class Checkbox implements ControlValueAccessor {
   @Input() label: string = ""; // Untuk judul tampilannya.
-  @Input() options: string[] = []; // Nilai-nilai pilihan.
+  @Input() model!: NgModel;
   @Input() name: string[] = []; // Model yang akan diisi.
+  @Input() options: string[] = []; // Nilai-nilai pilihan.
   @Input() required: boolean = false;
 
   public onChange: (value: string[]) => void = () => {};

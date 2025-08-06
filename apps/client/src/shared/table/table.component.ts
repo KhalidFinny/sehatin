@@ -9,7 +9,7 @@ import { Component, Input } from "@angular/core";
 })
 export class Table {
   @Input() headers: string[] = [];
-  @Input() rows: string[][] = [];
+  @Input() rows: [number, ...string[]][] = [];
   @Input() sortable: string[] = [];
 
   isSortable(header: string): boolean {
@@ -23,8 +23,8 @@ export class Table {
     this.sortState = { index, asc: ascending };
 
     this.rows = [...this.rows].sort((a, b) => {
-      const valA = a[index].toLowerCase() || "";
-      const valB = b[index].toLowerCase() || "";
+      const valA = typeof a[index] === "string" ? a[index].toLowerCase() : "";
+      const valB = typeof b[index] === "string" ? b[index].toLowerCase() : "";
       return ascending ? valA.localeCompare(valB) : valB.localeCompare(valA);
     });
   }

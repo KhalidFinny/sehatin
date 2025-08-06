@@ -4,7 +4,7 @@
 <main [ngClass]="isSidebarOpen ? 'ml-64 lg:ml-72' : 'lg:ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
   <section class="mt-20 flex w-auto flex-col rounded-xl bg-white p-6">
     <shared-breadcrumb [menus]="['Rekap Kesehatan', 'Tambah Rekap Kesehatan']" />
-    <form (ngSubmit)="submitData()" method="POST">
+    <form (ngSubmit)="createHealthRecordData()" method="POST">
       <mat-tab-group class="relative mt-6 text-sm">
         <mat-tab label="Profil">
           <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden pb-41 lg:grid-cols-2">
@@ -15,16 +15,20 @@
               placeholder="Cth. 30"
               type="number"
               variant="form"
+              [model]="age"
               [(ngModel)]="usia"
               [required]="true"
+              #age="ngModel"
             />
             <form-select
               label="Jenis Kelamin"
               name="jenis_kelamin"
               variant="form"
+              [model]="gender"
               [options]="genderOptions"
               [(ngModel)]="jenis_kelamin"
               [required]="true"
+              #gender="ngModel"
             />
             <form-input
               icon="fa-solid fa-weight-scale"
@@ -33,8 +37,10 @@
               placeholder="Cth. 60 (Gunakan Bilangan Bulat)"
               type="number"
               variant="form"
+              [model]="weight"
               [(ngModel)]="berat_badan"
               [required]="true"
+              #weight="ngModel"
             />
             <form-input
               icon="fa-solid fa-ruler-vertical"
@@ -43,81 +49,97 @@
               placeholder="Cth. 170 (Gunakan Bilangan Bulat)"
               type="number"
               variant="form"
+              [model]="height"
               [(ngModel)]="tinggi_badan"
               [required]="true"
+              #height="ngModel"
             />
             <form-select
               icon="fa-solid fa-dumbbell"
               label="Tingkat Aktivitas Fisik"
               name="tingkat_aktivitas_fisik"
               variant="form"
-              [options]="activityLevelOptions"
+              [model]="activityLevel"
               [(ngModel)]="tingkat_aktivitas_fisik"
+              [options]="activityLevelOptions"
               [required]="true"
+              #activityLevel="ngModel"
             />
             <form-select
               label="Tujuan Kesehatan"
               name="tujuan_kesehatan"
               variant="form"
-              [options]="healthGoal"
+              [model]="healthGoals"
               [(ngModel)]="tujuan_kesehatan"
+              [options]="healthGoal"
               [required]="true"
+              #healthGoals="ngModel"
             />
           </div>
         </mat-tab>
         <mat-tab label="Makanan">
-          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3">
+          <form (ngSubmit)="addFoodToTheList()" #formFood="ngForm" class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3" novalidate>
             <form-select
               label="Jenis Makanan"
               name="jenis_makanan"
               variant="form"
-              [options]="[
-                { label: 'Makanan Sehat', value: 'makanan_sehat' }
-              ]"
               [(ngModel)]="jenis_makanan"
+              [options]="[
+                { label: 'Nasi Putih', value: 'Nasi Putih' },
+                { label: 'Ayam, Bebek, Unggas Lainnya', value: 'Ayam, Bebek, Unggas Lainnya' },
+                { label: 'Air Kemasan', value: 'Air Kemasan' },
+                { label: 'Tahu, Tempe, Oncom', value: 'Tahu, Tempe, Oncom' }
+              ]"
               [required]="true"
             />
-            <form-select
-              label="Jumlah/Porsi"
-              name="jumlah"
+            <form-input
+              icon="fa-solid fa-ruler-vertical"
+              label="Jumlah / Porsi"
+              name="jumlah_atau_porsi"
+              placeholder="Cth. 2 kg"
+              type="text"
               variant="form"
-              [options]="[
-                { label: 'Gram', value: 'gram' },
-                { label: 'Porsi', value: 'porsi' },
-                { label: 'Sendok', value: 'sendok' },
-              ]"
-              [(ngModel)]="jumlah"
+              [(ngModel)]="jumlah_atau_porsi"
               [required]="true"
             />
             <form-select
               label="Frekuensi Konsumsi"
-              name="jumlah"
+              name="frekuensi_konsumsi"
               variant="form"
-              [options]="[
-                { label: 'Sarapan', value: 'sarapan' },
-                { label: 'Makan Siang', value: 'makan_siang' },
-                { label: 'Makan Malam', value: 'makan_malam' },
-              ]"
               [(ngModel)]="frekuensi_konsumsi"
+              [options]="[
+                { label: 'Sarapan', value: 'Sarapan' },
+                { label: 'Makan Siang', value: 'Makan Siang' },
+                { label: 'Makan Malam', value: 'Makan Malam' }
+              ]"
               [required]="true"
             />
+            <span class="flex items-center justify-end lg:col-span-3">
+              <button type="submit" [disabled]="formFood.invalid" class="bg-primary hover:bg-primary/80 w-fit cursor-pointer rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors duration-300">
+                <i class="fa-solid fa-plus mr-2"></i>
+                Tambah
+              </button>
+            </span>
             <shared-table
               class="lg:col-span-3"
-              [headers]="['Tanggal', 'Berat', 'Tekanan', 'Gula', 'Keterangan']"
-              [rows]="[]"
-              [sortable]="['Tanggal']"
+              [headers]="['No', 'Jenis Makanan', 'Jumlah / Porsi', 'Frekuensi Konsumsi']"
+              [rows]="rowsOfFood"
+              [sortable]="['No']"
             />
-          </div>
+          </form>
         </mat-tab>
+        <!-- TAB PENYAKIT -->
         <mat-tab label="Penyakit">
           <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden pb-41 lg:grid-cols-2">
             <form-select
               label="Kondisi Kesehatan"
               name="kondisi_kesehatan"
               variant="form"
-              [options]="listOfDiseases"
+              [model]="listOfDisease"
               [(ngModel)]="kondisi_kesehatan"
+              [options]="listOfDiseases"
               [required]="true"
+              #listOfDisease="ngModel"
             />
             <form-input
               icon="fa-solid fa-calendar-days"
@@ -126,32 +148,38 @@
               placeholder="Cth. 01/01/2023"
               type="date"
               variant="form"
+              [model]="dateOfDiagnosis"
               [(ngModel)]="tanggal_diagnosis"
               [required]="true"
+              #dateOfDiagnosis="ngModel"
             />
             <form-select
               label="Pengobatan Saat Ini"
               name="pengobatan_saat_ini"
               variant="form"
-              [options]="[
-                { label: 'Insulin', value: 'insulin' },
-                { label: 'Diet', value: 'diet' },
-                { label: 'Obat', value: 'obat' },
-              ]"
+              [model]="currentTreatment"
               [(ngModel)]="pengobatan_saat_ini"
+              [options]="[
+                { label: 'Insulin', value: 'Insulin' },
+                { label: 'Diet', value: 'Diet' },
+                { label: 'Obat', value: 'Obat' },
+              ]"
               [required]="true"
+              #currentTreatment="ngModel"
             />
             <form-select
               label="Kondisi Khusus"
               name="kondisi_khusus"
               variant="form"
-              [options]="[
-                { label: 'Kehamilan', value: 'kehamilan' },
-                { label: 'Menyusui', value: 'menyusui' },
-                { label: 'Pascaoperasi', value: 'pascaoperasi' },
-              ]"
+              [model]="specialConditions"
               [(ngModel)]="kondisi_khusus"
+              [options]="[
+                { label: 'Kehamilan', value: 'Kehamilan' },
+                { label: 'Menyusui', value: 'Menyusui' },
+                { label: 'Pascaoperasi', value: 'Pascaoperasi' },
+              ]"
               [required]="true"
+              #specialConditions="ngModel"
             />
           </div>
         </mat-tab>
@@ -161,23 +189,29 @@
               label="Jenis Alergi"
               name="jenis_alergi"
               variant="form"
-              [options]="kindOfAllergies"
+              [model]="kindOfAllergy"
               [(ngModel)]="jenis_alergi"
+              [options]="kindOfAllergies"
               [required]="true"
+              #kindOfAllergy="ngModel"
             />
             <form-select
               label="Tingkat Keparahan"
               name="tingkat_keparahan"
               variant="form"
-              [options]="severityOfAllergies"
+              [model]="severityOfAllergy"
               [(ngModel)]="tingkat_keparahan"
+              [options]="severityOfAllergies"
               [required]="true"
+              #severityOfAllergy="ngModel"
             />
             <form-textarea
               label="Riwayat Reaksi Alergi"
               name="riwayat_reaksi_alergi"
               placeholder="Ceritakan kapan dan bagaimana reaksi alergi terjadi ..."
+              [model]="historyOfAllergicReactions"
               [(ngModel)]="riwayat_reaksi_alergi"
+              #historyOfAllergicReactions="ngModel"
             />
             <shared-table
               class="lg:col-span-3"
@@ -193,9 +227,15 @@
               label="Kebiasaan Olah Raga"
               name="kebiasaan_olah_raga"
               variant="form"
-              [options]="[]"
+              [model]="exerciseHabits"
               [(ngModel)]="kebiasaan_olah_raga"
+              [options]="[
+                { label: 'Ringan', value: 'Ringan' },
+                { label: 'Sedang', value: 'Sedang' },
+                { label: 'Berat', value: 'Berat' },
+              ]"
               [required]="true"
+              #exerciseHabits="ngModel"
             />
             <form-input
               icon="fa-solid fa-clock"
@@ -204,21 +244,19 @@
               placeholder="Cth. 1 jam"
               type="text"
               variant="form"
+              [model]="sleepPatterns"
               [(ngModel)]="pola_tidur"
               [required]="true"
+              #sleepPatterns="ngModel"
             />
             <form-checkbox
+              label="Kebiasaan Lain"
+              [model]="otherHabits"
               [(ngModel)]="kebiasaan_lain"
               [ngModelOptions]="{ standalone: true }"
-              [label]="'Kebiasaan Lain'"
               [options]="['Merokok', 'Minum Alkohol', 'Kurang Tidur']"
               [required]="true"
-            />
-            <shared-table
-              class="lg:col-span-2"
-              [headers]="['Tanggal', 'Kebiasaan Olah Raga', 'Pola Tidur', 'Kebiasaan Lain']"
-              [rows]="[]"
-              [sortable]="['Tanggal']"
+              #otherHabits="ngModel"
             />
           </div>
         </mat-tab>

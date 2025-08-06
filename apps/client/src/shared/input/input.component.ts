@@ -1,5 +1,5 @@
-import { Component, EventEmitter, forwardRef, Input as InputCore, Output } from "@angular/core";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { Component, EventEmitter, forwardRef, Input as InputCore, OnInit, Output } from "@angular/core";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 @Component({
@@ -16,7 +16,7 @@ import { CommonModule } from "@angular/common";
     },
   ],
 })
-export class Input implements ControlValueAccessor {
+export class Input implements ControlValueAccessor, OnInit {
   /**
    * @prop name, label, value, type, required, info, icon, placeholder, variant
    * @type string
@@ -25,6 +25,7 @@ export class Input implements ControlValueAccessor {
   @InputCore() icon?: string;
   @InputCore() info?: string;
   @InputCore() label!: string;
+  @InputCore() model!: NgModel;
   @InputCore() name!: string;
   @InputCore() placeholder?: string;
   @InputCore() required: boolean = false;
@@ -47,6 +48,12 @@ export class Input implements ControlValueAccessor {
    * @description Internal states
    */
   showPassword: boolean = false;
+
+  ngOnInit() {
+    if (typeof this.name !== 'string') {
+      console.error('Prop "name" harus berupa string, tetapi ditemukan:', this.name);
+    }
+  }
 
   // --- Getters ---
   get labelString(): string {

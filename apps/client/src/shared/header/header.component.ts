@@ -35,7 +35,7 @@ export class Header implements OnInit {
   }
 
   get isAuthenticated(): boolean {
-    return typeof window !== "undefined" && localStorage.getItem("currentUser") !== null;
+    return typeof window !== "undefined" && localStorage.getItem("current-user") !== null;
   }
 
   get isDashboardPage(): boolean {

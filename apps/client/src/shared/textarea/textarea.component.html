@@ -24,4 +24,11 @@
     (ngModelChange)="countCharacterLength($event)"
     (blur)="onTouched()"
   ></textarea>
+  <div *ngIf="model?.invalid && (model?.dirty || model?.touched)" class="text-red-500 text-sm">
+    <h5 *ngIf="model.errors?.['required']">Kolom ini wajib diisi.</h5>
+    <h5 *ngIf="model.errors?.['min']">Nilai tidak boleh kurang dari {{ model.errors?.['min'].min }}.</h5>
+    <h5 *ngIf="model.errors?.['max']">Nilai tidak boleh lebih dari {{ model.errors?.['max'].max }}.</h5>
+    <h5 *ngIf="model.errors?.['minlength']">Minimal {{ model.errors?.['minlength'].requiredLength }} karakter.</h5>
+    <h5 *ngIf="model.errors?.['maxlength']">Maksimal {{ model.errors?.['maxlength'].requiredLength }} karakter.</h5>
+  </div>
 </fieldset>

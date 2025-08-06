@@ -28,7 +28,7 @@ export class Breadcrumb {
   }
 
   private setBaseRoute(): void {
-    const data = localStorage.getItem("currentUser");
+    const data = localStorage.getItem("current-user");
     if (!data) return;
 
     try {

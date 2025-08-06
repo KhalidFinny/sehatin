@@ -54,14 +54,14 @@ export class AppComponent implements OnDestroy, OnInit {
   // ===========================
 
   private getSessionInfo() {
-    const user = localStorage.getItem("currentUser");
-    const timestamp = localStorage.getItem("loginTimestamp");
+    const user = localStorage.getItem("current-user");
+    const timestamp = localStorage.getItem("login-timestamp");
     const loginTime = timestamp ? parseInt(timestamp, 10) : null;
     return { user, loginTime };
   }
 
   private updateBodyClass(path: string) {
     document.body.classList.remove("container");
-    if (!path.startsWith("/admin") || !path.startsWith("/pengguna")) document.body.classList.add("container");
+    if (!path.startsWith("/admin") && !path.startsWith("/pengguna")) document.body.classList.add("container");
   }
 }

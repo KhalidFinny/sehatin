@@ -1,7 +1,8 @@
 export enum MedicalHistory {
   DIABETES = "Diabetes",
-  KARDIOVASKULAR = "Kardiovaskular",
-  OBESETAS = "Obesitas",
   HIPERTENSI = "Hipertensi",
+  KARDIOVASKULAR = "Kardiovaskular",
   KOLESTEROL = "Kolesterol",
+  OBESETAS = "Obesitas",
+  SEHAT = "Sehat",
 }

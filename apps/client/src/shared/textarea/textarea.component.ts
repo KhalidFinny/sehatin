@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, forwardRef, Input } from "@angular/core";
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
+import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from "@angular/forms";
 
 @Component({
   selector: "form-textarea",
@@ -18,6 +18,7 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/f
 export class Textarea implements ControlValueAccessor {
   @Input() info?: string;
   @Input() label: string = "";
+  @Input() model!: NgModel;
   @Input() name!: string;
   @Input() placeholder: string = "";
   @Input() required: boolean = false;

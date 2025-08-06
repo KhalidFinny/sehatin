@@ -15,4 +15,7 @@
     <input type="checkbox" class="peer hidden" [value]="item" [checked]="name.includes(item)" (change)="toggleChoices(item)" />
     {{ item }}
   </label>
+  <div *ngIf="model?.invalid && (model?.dirty || model?.touched)" class="text-red-500 text-sm mt-1">
+    <h5 *ngIf="model.errors?.['required']">Kolom ini wajib diisi.</h5>
+  </div>
 </fieldset>

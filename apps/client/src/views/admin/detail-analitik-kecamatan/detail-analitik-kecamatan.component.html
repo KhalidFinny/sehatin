@@ -2,7 +2,7 @@
 <shared-header title="Detail Kecamatan" />
 
 <ng-container *ngIf="kecamatan; else notFound">
-  <main [ngClass]="isSidebarOpen ? 'ml-64 lg:ml-72' : 'lg:ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
+  <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
     <!-- SECTION: Overview Kecamatan -->
     <section class="mt-20 mb-6 flex items-center justify-between rounded-2xl border border-gray-100 bg-white p-6">
       <!-- Kiri: Icon dan Nama -->
@@ -61,7 +61,7 @@
 
 <!-- NG-TEMPLATE: Not Found -->
 <ng-template #notFound>
-  <main [ngClass]="isSidebarOpen ? 'ml-64 lg:ml-72' : 'lg:ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
+  <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
     <section class="py-20 text-center">
       <i class="fas fa-exclamation-triangle mb-4 text-4xl text-red-400"></i>
       <h2 class="mb-2 text-xl font-semibold text-gray-700">
