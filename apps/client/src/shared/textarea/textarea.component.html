@@ -17,18 +17,22 @@
     class="box-border w-full resize-none rounded-[0.7rem] border-[1.5px] border-[#d1d5db] bg-white px-4 py-4 text-sm text-[#222] shadow-[0_1px_4px_rgba(60,60,60,0.04)] transition-all duration-200 outline-none placeholder:text-[#b0b8c1] placeholder:opacity-100 focus:border-[#22b6d1] focus:shadow-[0_2px_8px_0_#22b6d122]"
     rows="4"
     maxlength="2000"
+    [id]="name"
     [name]="name"
     [placeholder]="placeholder"
     [required]="required"
-    [ngModel]="value"
+    [(ngModel)]="value"
     (ngModelChange)="countCharacterLength($event)"
     (blur)="onTouched()"
+    #model="ngModel"
   ></textarea>
-  <div *ngIf="model?.invalid && (model?.dirty || model?.touched)" class="text-red-500 text-sm">
+  <div *ngIf="model.invalid && (model.dirty || model.touched)" class="text-red-500 text-sm">
     <h5 *ngIf="model.errors?.['required']">Kolom ini wajib diisi.</h5>
-    <h5 *ngIf="model.errors?.['min']">Nilai tidak boleh kurang dari {{ model.errors?.['min'].min }}.</h5>
-    <h5 *ngIf="model.errors?.['max']">Nilai tidak boleh lebih dari {{ model.errors?.['max'].max }}.</h5>
-    <h5 *ngIf="model.errors?.['minlength']">Minimal {{ model.errors?.['minlength'].requiredLength }} karakter.</h5>
-    <h5 *ngIf="model.errors?.['maxlength']">Maksimal {{ model.errors?.['maxlength'].requiredLength }} karakter.</h5>
+    <h5 *ngIf="model.errors?.['minlength']">
+      Minimal {{ model.errors?.['minlength'].requiredLength }} karakter.
+    </h5>
+    <h5 *ngIf="model.errors?.['maxlength']">
+      Maksimal {{ model.errors?.['maxlength'].requiredLength }} karakter.
+    </h5>
   </div>
 </fieldset>

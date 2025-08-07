@@ -78,12 +78,13 @@
           </div>
         </mat-tab>
         <mat-tab label="Makanan">
-          <form (ngSubmit)="addFoodToTheList()" #formFood="ngForm" class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3" novalidate>
+          <div #formFood="ngForm" ngForm class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3" novalidate>
             <form-select
               label="Jenis Makanan"
               name="jenis_makanan"
               variant="form"
               [(ngModel)]="jenis_makanan"
+              [ngModelOptions]="{ standalone: true }"
               [options]="[
                 { label: 'Nasi Putih', value: 'Nasi Putih' },
                 { label: 'Ayam, Bebek, Unggas Lainnya', value: 'Ayam, Bebek, Unggas Lainnya' },
@@ -100,6 +101,7 @@
               type="text"
               variant="form"
               [(ngModel)]="jumlah_atau_porsi"
+              [ngModelOptions]="{ standalone: true }"
               [required]="true"
             />
             <form-select
@@ -107,6 +109,7 @@
               name="frekuensi_konsumsi"
               variant="form"
               [(ngModel)]="frekuensi_konsumsi"
+              [ngModelOptions]="{ standalone: true }"
               [options]="[
                 { label: 'Sarapan', value: 'Sarapan' },
                 { label: 'Makan Siang', value: 'Makan Siang' },
@@ -115,7 +118,7 @@
               [required]="true"
             />
             <span class="flex items-center justify-end lg:col-span-3">
-              <button type="submit" [disabled]="formFood.invalid" class="bg-primary hover:bg-primary/80 w-fit cursor-pointer rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors duration-300">
+              <button type="button" (click)="addFoodToTheList(); $event.preventDefault()" [disabled]="formFood.invalid" class="bg-primary hover:bg-primary/80 w-fit cursor-pointer rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors duration-300">
                 <i class="fa-solid fa-plus mr-2"></i>
                 Tambah
               </button>
@@ -126,7 +129,7 @@
               [rows]="rowsOfFood"
               [sortable]="['No']"
             />
-          </form>
+          </div>
         </mat-tab>
         <!-- TAB PENYAKIT -->
         <mat-tab label="Penyakit">
@@ -184,39 +187,43 @@
           </div>
         </mat-tab>
         <mat-tab label="Alergi">
-          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-3">
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-2">
             <form-select
               label="Jenis Alergi"
               name="jenis_alergi"
               variant="form"
-              [model]="kindOfAllergy"
               [(ngModel)]="jenis_alergi"
+              [ngModelOptions]="{ standalone: true }"
               [options]="kindOfAllergies"
               [required]="true"
-              #kindOfAllergy="ngModel"
             />
             <form-select
               label="Tingkat Keparahan"
               name="tingkat_keparahan"
               variant="form"
-              [model]="severityOfAllergy"
               [(ngModel)]="tingkat_keparahan"
+              [ngModelOptions]="{ standalone: true }"
               [options]="severityOfAllergies"
               [required]="true"
-              #severityOfAllergy="ngModel"
             />
             <form-textarea
+              class="lg:col-span-2"
               label="Riwayat Reaksi Alergi"
               name="riwayat_reaksi_alergi"
               placeholder="Ceritakan kapan dan bagaimana reaksi alergi terjadi ..."
-              [model]="historyOfAllergicReactions"
               [(ngModel)]="riwayat_reaksi_alergi"
-              #historyOfAllergicReactions="ngModel"
+              [ngModelOptions]="{ standalone: true }"
             />
+            <span class="flex items-center justify-end lg:col-span-2">
+              <button type="button" (click)="addAllergyToTheList(); $event.preventDefault()" class="bg-primary hover:bg-primary/80 w-fit cursor-pointer rounded-lg px-6 py-3 text-sm font-semibold text-white transition-colors duration-300">
+                <i class="fa-solid fa-plus mr-2"></i>
+                Tambah
+              </button>
+            </span>
             <shared-table
-              class="lg:col-span-3"
+              class="lg:col-span-2"
               [headers]="['Tanggal', 'Jenis Alergi', 'Tingkat Keparahan', 'Riwayat Reaksi Alergi']"
-              [rows]="[]"
+              [rows]="rowsOfAllergies"
               [sortable]="['Tanggal']"
             />
           </div>

@@ -101,7 +101,7 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
 
     // Mengambil data makanan dari localStorage()
     HealthRecord.loadFromLocalStorage();
-    this.daftar_makanan = HealthRecord.daftarMakanan;
+    this.daftar_makanan = HealthRecord.daftar_makanan;
   }
 
   /**
@@ -110,6 +110,28 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
    */
   public get rowsOfFood(): [number, ...string[]][] {
     return this.daftar_makanan.map((row, i) => [i + 1, ...row]);
+  }
+
+  public get rowsOfAllergies(): [number, ...string[]][] {
+    return this.daftar_alergi.map((row, i) => [i + 1, ...row]);
+  }
+
+  public addAllergyToTheList() {
+    if (!this.jenis_alergi || !this.tingkat_keparahan || !this.riwayat_reaksi_alergi) {
+      console.warn("Semua bidang harus diisi.");
+      return;
+    }
+
+    // Add to service
+    HealthRecord.addAllergies([this.jenis_alergi, this.tingkat_keparahan, this.riwayat_reaksi_alergi]);
+
+    // Update local array
+    this.daftar_alergi = HealthRecord.daftar_alergi;
+
+    // Reset fields
+    this.jenis_alergi = "";
+    this.tingkat_keparahan = "";
+    this.riwayat_reaksi_alergi = "";
   }
 
   /**
@@ -126,7 +148,7 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
     HealthRecord.addFoods([this.jenis_makanan, this.jumlah_atau_porsi, this.frekuensi_konsumsi]);
 
     // Update local array
-    this.daftar_makanan = HealthRecord.daftarMakanan;
+    this.daftar_makanan = HealthRecord.daftar_makanan;
 
     // Reset fields
     this.jenis_makanan = "";
@@ -155,8 +177,8 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
       kebiasaan_olah_raga: this.kebiasaan_olah_raga,
       pola_tidur: this.pola_tidur,
       kebiasaan_lain: this.kebiasaan_lain,
-      daftarAlergi: this.daftar_alergi,
-      daftarMakanan: this.daftar_makanan,
+      daftar_alergi: this.daftar_alergi,
+      daftar_makanan: this.daftar_makanan,
     });
   }
 }

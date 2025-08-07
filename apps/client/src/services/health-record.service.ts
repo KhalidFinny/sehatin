@@ -5,10 +5,34 @@ import { MedicalHistory } from "@enums/medical-history";
 @Injectable({ providedIn: "root" })
 export class HealthRecord {
   /**
+   * Menyimpan daftar alergi dalam array 2 dimensi.
+   * Format: [[jenis_alergi, tingkat_keparahan, riwayat_reaksi_alergi], ...]
+   */
+  public static daftar_alergi: string[][] = [];
+
+  /**
    * Menyimpan daftar makanan dalam array 2 dimensi.
    * Format: [[jenis_makanan, jumlah, frekuensi], ...]
    */
-  public static daftarMakanan: string[][] = [];
+  public static daftar_makanan: string[][] = [];
+
+  // Nama variabel localStorage agar tidak hardcode dan mencegah mistyping.
+  private static HEALTH_RECORD: string = "health-record";
+  private static LIST_OF_ALLERGIES: string = "list-of-allergies";
+  private static LIST_OF_FOODS: string = "list-of-foods";
+
+  public static addAllergies(item: string[]): void {
+    if (!item.every(Boolean)) {
+      console.warn("Semua kolom pada kategori alergi harus diisi.");
+      return;
+    }
+
+    this.daftar_alergi.push(item);
+    localStorage.setItem(this.LIST_OF_ALLERGIES, JSON.stringify(this.daftar_alergi));
+  } catch (err: unknown) {
+    console.error("Gagal menambahkan alergi ke dalam daftar karena kesalahan pada sistem.");
+    throw err;
+  }
 
   /**
    * Menambahkan makanan ke dalam daftar dan menyimpannya ke localStorage.
@@ -21,9 +45,9 @@ export class HealthRecord {
         return;
       }
 
-      this.daftarMakanan.push(item);
-      localStorage.setItem("list-of-foods", JSON.stringify(this.daftarMakanan));
-    } catch (err) {
+      this.daftar_makanan.push(item);
+      localStorage.setItem(this.LIST_OF_FOODS, JSON.stringify(this.daftar_makanan));
+    } catch (err: unknown) {
       console.error("Gagal menambahkan makanan ke dalam daftar karena kesalahan pada sistem.");
       throw err;
     }
@@ -33,8 +57,8 @@ export class HealthRecord {
    * Memuat data daftar makanan dari localStorage ke dalam memori aplikasi.
    */
   public static loadFromLocalStorage(): void {
-    const data = localStorage.getItem("list-of-foods");
-    if (data) this.daftarMakanan = JSON.parse(data);
+    if (localStorage.getItem(this.LIST_OF_ALLERGIES)) this.daftar_alergi = JSON.parse(localStorage.getItem(this.LIST_OF_ALLERGIES) as string);
+    else if (localStorage.getItem(this.LIST_OF_FOODS)) this.daftar_makanan = JSON.parse(localStorage.getItem(this.LIST_OF_FOODS) as string);
   }
 
   public static create(data: {
@@ -57,12 +81,12 @@ export class HealthRecord {
     kebiasaan_olah_raga: string;
     pola_tidur: string;
     kebiasaan_lain: string[];
-    daftarAlergi: string[][];
-    daftarMakanan: string[][];
+    daftar_alergi: string[][];
+    daftar_makanan: string[][];
   }): void {
     try {
       const record: typeof data = { ...data };
-      localStorage.setItem("health-record", JSON.stringify(record));
+      localStorage.setItem(this.HEALTH_RECORD, JSON.stringify(record));
     } catch (err) {
       console.error("Gagal menambahkan rekap kesehatan karena kesalahan pada sistem.");
       throw err;

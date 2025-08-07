@@ -1,9 +1,10 @@
 import { CommonModule } from "@angular/common";
-import { Component, forwardRef, Input } from "@angular/core";
+import { Component, Input, ViewChild, forwardRef } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from "@angular/forms";
 
 @Component({
   selector: "form-textarea",
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: "./textarea.component.html",
   styleUrl: "./textarea.component.css",
@@ -18,11 +19,12 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, NgModel } from "@
 export class Textarea implements ControlValueAccessor {
   @Input() info?: string;
   @Input() label: string = "";
-  @Input() model!: NgModel;
   @Input() name!: string;
   @Input() placeholder: string = "";
   @Input() required: boolean = false;
   @Input() value: string = "";
+
+  @ViewChild(NgModel) model!: NgModel;
 
   public length: number = 0;
 
