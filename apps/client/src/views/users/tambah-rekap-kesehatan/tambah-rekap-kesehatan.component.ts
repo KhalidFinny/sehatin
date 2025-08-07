@@ -14,7 +14,7 @@ import { SeverityOfAllergy } from "@enums/severity-of-allergy";
 import { BasePage } from "@helpers/base-page";
 import { EnumOptions } from "@helpers/enum-options";
 import { SidebarService } from "@services/sidebar.service";
-import { HealthRecord } from "@services/health-record.service";
+import { HealthRecordService } from "@services/health-record.service";
 import { Breadcrumb } from "@shared/breadcrumb/breadcrumb.component";
 import { Checkbox } from "@shared/checkbox/checkbox.component";
 import { Header } from "@shared/header/header.component";
@@ -78,7 +78,7 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   @InputCore() pola_tidur: string = "";
   @InputCore() kebiasaan_lain: string[] = [];
 
-  constructor(public title: Title, public meta: Meta, private router: Router, private sidebarService: SidebarService) {
+  constructor(private sidebarService: SidebarService, private router: Router, private healthRecordService: HealthRecordService, public title: Title, public meta: Meta) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Tambah Rekap Kesehatan | SEHATIN", "");
   }
@@ -97,11 +97,13 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
     this.severityOfAllergies = EnumOptions.fromEnum(SeverityOfAllergy);
 
     // Logika sidebar agar menyesuaikan dengan tampilan.
-    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => this.isSidebarOpen = state);
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => {
+      this.isSidebarOpen = state;
+    });
 
     // Mengambil data makanan dari localStorage()
-    HealthRecord.loadFromLocalStorage();
-    this.daftar_makanan = HealthRecord.daftar_makanan;
+    this.healthRecordService.loadFromLocalStorage();
+    this.daftar_makanan = this.healthRecordService.daftar_makanan;
   }
 
   /**
@@ -123,10 +125,10 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
     }
 
     // Add to service
-    HealthRecord.addAllergies([this.jenis_alergi, this.tingkat_keparahan, this.riwayat_reaksi_alergi]);
+    this.healthRecordService.addAllergies([this.jenis_alergi, this.tingkat_keparahan, this.riwayat_reaksi_alergi]);
 
     // Update local array
-    this.daftar_alergi = HealthRecord.daftar_alergi;
+    this.daftar_alergi = this.healthRecordService.daftar_alergi;
 
     // Reset fields
     this.jenis_alergi = "";
@@ -145,10 +147,10 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
     }
 
     // Add to service
-    HealthRecord.addFoods([this.jenis_makanan, this.jumlah_atau_porsi, this.frekuensi_konsumsi]);
+    this.healthRecordService.addFoods([this.jenis_makanan, this.jumlah_atau_porsi, this.frekuensi_konsumsi]);
 
     // Update local array
-    this.daftar_makanan = HealthRecord.daftar_makanan;
+    this.daftar_makanan = this.healthRecordService.daftar_makanan;
 
     // Reset fields
     this.jenis_makanan = "";
@@ -156,10 +158,10 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
     this.frekuensi_konsumsi = "";
   }
 
-  public createHealthRecordData(): void {
+  public createHealthRecordData(): Promise<boolean> {
     const penyakitSudahDiisi = this.kondisi_kesehatan !== null || this.tanggal_diagnosis !== null || this.pengobatan_saat_ini.trim() !== "" || this.kondisi_khusus.trim() !== "";
 
-    HealthRecord.create({
+    this.healthRecordService.create({
       usia: this.usia,
       jenis_kelamin: this.jenis_kelamin,
       berat_badan: this.berat_badan,
@@ -177,6 +179,6 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
       daftar_makanan: this.daftar_makanan,
     });
 
-    this.router.navigate(["/pengguna/rekap-kesehatan"]);
+    return this.router.navigate(["/pengguna/rekap-kesehatan"]);
   }
 }
