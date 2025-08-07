@@ -1,0 +1,169 @@
+<shared-sidebar *ngIf="isSidebarOpen" userType="user"></shared-sidebar>
+<shared-header title="Edit Profil"></shared-header>
+
+<main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-8'" class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50/30 py-8 pr-8 transition-all duration-300 ease-in-out">
+  <section class="mt-20 mx-auto max-w-4xl">
+    <!-- Back Navigation -->
+    <nav class="mb-8">
+      <a routerLink="/pengguna/profil" class="group inline-flex items-center gap-3 text-[#2c9ab7] hover:text-[#238a9c] font-medium transition-all duration-200">
+        <figure class="w-10 h-10 bg-[#2c9ab7] rounded-xl flex items-center justify-center group-hover:scale-105 transition-all duration-200">
+          <i class="fa-solid fa-arrow-left text-white text-sm"></i>
+        </figure>
+        <span class="text-lg">Kembali ke Profil</span>
+      </a>
+    </nav>
+
+    <!-- Profile Edit Card -->
+    <article class="bg-white/80 backdrop-blur-sm rounded-3xl border border-white/60 overflow-hidden">
+      <!-- Header Section -->
+      <header class="bg-gradient-to-r from-[#2c9ab7] to-[#3bb3d1] text-white text-center py-12 px-8 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/5"></div>
+        <figure class="relative z-10">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6">
+            <i class="fa-solid fa-user-edit text-white text-2xl"></i>
+          </div>
+          <figcaption>
+            <h1 class="text-4xl font-bold mb-4">Edit Profil</h1>
+            <p class="text-blue-100 text-lg max-w-md mx-auto">Lengkapi informasi profil Anda untuk personalisasi data kesehatan yang lebih akurat</p>
+          </figcaption>
+        </figure>
+      </header>
+
+      <!-- Form Section -->
+      <section class="p-12">
+        <form (ngSubmit)="simpanProfil()" #formProfil="ngForm" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <!-- Full Name Field -->
+          <fieldset class="md:col-span-2">
+            <label for="nama" class="block text-sm font-semibold text-slate-700 mb-3">Nama Lengkap</label>
+            <figure class="relative">
+              <i class="absolute left-4 top-1/2 transform -translate-y-1/2 fa-solid fa-user text-[#2c9ab7]/60 pointer-events-none"></i>
+              <input
+                id="nama"
+                name="nama"
+                type="text"
+                class="w-full pl-12 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2c9ab7]/20 focus:border-[#2c9ab7] transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                [(ngModel)]="profil.nama"
+                placeholder="Masukkan nama lengkap"
+                required
+              />
+            </figure>
+          </fieldset>
+
+          <!-- Email Field -->
+          <fieldset class="md:col-span-2">
+            <label for="email" class="block text-sm font-semibold text-slate-700 mb-3">Email</label>
+            <figure class="relative">
+              <i class="absolute left-4 top-1/2 transform -translate-y-1/2 fa-solid fa-envelope text-[#2c9ab7]/60 pointer-events-none"></i>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                class="w-full pl-12 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2c9ab7]/20 focus:border-[#2c9ab7] transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                [(ngModel)]="profil.email"
+                placeholder="nama@email.com"
+                required
+              />
+            </figure>
+          </fieldset>
+
+          <!-- Gender Field -->
+          <fieldset>
+            <label for="jenisKelamin" class="block text-sm font-semibold text-slate-700 mb-3">Jenis Kelamin</label>
+            <figure class="relative">
+              <i class="absolute left-4 top-1/2 transform -translate-y-1/2 fa-solid fa-venus-mars text-[#2c9ab7]/60 pointer-events-none z-10"></i>
+              <select
+                id="jenisKelamin"
+                name="jenisKelamin"
+                class="w-full pl-12 pr-12 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2c9ab7]/20 focus:border-[#2c9ab7] transition-all duration-200 bg-white/50 backdrop-blur-sm appearance-none cursor-pointer"
+                [(ngModel)]="profil.jenisKelamin"
+                required
+              >
+                <option value="">Pilih Jenis Kelamin</option>
+                <option value="Laki-laki">Laki-laki</option>
+                <option value="Perempuan">Perempuan</option>
+              </select>
+              <i class="absolute right-4 top-1/2 transform -translate-y-1/2 fa-solid fa-chevron-down text-slate-400 pointer-events-none"></i>
+            </figure>
+          </fieldset>
+
+          <!-- Birth Date Field -->
+          <fieldset>
+            <label for="tanggalLahir" class="block text-sm font-semibold text-slate-700 mb-3">Tanggal Lahir</label>
+            <figure class="relative">
+              <i class="absolute left-4 top-1/2 transform -translate-y-1/2 fa-solid fa-calendar-days text-[#2c9ab7]/60 pointer-events-none"></i>
+              <input
+                id="tanggalLahir"
+                name="tanggalLahir"
+                type="date"
+                class="w-full pl-12 pr-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2c9ab7]/20 focus:border-[#2c9ab7] transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                [(ngModel)]="profil.tanggalLahir"
+                (ngModelChange)="updateKelompokUsia()"
+                required
+              />
+            </figure>
+            <!-- Auto-detected Age Group Display -->
+            <div *ngIf="profil.kelompokUsia" class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-info-circle text-blue-600"></i>
+                <span class="text-sm text-blue-800">
+                  Kelompok Usia Terdeteksi: <strong>{{ profil.kelompokUsia }}</strong>
+                </span>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Weight Field -->
+          <fieldset>
+            <label for="beratBadan" class="block text-sm font-semibold text-slate-700 mb-3">Berat Badan</label>
+            <figure class="relative">
+              <i class="absolute left-4 top-1/2 transform -translate-y-1/2 fa-solid fa-weight-scale text-[#2c9ab7]/60 pointer-events-none"></i>
+              <input
+                id="beratBadan"
+                name="beratBadan"
+                type="number"
+                class="w-full pl-12 pr-16 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2c9ab7]/20 focus:border-[#2c9ab7] transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                [(ngModel)]="profil.beratBadan"
+                placeholder="70"
+                min="0"
+                required
+              />
+              <figcaption class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 text-sm font-medium pointer-events-none">kg</figcaption>
+            </figure>
+          </fieldset>
+
+          <!-- Height Field -->
+          <fieldset>
+            <label for="tinggiBadan" class="block text-sm font-semibold text-slate-700 mb-3">Tinggi Badan</label>
+            <figure class="relative">
+              <i class="absolute left-4 top-1/2 transform -translate-y-1/2 fa-solid fa-ruler-vertical text-[#2c9ab7]/60 pointer-events-none"></i>
+              <input
+                id="tinggiBadan"
+                name="tinggiBadan"
+                type="number"
+                class="w-full pl-12 pr-16 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-[#2c9ab7]/20 focus:border-[#2c9ab7] transition-all duration-200 bg-white/50 backdrop-blur-sm"
+                [(ngModel)]="profil.tinggiBadan"
+                placeholder="170"
+                min="0"
+                required
+              />
+              <figcaption class="absolute right-4 top-1/2 transform -translate-y-1/2 text-slate-500 text-sm font-medium pointer-events-none">cm</figcaption>
+            </figure>
+          </fieldset>
+
+          <!-- Submit Button -->
+          <footer class="md:col-span-2 text-center mt-8">
+            <button
+              type="submit"
+              class="group bg-gradient-to-r from-[#2c9ab7] to-[#3bb3d1] text-white font-bold py-4 px-12 rounded-xl hover:from-[#238a9c] hover:to-[#2c9ab7] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105"
+              [disabled]="formProfil.invalid"
+            >
+              <i class="fa-solid fa-save mr-3"></i>
+              <span class="text-lg">Simpan Perubahan</span>
+            </button>
+          </footer>
+        </form>
+      </section>
+    </article>
+  </section>
+</main>

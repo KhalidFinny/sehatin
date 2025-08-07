@@ -1,5 +1,132 @@
-<shared-sidebar *ngIf="isSidebarOpen" userType="user" />
-<shared-header title="Profil" />
+<shared-sidebar *ngIf="isSidebarOpen" userType="user"></shared-sidebar>
+<shared-header title="Profil"></shared-header>
 
 <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
+  <div class="mt-24 mx-auto max-w-7xl">
+    <!-- Header Section -->
+    <div class="mb-12 text-center">
+      <div class="inline-flex items-center justify-center w-24 h-24 bg-primary/10 rounded-full mb-6">
+        <i class="fa-solid fa-user text-primary text-3xl"></i>
+      </div>
+      <h1 class="text-3xl font-bold text-text-primary mb-2">{{ profil.nama }}</h1>
+      <p class="text-text-secondary mb-6">{{ profil.email }}</p>
+
+      <!-- Action Button - Dipindah ke antara foto dan header -->
+      <div class="text-center">
+        <a routerLink="/pengguna/profil/edit" class="inline-flex items-center gap-2 bg-primary hover:bg-hov-blue text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 hover:scale-105 text-sm">
+          <i class="fa-solid fa-edit text-xs"></i>
+          Edit Profil
+        </a>
+      </div>
+    </div>
+
+    <!-- Masonry Layout -->
+    <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+      <!-- Personal Info Card -->
+      <div class="break-inside-avoid bg-white rounded-lg border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-bold text-text-primary">Informasi Pribadi</h2>
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-user text-primary text-lg"></i>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-text-secondary">Nama Lengkap</label>
+            <p class="text-lg font-semibold text-text-primary">{{ profil.nama }}</p>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-text-secondary">Email</label>
+            <p class="text-lg font-semibold text-text-primary">{{ profil.email }}</p>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-text-secondary">Jenis Kelamin</label>
+            <p class="text-lg font-semibold text-text-primary">{{ profil.jenisKelamin }}</p>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-medium text-text-secondary">Kelompok Usia</label>
+            <span class="inline-flex items-center px-3 py-1 rounded-lg text-sm font-medium bg-primary/10 text-primary">
+              {{ profil.kelompokUsia }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weight Card -->
+      <div class="break-inside-avoid bg-white rounded-lg border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-text-primary">Berat Badan</h3>
+          <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-weight-scale text-secondary text-sm"></i>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <div class="text-4xl font-bold text-text-primary mb-2">{{ profil.beratBadan }}</div>
+          <div class="text-sm text-text-secondary">kilogram</div>
+        </div>
+      </div>
+
+      <!-- Height Card -->
+      <div class="break-inside-avoid bg-white rounded-lg border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-text-primary">Tinggi Badan</h3>
+          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-ruler-vertical text-accent text-sm"></i>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <div class="text-4xl font-bold text-text-primary mb-2">{{ profil.tinggiBadan }}</div>
+          <div class="text-sm text-text-secondary">centimeter</div>
+        </div>
+      </div>
+
+      <!-- BMI Card -->
+      <div class="break-inside-avoid bg-white rounded-lg border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-text-primary">BMI</h3>
+          <div class="w-10 h-10 bg-primary-alt/10 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-chart-line text-primary-alt text-sm"></i>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <div class="text-4xl font-bold text-text-primary mb-2">{{ hitungBMI() }}</div>
+          <div class="text-sm text-text-secondary">Body Mass Index</div>
+        </div>
+      </div>
+
+      <!-- Birth Date Card -->
+      <div class="break-inside-avoid bg-white rounded-lg border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-text-primary">Tanggal Lahir</h3>
+          <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-calendar text-accent text-sm"></i>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <div class="text-lg font-semibold text-text-primary mb-2">{{ formatTanggal(profil.tanggalLahir) }}</div>
+          <div class="text-sm text-text-secondary">Tanggal Lahir</div>
+        </div>
+      </div>
+
+      <!-- Age Card -->
+      <div class="break-inside-avoid bg-white rounded-lg border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-text-primary">Usia</h3>
+          <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-birthday-cake text-primary text-sm"></i>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <div class="text-4xl font-bold text-primary mb-2">{{ hitungUsia() }}</div>
+          <div class="text-sm text-text-secondary">tahun</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </main>

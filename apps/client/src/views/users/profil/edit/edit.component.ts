@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { Meta, Title } from "@angular/platform-browser";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { Subscription } from "rxjs";
 import { BasePage } from "@helpers/base-page";
 import { SidebarService } from "@services/sidebar.service";
@@ -19,13 +20,13 @@ export interface ProfilUser {
 }
 
 @Component({
-  selector: "pages-profil-pengguna",
-  imports: [CommonModule, RouterModule, Header, Sidebar],
-  templateUrl: "./profil.component.html",
+  selector: "pages-edit-profil-pengguna",
+  imports: [CommonModule, FormsModule, RouterModule, Header, Sidebar],
+  templateUrl: "./edit.component.html",
   standalone: true,
-  styleUrl: "./profil.component.css",
+  styleUrl: "./edit.component.css",
 })
-export class Profil implements OnDestroy, OnInit {
+export class EditComponent implements OnDestroy, OnInit {
   public isSidebarOpen: boolean = true;
   public profil: ProfilUser = {
     nama: "User Sehatin",
@@ -43,10 +44,11 @@ export class Profil implements OnDestroy, OnInit {
   constructor(
     title: Title,
     meta: Meta,
-    private sidebarService: SidebarService
+    private sidebarService: SidebarService,
+    private router: Router
   ) {
     this.pageAttributes = new BasePage(title, meta);
-    this.pageAttributes.setTitleAndMeta("Profil | SEHATIN", "");
+    this.pageAttributes.setTitleAndMeta("Edit Profil | SEHATIN", "");
   }
 
   ngOnDestroy(): void {
@@ -59,25 +61,24 @@ export class Profil implements OnDestroy, OnInit {
     );
   }
 
-  public hitungBMI(): string {
-    if (this.profil.tinggiBadan <= 0) return "0";
-    const tinggiDalamMeter = this.profil.tinggiBadan / 100;
-    const bmi = this.profil.beratBadan / (tinggiDalamMeter * tinggiDalamMeter);
-    return bmi.toFixed(1);
+  public simpanProfil(): void {
+    // Simulasi penyimpanan data
+    console.log("Data profil disimpan:", this.profil);
+
+    // Auto redirect ke halaman profil setelah simpan
+    setTimeout(() => {
+      this.router.navigate(['/pengguna/profil']);
+    }, 1000);
   }
 
-  public formatTanggal(tanggal: string): string {
-    if (!tanggal) return "-";
-    const date = new Date(tanggal);
-    return date.toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
+  public updateKelompokUsia(): void {
+    if (this.profil.tanggalLahir) {
+      const usia = this.hitungUsia();
+      this.profil.kelompokUsia = this.tentukanKelompokUsia(usia);
+    }
   }
 
-  public hitungUsia(): number {
-    if (!this.profil.tanggalLahir) return 0;
+  private hitungUsia(): number {
     const tanggalLahir = new Date(this.profil.tanggalLahir);
     const hariIni = new Date();
     let usia = hariIni.getFullYear() - tanggalLahir.getFullYear();
@@ -89,5 +90,13 @@ export class Profil implements OnDestroy, OnInit {
     }
 
     return usia;
+  }
+
+  private tentukanKelompokUsia(usia: number): string {
+    if (usia < 5) return "Balita";
+    if (usia < 12) return "Anak-anak";
+    if (usia < 18) return "Remaja";
+    if (usia < 60) return "Dewasa";
+    return "Lansia";
   }
 }
