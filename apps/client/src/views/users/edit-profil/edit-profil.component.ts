@@ -9,7 +9,7 @@ import { SidebarService } from "@services/sidebar.service";
 import { Header } from "@shared/header/header.component";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 
-export interface ProfilUser {
+export type ProfilUser = {
   nama: string;
   email: string;
   jenisKelamin: string;
@@ -21,12 +21,12 @@ export interface ProfilUser {
 
 @Component({
   selector: "pages-edit-profil-pengguna",
-  imports: [CommonModule, FormsModule, RouterModule, Header, Sidebar],
-  templateUrl: "./edit.component.html",
   standalone: true,
-  styleUrl: "./edit.component.css",
+  imports: [CommonModule, FormsModule, RouterModule, Header, Sidebar],
+  templateUrl: "./edit-profil.component.html",
+  styleUrl: "./edit-profil.component.css",
 })
-export class EditComponent implements OnDestroy, OnInit {
+export class EditProfil implements OnDestroy, OnInit {
   public isSidebarOpen: boolean = true;
   public profil: ProfilUser = {
     nama: "User Sehatin",
@@ -41,12 +41,7 @@ export class EditComponent implements OnDestroy, OnInit {
   private sidebarSubscription!: Subscription;
   private pageAttributes: BasePage;
 
-  constructor(
-    title: Title,
-    meta: Meta,
-    private sidebarService: SidebarService,
-    private router: Router
-  ) {
+  constructor(public title: Title, public meta: Meta, private sidebarService: SidebarService, private router: Router) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Edit Profil | SEHATIN", "");
   }
@@ -56,19 +51,12 @@ export class EditComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe(
-      (state) => (this.isSidebarOpen = state)
-    );
+    this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
   }
 
   public simpanProfil(): void {
-    // Simulasi penyimpanan data
-    console.log("Data profil disimpan:", this.profil);
-
     // Auto redirect ke halaman profil setelah simpan
-    setTimeout(() => {
-      this.router.navigate(['/pengguna/profil']);
-    }, 1000);
+    setTimeout(() => this.router.navigate(['/pengguna/profil']), 1000);
   }
 
   public updateKelompokUsia(): void {

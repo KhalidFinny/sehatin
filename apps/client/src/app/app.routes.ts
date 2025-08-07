@@ -12,9 +12,9 @@ import { DasborAdmin } from "@views/admin/dasbor/dasbor.component";
 import { DetailAnalitikKecamatan } from '@views/admin/detail-analitik-kecamatan/detail-analitik-kecamatan.component';
 import { Profil as ProfilAdmin } from "@views/admin/profil/profil.component";
 import { DasborPengguna } from "@views/users/dasbor/dasbor.component";
+import { EditProfil as EditProfilPengguna } from "@views/users/edit-profil/edit-profil.component";
 import { RekapKesehatan } from "@views/users/rekap-kesehatan/rekap-kesehatan.component";
 import { Profil as ProfilPengguna } from "@views/users/profil/profil.component";
-import { EditComponent as EditProfilPengguna } from "@views/users/profil/edit/edit.component";
 import { TambahRekapKesehatan } from "@views/users/tambah-rekap-kesehatan/tambah-rekap-kesehatan.component";
 import { SkriningPtm } from "@views/users/skrining-ptm/skrining-ptm.component";
 
