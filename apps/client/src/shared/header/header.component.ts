@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, OnInit } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
+import { CURRENT_USER } from "@constants/local-storage-keys";
 import { Text } from "@helpers/text";
 import { AuthService } from "@services/auth.service";
 import { SidebarService } from "@services/sidebar.service";
@@ -35,7 +36,7 @@ export class Header implements OnInit {
   }
 
   get isAuthenticated(): boolean {
-    return typeof window !== "undefined" && localStorage.getItem("current-user") !== null;
+    return typeof window !== "undefined" && localStorage.getItem(CURRENT_USER) !== null;
   }
 
   get isDashboardPage(): boolean {

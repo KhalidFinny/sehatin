@@ -1,9 +1,10 @@
 <fieldset class="flex w-full flex-col justify-between" [ngClass]="{ 'space-y-4': !info }">
   <label *ngIf="variant !== 'auth'" [for]="name" class="text-sm font-medium text-[var(--primary-text)]">
-    <ng-container *ngIf="required; else labelTemplate">
-      {{ labelString }} <span class="text-red-500">*</span>
+    {{ labelString }}
+    <ng-container *ngIf="required; else file">
+      <span class="text-red-500">*</span>
     </ng-container>
-    <ng-template #labelTemplate>
+    <ng-template #file>
       <ng-container *ngIf="type === 'file'">
         {{ labelString }}
       </ng-container>

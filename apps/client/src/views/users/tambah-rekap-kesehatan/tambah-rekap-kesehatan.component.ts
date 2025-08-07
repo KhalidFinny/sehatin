@@ -3,7 +3,7 @@ import { Component, Input as InputCore, OnDestroy, OnInit } from "@angular/core"
 import { FormsModule } from "@angular/forms";
 import { MatTabsModule } from "@angular/material/tabs";
 import { Meta, Title } from "@angular/platform-browser";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { Subscription } from "rxjs";
 import { ActivityLevel } from "@enums/activity-level";
 import { HealthGoal } from "@enums/health-goal";
@@ -78,7 +78,7 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   @InputCore() pola_tidur: string = "";
   @InputCore() kebiasaan_lain: string[] = [];
 
-  constructor(title: Title, meta: Meta, private sidebarService: SidebarService) {
+  constructor(public title: Title, public meta: Meta, private router: Router, private sidebarService: SidebarService) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Tambah Rekap Kesehatan | SEHATIN", "");
   }
@@ -157,6 +157,8 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
   }
 
   public createHealthRecordData(): void {
+    const penyakitSudahDiisi = this.kondisi_kesehatan !== null || this.tanggal_diagnosis !== null || this.pengobatan_saat_ini.trim() !== "" || this.kondisi_khusus.trim() !== "";
+
     HealthRecord.create({
       usia: this.usia,
       jenis_kelamin: this.jenis_kelamin,
@@ -164,21 +166,17 @@ export class TambahRekapKesehatan implements OnDestroy, OnInit {
       tinggi_badan: this.tinggi_badan,
       tingkat_aktivitas_fisik: this.tingkat_aktivitas_fisik,
       tujuan_kesehatan: this.tujuan_kesehatan,
-      jenis_makanan: this.jenis_makanan,
-      jumlah_atau_porsi: this.jumlah_atau_porsi,
-      frekuensi_konsumsi: this.frekuensi_konsumsi,
-      kondisi_kesehatan: this.kondisi_kesehatan,
-      tanggal_diagnosis: this.tanggal_diagnosis,
-      pengobatan_saat_ini: this.pengobatan_saat_ini,
-      kondisi_khusus: this.kondisi_khusus,
-      jenis_alergi: this.jenis_alergi,
-      tingkat_keparahan: this.tingkat_keparahan,
-      riwayat_reaksi_alergi: this.riwayat_reaksi_alergi,
+      kondisi_kesehatan: penyakitSudahDiisi ? this.kondisi_kesehatan : null,
+      tanggal_diagnosis: penyakitSudahDiisi ? this.tanggal_diagnosis : null,
+      pengobatan_saat_ini: penyakitSudahDiisi ? this.pengobatan_saat_ini.trim() : "",
+      kondisi_khusus: penyakitSudahDiisi ? this.kondisi_khusus.trim() : "",
       kebiasaan_olah_raga: this.kebiasaan_olah_raga,
       pola_tidur: this.pola_tidur,
       kebiasaan_lain: this.kebiasaan_lain,
       daftar_alergi: this.daftar_alergi,
       daftar_makanan: this.daftar_makanan,
     });
+
+    this.router.navigate(["/pengguna/rekap-kesehatan"]);
   }
 }

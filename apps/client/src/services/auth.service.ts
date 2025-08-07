@@ -2,6 +2,7 @@ import { Injectable, Inject, PLATFORM_ID } from "@angular/core";
 import { Router } from "@angular/router";
 import { isPlatformBrowser } from "@angular/common";
 import { BehaviorSubject, Subject } from "rxjs";
+import { CURRENT_USER, LOGIN_TIMESTAMP } from "@constants/local-storage-keys";
 
 export type User = {
   id: number;
@@ -34,7 +35,7 @@ export class AuthService {
 
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: Object) {
     if (!isPlatformBrowser(this.platformId)) return;
-    const savedUser = localStorage.getItem("current-user");
+    const savedUser = localStorage.getItem(CURRENT_USER);
     if (savedUser) this.user = JSON.parse(savedUser);
     this.fetchLocalStorage.next(true);
   }
@@ -50,8 +51,8 @@ export class AuthService {
 
       this.user = user;
       if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem("current-user", JSON.stringify(user));
-        localStorage.setItem("login-timestamp", Date.now().toString());
+        localStorage.setItem(CURRENT_USER, JSON.stringify(user));
+        localStorage.setItem(LOGIN_TIMESTAMP, Date.now().toString());
       }
 
       this.authStateChanged.next();
@@ -79,8 +80,8 @@ export class AuthService {
     this.user = null;
 
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem("current-user");
-      localStorage.removeItem("login-timestamp");
+      localStorage.removeItem(CURRENT_USER);
+      localStorage.removeItem(LOGIN_TIMESTAMP);
     }
 
     this.authStateChanged.next();

@@ -131,7 +131,6 @@
             />
           </div>
         </mat-tab>
-        <!-- TAB PENYAKIT -->
         <mat-tab label="Penyakit">
           <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden pb-41 lg:grid-cols-2">
             <form-select
@@ -141,7 +140,6 @@
               [model]="listOfDisease"
               [(ngModel)]="kondisi_kesehatan"
               [options]="listOfDiseases"
-              [required]="true"
               #listOfDisease="ngModel"
             />
             <form-input
@@ -153,7 +151,6 @@
               variant="form"
               [model]="dateOfDiagnosis"
               [(ngModel)]="tanggal_diagnosis"
-              [required]="true"
               #dateOfDiagnosis="ngModel"
             />
             <form-select
@@ -167,7 +164,6 @@
                 { label: 'Diet', value: 'Diet' },
                 { label: 'Obat', value: 'Obat' },
               ]"
-              [required]="true"
               #currentTreatment="ngModel"
             />
             <form-select
@@ -181,7 +177,6 @@
                 { label: 'Menyusui', value: 'Menyusui' },
                 { label: 'Pascaoperasi', value: 'Pascaoperasi' },
               ]"
-              [required]="true"
               #specialConditions="ngModel"
             />
           </div>
@@ -229,7 +224,7 @@
           </div>
         </mat-tab>
         <mat-tab label="Gaya Hidup">
-          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden lg:grid-cols-2">
+          <div class="mt-10 grid grid-cols-1 gap-10 overflow-hidden pb-15 lg:grid-cols-2">
             <form-select
               label="Kebiasaan Olah Raga"
               name="kebiasaan_olah_raga"

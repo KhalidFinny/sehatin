@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { Router, RouterModule } from "@angular/router";
+import { CURRENT_USER } from "@constants/local-storage-keys";
 import { Text } from "@helpers/text";
 
 @Component({
@@ -28,7 +29,7 @@ export class Breadcrumb {
   }
 
   private setBaseRoute(): void {
-    const data = localStorage.getItem("current-user");
+    const data = localStorage.getItem(CURRENT_USER);
     if (!data) return;
 
     try {

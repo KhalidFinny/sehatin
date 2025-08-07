@@ -16,14 +16,7 @@
         <th *ngFor="let header of headers; let i = index" class="w-1/{{ headers.length }} px-6 py-4 text-right font-medium tracking-wider">
           <div *ngIf="isSortable(header); else noSort" (click)="sortByColumn(i)" class="flex cursor-pointer items-center justify-center space-x-2 text-xs font-medium whitespace-nowrap">
             <h5>{{ header }}</h5>
-            <i
-              class="fa-solid"
-              [ngClass]="{
-                'fa-sort': sortState.index !== i,
-                'fa-sort-up': sortState.index === i && sortState.asc,
-                'fa-sort-down': sortState.index === i && !sortState.asc
-              }"
-            ></i>
+            <i class="fa-solid" [ngClass]="{ 'fa-sort': sortState.index !== i, 'fa-sort-up': sortState.index === i && sortState.asc, 'fa-sort-down': sortState.index === i && !sortState.asc }"></i>
           </div>
           <ng-template #noSort>
             <div class="flex items-center justify-center space-x-2 text-xs font-medium whitespace-nowrap">
@@ -44,9 +37,9 @@
           </section>
         </td>
       </tr>
-      <tr *ngFor="let row of rows" class="border-t border-[var(--stroke)] text-sm text-[var(--primary-text)] transition-all duration-200">
+      <tr *ngFor="let row of rows" class="border-primary border-t text-sm transition-all duration-200">
         <td *ngFor="let cell of row" class="px-6 py-3 whitespace-nowrap">
-          <section class="flex cursor-default space-x-3 text-[10pt]" [innerHTML]="cell"></section>
+          <section class="flex cursor-default items-center justify-center space-x-3 text-[10pt]" [innerHTML]="cell"></section>
         </td>
       </tr>
     </tbody>

@@ -8,6 +8,7 @@ import { SidebarService } from "@services/sidebar.service";
 import { Header } from "@shared/header/header.component";
 import { Sidebar } from "@shared/sidebar/sidebar.component";
 import { Table } from "@shared/table/table.component";
+import { HealthRecord, HealthRecordData, HealthRecordTable } from "@services/health-record.service";
 
 export type Statistics = {
   background: string;
@@ -29,6 +30,7 @@ export class RekapKesehatan implements OnDestroy, OnInit {
   public currentDate: string = "";
   public currentTime: string = "";
   public isSidebarOpen: boolean = true;
+  public rows: [number, ...string[]][] = [];
 
   private sidebarSubscription!: Subscription;
   private pageAttributes: BasePage;
@@ -83,6 +85,14 @@ export class RekapKesehatan implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.sidebarSubscription = this.sidebarService.sidebarOpen.subscribe((state) => (this.isSidebarOpen = state));
+    this.rows = (HealthRecord.getAll() as HealthRecordData[]).map((data, i) => [
+      i + 1,
+      (data.usia ?? 0).toString() + " tahun",
+      (data.berat_badan ?? 0).toString(),
+      (data.tinggi_badan ?? 0).toString(),
+      (data.tingkat_aktivitas_fisik ?? "-").toLowerCase().replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+      data.pola_tidur ?? "-",
+    ]);
   }
 
   private updateDateTime() {

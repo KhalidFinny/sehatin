@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterOutlet, Router, NavigationEnd, Event } from "@angular/router";
 import { Subscription } from "rxjs";
+import { CURRENT_USER, LOGIN_TIMESTAMP } from "@constants/local-storage-keys";
 import { Footer } from "@shared/footer/footer.component";
 import { Header } from "@shared/header/header.component";
 import { AuthService } from "@services/auth.service";
@@ -54,8 +55,8 @@ export class AppComponent implements OnDestroy, OnInit {
   // ===========================
 
   private getSessionInfo() {
-    const user = localStorage.getItem("current-user");
-    const timestamp = localStorage.getItem("login-timestamp");
+    const user = localStorage.getItem(CURRENT_USER);
+    const timestamp = localStorage.getItem(LOGIN_TIMESTAMP);
     const loginTime = timestamp ? parseInt(timestamp, 10) : null;
     return { user, loginTime };
   }

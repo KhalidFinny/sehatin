@@ -24,6 +24,7 @@
     "target": "ES2022",
     "paths": {
       "@app/*": ["app/*"],
+      "@constants/*": ["constants/*"],
       "@enums/*": ["enums/*"],
       "@errors/*": ["errors/*"],
       "@guards/*": ["guards/*"],
