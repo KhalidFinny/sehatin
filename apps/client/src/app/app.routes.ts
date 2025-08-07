@@ -14,6 +14,7 @@ import { Profil as ProfilAdmin } from "@views/admin/profil/profil.component";
 import { DasborPengguna } from "@views/users/dasbor/dasbor.component";
 import { RekapKesehatan } from "@views/users/rekap-kesehatan/rekap-kesehatan.component";
 import { Profil as ProfilPengguna } from "@views/users/profil/profil.component";
+import { EditComponent as EditProfilPengguna } from "@views/users/profil/edit/edit.component";
 import { TambahRekapKesehatan } from "@views/users/tambah-rekap-kesehatan/tambah-rekap-kesehatan.component";
 import { SkriningPtm } from "@views/users/skrining-ptm/skrining-ptm.component";
 
@@ -44,6 +45,7 @@ export const routes: Routes = [
   { path: "pengguna/rekap-kesehatan/tambah", component: TambahRekapKesehatan, canActivate: [AuthGuard] },
   { path: "pengguna/skrining-ptm", component: SkriningPtm, canActivate: [AuthGuard] },
   { path: "pengguna/profil", component: ProfilPengguna, canActivate: [AuthGuard] },
+  { path: "pengguna/profil/edit", component: EditProfilPengguna, canActivate: [AuthGuard] },
 
   /**
    * Perutean jika halaman tidak ditemukan.

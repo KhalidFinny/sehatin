@@ -1,7 +1,187 @@
 <shared-sidebar *ngIf="isSidebarOpen" userType="user" />
 <shared-header title="Skrining PTM" />
 
-<!-- prettier-ignore -->
 <main [ngClass]="isSidebarOpen ? 'ml-64' : 'ml-8'" class="cursor-default border-b border-gray-100 py-8 pr-8 transition-all duration-300 ease-in-out">
-  <!-- Konten skrining PTM di sini -->
+  <div class="mt-24 mx-auto max-w-7xl">
+
+    <!-- Intro Card -->
+    <div *ngIf="!showQuestions && !showResult" class="bg-white rounded-2xl border border-gray-100 p-8 mb-8">
+      <div class="flex items-center gap-12">
+        <div class="flex-shrink-0 w-1/3">
+          <img src="/images/doc.png" alt="Dokter SEHATIN" class="h-80 w-auto doctor-image">
+        </div>
+        <div class="flex-1">
+          <h1 class="text-4xl font-bold text-gray-900 mb-6">Yuk cek kondisi kamu <span class="text-[#2c9ab7]">sekarang</span>!</h1>
+          <p class="text-xl text-gray-600 mb-8">Pastikan untuk menjawab semua pertanyaan dengan jujur ya!</p>
+          <button (click)="startSkrining()" class="bg-[#2c9ab7] hover:bg-[#26798f] text-white font-semibold py-4 px-10 rounded-lg transition-colors duration-200 text-xl btn-primary">
+            Mulai Skrining →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Questions Cards -->
+    <div *ngIf="showQuestions && !showResult" class="space-y-6">
+      <!-- Progress Bar -->
+      <div class="bg-white rounded-2xl border border-gray-100 p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-gray-900">Riwayat dan Faktor Risiko PTM</h2>
+          <span class="text-sm text-gray-600">{{ currentQuestionIndex + 1 }} / {{ questions.length }}</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div class="bg-[#2c9ab7] h-2 rounded-full transition-all duration-300" [style.width.%]="(currentQuestionIndex + 1) / questions.length * 100"></div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="bg-white rounded-2xl border border-gray-100 p-8 question-card">
+        <div class="flex items-start gap-12">
+          <div class="flex-shrink-0 w-1/3">
+            <img src="/images/doc.png" alt="Dokter SEHATIN" class="h-80 w-auto doctor-image">
+          </div>
+          <div class="flex-1">
+            <!-- Category Title -->
+            <div class="mb-6">
+              <h4 class="text-sm font-semibold text-[#2c9ab7] uppercase tracking-wide mb-2">{{ getCategoryTitle(questions[currentQuestionIndex].category) }}</h4>
+              <h3 class="text-2xl font-semibold text-gray-900 leading-relaxed">{{ questions[currentQuestionIndex].question }}</h3>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+              <button
+                (click)="selectAnswer('ya')"
+                [class]="'p-6 rounded-lg border-2 font-semibold transition-all duration-200 text-lg ' + (selectedAnswer === 'ya' ? 'bg-[#2c9ab7] text-white border-[#2c9ab7]' : 'bg-white text-gray-700 border-gray-300 hover:border-[#2c9ab7]')"
+              >
+                Ya, saya mengalami hal tersebut
+              </button>
+              <button
+                (click)="selectAnswer('tidak')"
+                [class]="'p-6 rounded-lg border-2 font-semibold transition-all duration-200 text-lg ' + (selectedAnswer === 'tidak' ? 'bg-[#2c9ab7] text-white border-[#2c9ab7]' : 'bg-white text-gray-700 border-gray-300 hover:border-[#2c9ab7]')"
+              >
+                Tidak, saya tidak mengalami hal tersebut
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Card -->
+    <div *ngIf="showResult" class="bg-white rounded-2xl border border-gray-100 p-8 result-fade-in">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Hasil Skrining PTM</h2>
+        <p class="text-lg text-gray-600">Berdasarkan jawaban Anda, berikut adalah analisis risiko kesehatan</p>
+      </div>
+
+      <!-- Risk Categories -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+        <!-- Hipertensi -->
+        <div class="bg-red-50 border-2 border-red-200 rounded-xl p-6 text-center risk-card">
+          <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-heart-pulse text-white text-xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-red-800 mb-2">Hipertensi</h3>
+          <div class="text-2xl font-bold text-red-600 mb-2">TINGGI</div>
+          <div class="w-full bg-red-200 rounded-full h-2">
+            <div class="bg-red-500 h-2 rounded-full" style="width: 85%"></div>
+          </div>
+        </div>
+
+        <!-- Diabetes -->
+        <div class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 text-center risk-card">
+          <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-cookie-bite text-white text-xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-yellow-800 mb-2">Diabetes</h3>
+          <div class="text-2xl font-bold text-yellow-600 mb-2">SEDANG</div>
+          <div class="w-full bg-yellow-200 rounded-full h-2">
+            <div class="bg-yellow-500 h-2 rounded-full" style="width: 60%"></div>
+          </div>
+        </div>
+
+        <!-- Obesitas -->
+        <div class="bg-orange-50 border-2 border-orange-200 rounded-xl p-6 text-center risk-card">
+          <div class="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-weight-scale text-white text-xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-orange-800 mb-2">Obesitas</h3>
+          <div class="text-2xl font-bold text-orange-600 mb-2">RENDAH</div>
+          <div class="w-full bg-orange-200 rounded-full h-2">
+            <div class="bg-orange-500 h-2 rounded-full" style="width: 30%"></div>
+          </div>
+        </div>
+
+        <!-- Kardiovaskular -->
+        <div class="bg-purple-50 border-2 border-purple-200 rounded-xl p-6 text-center risk-card">
+          <div class="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-heart text-white text-xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-purple-800 mb-2">Kardiovaskular</h3>
+          <div class="text-2xl font-bold text-purple-600 mb-2">SEDANG</div>
+          <div class="w-full bg-purple-200 rounded-full h-2">
+            <div class="bg-purple-500 h-2 rounded-full" style="width: 55%"></div>
+          </div>
+        </div>
+
+        <!-- Kolesterol -->
+        <div class="bg-indigo-50 border-2 border-indigo-200 rounded-xl p-6 text-center risk-card">
+          <div class="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fa-solid fa-chart-line text-white text-xl"></i>
+          </div>
+          <h3 class="text-lg font-bold text-indigo-800 mb-2">Kolesterol</h3>
+          <div class="text-2xl font-bold text-indigo-600 mb-2">RENDAH</div>
+          <div class="w-full bg-indigo-200 rounded-full h-2">
+            <div class="bg-indigo-500 h-2 rounded-full" style="width: 25%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Risk Alert -->
+      <div class="bg-gradient-to-r from-red-50 to-red-100 border-2 border-red-300 rounded-xl p-6 mb-8 alert-pulse">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-exclamation-triangle text-white text-lg"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-red-800 mb-2">⚠️ Perhatian Khusus</h3>
+            <p class="text-red-700">Anda memiliki risiko <strong>HIERTENSI TINGGI</strong> berdasarkan pola hidup yang terdeteksi</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+          <i class="fa-solid fa-stethoscope text-[#2c9ab7] text-2xl mb-2"></i>
+          <h4 class="font-semibold text-[#2c9ab7] mb-1">Konsultasi Dokter</h4>
+          <p class="text-sm text-blue-700">Segera periksa tekanan darah</p>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
+          <i class="fa-solid fa-dumbbell text-green-600 text-2xl mb-2"></i>
+          <h4 class="font-semibold text-green-800 mb-1">Olahraga Rutin</h4>
+          <p class="text-sm text-green-700">30 menit sehari, 5x seminggu</p>
+        </div>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 text-center">
+          <i class="fa-solid fa-apple-alt text-yellow-600 text-2xl mb-2"></i>
+          <h4 class="font-semibold text-yellow-800 mb-1">Diet Sehat</h4>
+          <p class="text-sm text-yellow-700">Kurangi garam & lemak</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <button (click)="resetSkrining()" class="bg-[#2c9ab7] hover:bg-[#26798f] text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+          <i class="fa-solid fa-redo mr-2"></i>
+          Ulangi Skrining
+        </button>
+        <button (click)="downloadPDF()" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+          <i class="fa-solid fa-download mr-2"></i>
+          Download PDF
+        </button>
+        <button class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-8 rounded-lg transition-colors duration-200">
+          <i class="fa-solid fa-calendar-check mr-2"></i>
+          Jadwalkan Konsultasi
+        </button>
+      </div>
+    </div>
+  </div>
 </main>
