@@ -2,19 +2,19 @@
   <i class="fa-solid fa-arrow-left mr-2" aria-label="Kembali ke halaman sebelumnya"></i>
   <h5 class="text-sm font-bold">Kembali</h5>
 </a>
-<main class="flex min-h-screen flex-col items-center justify-center gap-8 bg-gradient-to-br from-[#f4f8fb] to-[#e0f2fe] px-60 py-25 lg:flex-row">
-  <section class="flex w-full max-w-lg flex-1 flex-col justify-center">
-    <h1 class="mb-3 text-3xl font-bold text-gray-800">
-      Daftar agar ikut dalam
-      <br />
-      menjaga kesehatan!
+<main class="grid min-h-screen grid-cols-1 items-center bg-gradient-to-br from-[#f4f8fb] to-[#e0f2fe] px-6 py-16 lg:grid-cols-2 lg:px-32 lg:pt-32 lg:pb-20">
+  <section class="mx-auto flex w-full max-w-lg flex-col justify-center">
+    <h1 class="text-text-primary mb-3 cursor-default text-xl font-bold lg:text-3xl">
+      Daftar agar ikut dalam menjaga kesehatan!
     </h1>
-    <p class="mb-8 text-gray-600">Lengkapi data untuk membuat akun baru</p>
-    <div *ngIf="showAlert" class="mb-6 rounded-lg p-4 text-center" [ngClass]="alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+    <p class="text-text-secondary mb-8 cursor-default text-sm lg:text-base">
+      Lengkapi data untuk membuat akun baru
+    </p>
+    <h5 *ngIf="showAlert" class="mb-6 rounded-lg p-4 text-center" [ngClass]="alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
       {{ alertMessage }}
-    </div>
-    <form class="space-y-6" (ngSubmit)="onRegister()" aria-describedby="form-instruksi">
-      <span id="form-instruksi" class="sr-only">
+    </h5>
+    <form class="space-y-6" (ngSubmit)="onRegister()"  class="flex flex-col space-y-6">
+      <span class="sr-only">
         Formulir untuk pendaftaran akun baru
       </span>
       <form-input

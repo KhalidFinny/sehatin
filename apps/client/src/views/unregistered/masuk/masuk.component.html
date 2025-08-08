@@ -4,15 +4,15 @@
 </a>
 <main class="grid min-h-screen grid-cols-1 items-center bg-gradient-to-br from-[#f4f8fb] to-[#e0f2fe] px-6 py-16 lg:grid-cols-2 lg:px-32 lg:pt-32 lg:pb-20">
   <section class="mx-auto flex w-full max-w-lg flex-col justify-center">
-    <h1 class="text-text-primary mb-3 cursor-default text-4xl font-bold">
+    <h1 class="text-text-primary mb-3 cursor-default text-xl font-bold lg:text-3xl">
       Masuk ke <span class="text-primary font-bold">Sehatin</span>
     </h1>
-    <p class="text-text-secondary mb-8 cursor-default">
+    <p class="text-text-secondary mb-8 cursor-default text-sm lg:text-base">
       Sistem Edukasi dan Pemantauan Kesehatan Terintegrasi Nasional
     </p>
-    <div *ngIf="showAlert" class="mb-6 rounded-lg p-4 text-center" [ngClass]="alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
+    <h5 *ngIf="showAlert" class="mb-6 rounded-lg p-4 text-center" [ngClass]="alertType === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'">
       {{ alertMessage }}
-    </div>
+    </h5>
     <form (ngSubmit)="onLogin()" class="flex flex-col space-y-6">
       <form-input
         icon="fa-solid fa-envelope"
@@ -43,22 +43,20 @@
         <span *ngIf="isLoading">Memproses...</span>
       </button>
     </form>
-    <div class="mt-8 text-center" aria-label="Navigasi ke halaman daftar">
-      <p class="cursor-default">
-        Belum punya akun?
-        <a href="/daftar" class="text-primary hover:text-primary-dark cursor-pointer font-semibold transition-colors">
-          Daftar di sini
-        </a>
-      </p>
-    </div>
+    <p class="mt-8 cursor-default text-center text-sm lg:text-base" aria-label="Navigasi ke halaman daftar">
+      Belum punya akun?
+      <a href="/daftar" class="text-primary hover:text-primary-dark cursor-pointer font-semibold transition-colors">
+        Daftar di sini
+      </a>
+    </p>
     <figure class="border-primary mt-10 rounded-xl border-l-4 bg-white/80 p-5 shadow-sm">
-      <h2 class="mb-2 text-lg font-semibold text-gray-700">
+      <h2 class="mb-2 text-sm font-semibold text-gray-700 lg:text-lg">
         Demo Credentials:
       </h2>
-      <p class="mb-1 text-sm">
+      <p class="mb-1 text-xs lg:text-sm">
         <strong>Admin:</strong> admin&#64;sehatin.com / admin123
       </p>
-      <p class="text-sm">
+      <p class="text-xs lg:text-sm">
         <strong>User:</strong> user&#64;sehatin.com / user123
       </p>
     </figure>
