@@ -1,9 +1,7 @@
-import { CommonModule, isPlatformBrowser } from "@angular/common";
-import { Component, OnInit, Inject, PLATFORM_ID } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
 import { Meta, Title } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
-import { interval } from "rxjs";
-import { takeWhile } from "rxjs/operators";
 import { BasePage } from "@helpers/base-page";
 
 type Doctors = {
@@ -17,12 +15,12 @@ type Doctors = {
   link: string | URL;
 };
 
-type Statistics = {
+type Feature = {
   color: string;
   icon: string;
-  value: number;
   title: string;
   description: string;
+  link?: string;
 };
 
 @Component({
@@ -32,44 +30,42 @@ type Statistics = {
   templateUrl: "./beranda.component.html",
   styleUrl: "./beranda.component.css",
 })
-export class Beranda implements OnInit {
-  public animatedStats: number[] = [];
-
+export class Beranda {
   private pageAttributes: BasePage;
 
-  constructor(title: Title, meta: Meta, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(title: Title, meta: Meta) {
     this.pageAttributes = new BasePage(title, meta);
     this.pageAttributes.setTitleAndMeta("Beranda | SEHATIN", "");
   }
 
-  public statistics: Statistics[] = [
+  public features: Feature[] = [
     {
       color: "blue",
-      icon: "fa-solid fa-user-group",
-      value: 100,
-      title: "Pengguna Aktif",
-      description: "Pengguna terdaftar di platform",
-    },
-    {
-      color: "red",
-      icon: "fa-solid fa-heart",
-      value: 100,
-      title: "Pasien Terobati",
-      description: "Pasien terobati di platform",
+      icon: "fa-solid fa-clipboard-check",
+      title: "Skrining PTM",
+      description: "Deteksi dini faktor risiko penyakit tidak menular dengan sistem skrining komprehensif",
+      link: "/skrining-ptm"
     },
     {
       color: "green",
-      icon: "fa-solid fa-building",
-      value: 25,
-      title: "Rumah Sakit Partner",
-      description: "Jaringan rumah sakit terpercaya",
+      icon: "fa-solid fa-chart-line",
+      title: "Analitik Kecamatan",
+      description: "Visualisasi data kesehatan per kecamatan untuk monitoring wilayah",
+      link: "/analitik-kecamatan"
     },
     {
-      color: "cyan",
-      icon: "fa-solid fa-arrow-trend-up",
-      value: 98,
-      title: "Tingkat Kepuasan",
-      description: "Penilaian kepuasan pengguna",
+      color: "purple",
+      icon: "fa-solid fa-users-cog",
+      title: "Analitik Pengguna",
+      description: "Dashboard analitik lengkap untuk monitoring aktivitas dan profil pengguna",
+      link: "/analitik-pengguna"
+    },
+    {
+      color: "orange",
+      icon: "fa-solid fa-notes-medical",
+      title: "Rekap Kesehatan",
+      description: "Riwayat kesehatan lengkap dan terstruktur untuk pemantauan berkelanjutan",
+      link: "/rekap-kesehatan"
     },
   ];
 
@@ -106,25 +102,5 @@ export class Beranda implements OnInit {
     },
   ];
 
-  ngOnInit() {
-    this.animateAllStats(1500); // durasi 1.5 detik
-  }
 
-  public animateAllStats(duration: number = 1000) {
-    if (!isPlatformBrowser(this.platformId)) {
-      this.animatedStats = this.statistics.map((stat) => stat.value);
-      return;
-    }
-
-    const frameRate = 60; // 60 fps
-    const totalFrame = Math.round((duration / 1000) * frameRate);
-    let frame = 0;
-    this.animatedStats = this.statistics.map(() => 0);
-
-    const sub = interval(1000 / frameRate).pipe(takeWhile(() => frame <= totalFrame)).subscribe(() => {
-      frame++;
-      this.animatedStats = this.statistics.map((stat, i) => frame >= totalFrame ? stat.value : Math.round(frame / totalFrame * stat.value));
-      if (frame >= totalFrame) sub.unsubscribe();
-    });
-  }
 }
