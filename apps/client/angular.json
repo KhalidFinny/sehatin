@@ -13,10 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "allowedCommonJsDependencies": [
-              "indonesia-nodejs",
-              "@prisma/client"
-            ],
+            "allowedCommonJsDependencies": ["indonesia-nodejs", "canvg", "@babel/runtime", "core-js", "raf", "rgbcolor", "jspdf"],
             "outputPath": "dist/sehatin",
             "index": "src/index.html",
             "browser": "src/main.ts",
