@@ -1,7 +1,10 @@
 <!-- Header untuk pengguna yang sudah login. -->
 <ng-container *ngIf="isDashboardPage && isAuthenticated; else publicHeader">
-  <header [ngClass]="{ 'pl-64': isSidebarOpen, 'pl-8': !isSidebarOpen, 'bg-opacity-95 fixed top-0 right-0 left-0 z-20 flex items-center gap-6 border-b border-slate-200 bg-slate-50 py-7 backdrop-blur-sm transition-all duration-300 ease-in-out': true }">
-  <button class="hover:text-primary cursor-pointer text-lg text-neutral-900 transition-colors duration-150 focus:outline-none" (click)="toggleSidebar()">
+  <header
+    [ngClass]="{ 'pl-64': isSidebarOpen, 'pl-8': !isSidebarOpen, 'bg-opacity-95 fixed top-0 right-0 left-0 z-20 flex items-center gap-6 border-b border-slate-200 bg-slate-50 py-7 backdrop-blur-sm transition-all duration-300 ease-in-out': true }">
+    <button
+      class="hover:text-primary cursor-pointer text-lg text-neutral-900 transition-colors duration-150 focus:outline-none"
+      (click)="toggleSidebar()">
       <i class="fa-solid fa-bars"></i>
     </button>
     <span class="relative cursor-default">
@@ -16,31 +19,52 @@
 <!-- Header untuk pengunjung (belum login) dan halaman publik -->
 <ng-template #publicHeader>
   <header class="fixed top-0 right-0 left-0 z-50 container mx-auto pt-8">
-    <section class="border-primary/20 mx-auto flex w-[92%] items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
+    <section
+      class="border-primary/20 mx-auto flex w-[92%] items-center justify-between rounded-lg border bg-white/95 px-8 py-4 backdrop-blur-lg transition-all duration-300">
       <a routerLink="/" class="group relative flex items-center gap-3">
-        <img src="/images/sehatin.svg" alt="Logo" class="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
-        <div class="bg-primary/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100"></div>
+        <img src="/images/sehatin.svg" alt="Logo"
+          class="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
+        <div
+          class="bg-primary/20 absolute inset-0 -z-10 rounded-full opacity-0 blur-lg transition-opacity duration-300 group-hover:opacity-100">
+        </div>
       </a>
       <nav class="hidden w-full items-center justify-end gap-8 lg:flex">
-        <a routerLink="/tentang-kami" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
-          Tentang Kami
-          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+        <a routerLink="/" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+          Beranda
+          <span
+            class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a routerLink="/artikel" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+        <a href="/#fitur" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+          Tentang Kami
+          <span
+            class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+        <a href="/#tutorial" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+          Tutorial
+          <span
+            class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+        <a routerLink="/artikel"
+          class="text-text-primary hover:text-primary group relative transition-colors duration-200">
           Artikel
-          <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+          <span
+            class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
         </a>
         <ng-container *ngIf="!isAuthenticated">
-          <a routerLink="/masuk" class="text-text-primary hover:text-primary group relative transition-colors duration-200">
+          <a routerLink="/masuk"
+            class="text-text-primary hover:text-primary group relative transition-colors duration-200">
             Masuk
-            <span class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
+            <span
+              class="bg-primary absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"></span>
           </a>
-          <a routerLink="/daftar" class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
+          <a routerLink="/daftar"
+            class="bg-primary hover:bg-primary/90 rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
             Daftar
           </a>
         </ng-container>
         <ng-container *ngIf="isAuthenticated">
-          <button (click)="goToDashboard()" class="bg-primary hover:bg-primary/90 cursor-pointer rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
+          <button (click)="goToDashboard()"
+            class="bg-primary hover:bg-primary/90 cursor-pointer rounded-lg border-2 px-6 py-2.5 text-white transition-all duration-300">
             Dasbor
           </button>
         </ng-container>
@@ -56,10 +80,13 @@
 <ng-container *ngIf="!isDashboardPage || !isAuthenticated">
   <nav
     class="fixed right-0 z-[999] flex h-screen w-1/2 transform flex-col items-start gap-4 bg-white/90 p-6 text-slate-900 shadow-lg backdrop-blur-md transition-transform duration-300 ease-in-out lg:hidden"
-    [ngClass]="{ 'translate-x-0': isSidebarOpen, 'translate-x-full': !isSidebarOpen }"
-  >
+    [ngClass]="{ 'translate-x-0': isSidebarOpen, 'translate-x-full': !isSidebarOpen }">
     <i class="fa-solid fa-xmark mb-4 cursor-pointer text-2xl" (click)="toggleSidebar()"></i>
-    <a routerLink="/tentang-kami" (click)="toggleSidebar()">Tentang Kami</a>
+    <a routerLink="/" (click)="toggleSidebar()">Beranda</a>
+    <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />
+    <a href="/#fitur" (click)="toggleSidebar()">Tentang Kami</a>
+    <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />
+    <a href="/#tutorial" (click)="toggleSidebar()">Tutorial</a>
     <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />
     <a routerLink="/artikel" (click)="toggleSidebar()">Artikel</a>
     <hr class="my-0.5 h-0.5 w-full border-slate-800/25" />

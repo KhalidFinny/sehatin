@@ -1,146 +1,196 @@
-<footer class="space-y-8 border-t border-gray-200 bg-white py-8">
-  <section class="container mx-auto w-[92%] grid grid-cols-1 gap-8 px-4 md:grid-cols-2 lg:grid-cols-4">
-    <article class="space-y-4 flex flex-col items-start">
-      <img src="/images/sehatin.svg" alt="SEHATIN Logo" class="h-10 w-auto" />
-      <p class="text-text-secondary text-sm leading-relaxed">
-        Sistem cerdas membantu masyarakat untuk mengelola kesehatan dengan lebih efisien dan efektif.
-      </p>
-      <div class="flex space-x-4 mt-2">
-        <a href="https://twitter.com/sehatin" target="_blank" rel="noopener" class="text-text-secondary hover:text-primary transition-colors duration-200">
-          <i class="fab fa-twitter text-xl"></i>
+<footer class="relative bg-gradient-to-b from-gray-50 to-white">
+  <!-- Decorative Top Border -->
+  <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-400"></div>
+
+  <section class="container mx-auto w-[92%] px-4 pt-16 pb-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <!-- About Section -->
+      <article class="space-y-4 flex flex-col items-start lg:col-span-1">
+        <div class="relative">
+          <img src="/images/sehatin.svg" alt="SEHATIN Logo" class="h-12 w-auto" />
+          <div class="absolute -bottom-2 left-0 h-1 w-16 bg-gradient-to-r from-primary to-cyan-400 rounded-full"></div>
+        </div>
+        <p class="text-text-secondary text-sm leading-relaxed mt-2">
+          Sistem terintegrasi untuk pencegahan dan monitoring PTM (Penyakit Tidak Menular)
+          di Kabupaten Malang.
+        </p>
+        <div class="flex flex-col gap-2 text-sm text-gray-600">
+          <div class="flex items-center gap-3">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+              <i class="fas fa-map-marker-alt text-primary text-xs"></i>
+            </span>
+            <span class="text-xs">Kabupaten Malang, Jawa Timur</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+              <i class="fas fa-envelope text-primary text-xs"></i>
+            </span>
+            <span class="text-xs">info@sehatin.go.id</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Layanan -->
+      <nav aria-label="Layanan" class="group">
+        <h3 class="text-text-primary mb-4 text-base md:text-lg font-bold relative">
+          Layanan
+          <span
+            class="absolute -bottom-1 left-0 h-0.5 w-8 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></span>
+        </h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a routerLink="/masuk"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 group-hover/item:bg-blue-100 transition-colors">
+                <i class="fas fa-notes-medical text-xs text-blue-600"></i>
+              </span>
+              <span>Rekap Kesehatan</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/masuk"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-green-50 group-hover/item:bg-green-100 transition-colors">
+                <i class="fas fa-clipboard-check text-xs text-green-600"></i>
+              </span>
+              <span>Skrining PTM</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Perusahaan -->
+      <nav aria-label="Perusahaan" class="group">
+        <h3 class="text-text-primary mb-4 text-base md:text-lg font-bold relative">
+          Perusahaan
+          <span
+            class="absolute -bottom-1 left-0 h-0.5 w-8 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></span>
+        </h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="/#fitur"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-purple-50 group-hover/item:bg-purple-100 transition-colors">
+                <i class="fas fa-info-circle text-xs text-purple-600"></i>
+              </span>
+              <span>Tentang Kami</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/karir"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-50 group-hover/item:bg-orange-100 transition-colors">
+                <i class="fas fa-briefcase text-xs text-orange-600"></i>
+              </span>
+              <span>Karir</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/artikel"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-50 group-hover/item:bg-indigo-100 transition-colors">
+                <i class="fas fa-newspaper text-xs text-indigo-600"></i>
+              </span>
+              <span>Artikel</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Dukungan -->
+      <nav aria-label="Dukungan" class="group">
+        <h3 class="text-text-primary mb-4 text-base md:text-lg font-bold relative">
+          Dukungan
+          <span
+            class="absolute -bottom-1 left-0 h-0.5 w-8 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></span>
+        </h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a routerLink="/pusat-bantuan"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 group-hover/item:bg-teal-100 transition-colors">
+                <i class="fas fa-question-circle text-xs text-teal-600"></i>
+              </span>
+              <span>Pusat Bantuan</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/kebijakan-privasi"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 group-hover/item:bg-red-100 transition-colors">
+                <i class="fas fa-shield-alt text-xs text-red-600"></i>
+              </span>
+              <span>Kebijakan Privasi</span>
+            </a>
+          </li>
+          <li>
+            <a routerLink="/faq"
+              class="text-text-secondary hover:text-primary group/item flex items-center gap-3 transition-all duration-200 hover:translate-x-1">
+              <span
+                class="flex h-7 w-7 items-center justify-center rounded-lg bg-yellow-50 group-hover/item:bg-yellow-100 transition-colors">
+                <i class="fas fa-comments text-xs text-yellow-600"></i>
+              </span>
+              <span>FAQ</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="mt-12 rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-400 p-8 text-center shadow-xl">
+      <h3 class="mb-2 text-xl font-bold text-white lg:text-2xl">Mulai Monitoring Kesehatan Anda</h3>
+      <p class="mb-6 text-sm text-white/90">Bergabunglah dengan ribuan pengguna untuk hidup lebih sehat</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a routerLink="/daftar"
+          class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary shadow-lg transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5">
+          <i class="fas fa-user-plus"></i>
+          <span>Daftar Sekarang</span>
         </a>
-        <a href="https://instagram.com/sehatin" target="_blank" rel="noopener" class="text-text-secondary hover:text-primary transition-colors duration-200">
-          <i class="fab fa-instagram text-xl"></i>
-        </a>
-        <a href="https://facebook.com/sehatin" target="_blank" rel="noopener" class="text-text-secondary hover:text-primary transition-colors duration-200">
-          <i class="fab fa-facebook text-xl"></i>
-        </a>
-        <a href="https://linkedin.com/company/sehatin" target="_blank" rel="noopener" class="text-text-secondary hover:text-primary transition-colors duration-200">
-          <i class="fab fa-linkedin text-xl"></i>
+        <a routerLink="/masuk"
+          class="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-white px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-white hover:text-primary">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Masuk</span>
         </a>
       </div>
-    </article>
-    <nav aria-label="Layanan">
-      <h3 class="text-text-primary mb-3 text-base md:text-lg font-semibold">Layanan</h3>
-      <ul class="space-y-2 text-sm">
-        <li>
-          <a href="/konsultasi-dokter" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-user-md text-sm"></i> Konsultasi Dokter
-          </a>
-        </li>
-        <li>
-          <a href="/booking-janji-temu" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-calendar-check text-sm"></i> Booking Janji Temu
-          </a>
-        </li>
-        <li>
-          <a href="/telemedicine" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-video text-sm"></i> Telemedicine
-          </a>
-        </li>
-        <li>
-          <a href="/rekam-medis-digital" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-file-medical text-sm"></i> Rekam Medis Digital
-          </a>
-        </li>
-        <li>
-          <a href="/apotek-online" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-pills text-sm"></i> Apotek Online
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <nav aria-label="Perusahaan">
-      <h3 class="text-text-primary mb-3 text-base md:text-lg font-semibold">Perusahaan</h3>
-      <ul class="space-y-2 text-sm">
-        <li>
-          <a href="/tentang-kami" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-info-circle text-sm"></i> Tentang Kami
-          </a>
-        </li>
-        <li>
-          <a href="/karir" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-briefcase text-sm"></i> Karir
-          </a>
-        </li>
-        <li>
-          <a href="/artikel" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-blog text-sm"></i> Artikel
-          </a>
-        </li>
-        <li>
-          <a href="/press-kit" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-newspaper text-sm"></i> Press Kit
-          </a>
-        </li>
-        <li>
-          <a href="/partner" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-handshake text-sm"></i> Partner
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <nav aria-label="Dukungan">
-      <h3 class="text-text-primary mb-3 text-base md:text-lg font-semibold">Dukungan</h3>
-      <ul class="space-y-2 text-sm">
-        <li>
-          <a href="/pusat-bantuan" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-question-circle text-sm"></i> Pusat Bantuan
-          </a>
-        </li>
-        <li>
-          <a href="/kontak" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-phone text-sm"></i> Kontak
-          </a>
-        </li>
-        <li>
-          <a href="/kebijakan-privasi" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-shield-alt text-sm"></i> Kebijakan Privasi
-          </a>
-        </li>
-        <li>
-          <a href="/syarat-dan-ketentuan" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-file-contract text-sm"></i> Syarat & Ketentuan
-          </a>
-        </li>
-        <li>
-          <a href="/faq" class="text-text-secondary hover:text-primary flex items-center gap-2 transition">
-            <i class="fas fa-comments text-sm"></i> FAQ
-          </a>
-        </li>
-      </ul>
-    </nav>
+    </div>
   </section>
-  <hr class="mx-auto w-[92%] border-gray-200" />
-  <section class="container mx-auto w-[92%] px-4 max-w-lg">
-    <h3 class="text-text-primary mb-2 text-base md:text-lg font-semibold">Berlangganan Newsletter</h3>
-    <p class="text-text-secondary mb-4 text-sm">Dapatkan informasi terbaru tentang kesehatan dan layanan kami</p>
-    <form class="flex flex-col sm:flex-row gap-2 w-full" method="post" action="">
-      <fieldset class="relative flex-1 w-full">
-        <label for="email-for-subscribe" class="sr-only">Email</label>
-        <i class="fas fa-envelope text-text-secondary absolute top-1/2 left-3 -translate-y-1/2 text-sm"></i>
-        <input
-          name="email-for-subscribe"
-          id="email-for-subscribe"
-          type="email"
-          placeholder="Masukkan email Anda"
-          class="focus:ring-primary w-full rounded-lg border border-gray-300 py-2 pr-4 pl-10 text-sm focus:border-transparent focus:ring-2 focus:outline-none"
-        />
-      </fieldset>
-      <button type="submit" class="bg-primary hover:bg-hov-blue flex items-center justify-center gap-2 rounded-lg px-6 py-2 text-sm font-medium text-white transition-colors duration-200 w-full sm:w-auto">
-        <i class="fas fa-paper-plane text-sm"></i> Berlangganan
-      </button>
-    </form>
-  </section>
-  <section class="text-text-secondary container mx-auto w-[92%] flex flex-col items-center justify-between border-t border-gray-200 px-4 pt-6 text-sm md:flex-row md:items-center md:gap-0 gap-4">
-    <p class="mb-0 text-center md:text-left">
-      © 2025 SEHATIN made with
-      <i class="fa-solid fa-heart text-red-500"></i> by
-      <span class="text-primary hover:text-hov-blue transition">Tim Bikin Web di Jember</span>
-    </p>
-    <nav class="flex flex-col md:flex-row gap-2 md:gap-6 items-center">
-      <a href="/kebijakan-privasi" class="hover:text-primary transition">Kebijakan Privasi</a>
-      <a href="/syarat-penggunaan" class="hover:text-primary transition">Syarat Penggunaan</a>
-    </nav>
+
+  <!-- Bottom Bar -->
+  <section class="border-t border-gray-200 bg-gray-50">
+    <div class="container mx-auto w-[92%] px-4 py-6">
+      <div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+        <div class="flex flex-col items-center md:items-start gap-1">
+          <p class="text-sm text-gray-700 font-medium">
+            © 2025 SEHATIN - Sistem Monitoring PTM Kabupaten Malang
+          </p>
+          <p class="text-xs text-gray-500">
+            Dibuat dengan <i class="fas fa-heart text-red-500 mx-1"></i> oleh
+            <span class="font-semibold text-primary">Tim Bikin Web di Jember</span>
+          </p>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="https://instagram.com/sehatin" target="_blank"
+            class="group flex h-9 w-9 items-center justify-center rounded-full bg-white border border-gray-200 transition-all duration-200 hover:border-primary hover:bg-primary">
+            <i class="fab fa-instagram text-gray-600 group-hover:text-white transition-colors"></i>
+          </a>
+          <a href="https://facebook.com/sehatin" target="_blank"
+            class="group flex h-9 w-9 items-center justify-center rounded-full bg-white border border-gray-200 transition-all duration-200 hover:border-primary hover:bg-primary">
+            <i class="fab fa-facebook-f text-gray-600 group-hover:text-white transition-colors"></i>
+          </a>
+          <a href="https://twitter.com/sehatin" target="_blank"
+            class="group flex h-9 w-9 items-center justify-center rounded-full bg-white border border-gray-200 transition-all duration-200 hover:border-primary hover:bg-primary">
+            <i class="fab fa-twitter text-gray-600 group-hover:text-white transition-colors"></i>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 </footer>
