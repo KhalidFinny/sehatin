@@ -1,7 +1,7 @@
 <!-- Hero -->
+<!-- prettier-ignore -->
 <section class="bg-background pt-40 pb-5">
-  <article
-    class="relative mx-auto flex w-[92%] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white px-8 py-20 transition-transform duration-800 ease-out hover:scale-[1.01] lg:px-12 xl:py-0">
+  <article class="relative mx-auto flex w-[92%] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white px-8 py-20 transition-transform duration-800 ease-out hover:scale-[1.01] lg:px-12 xl:py-0">
     <div class="bg-primary/10 absolute top-[-60px] left-[-60px] z-0 h-[180px] w-[180px] rounded-full"></div>
     <div class="bg-accent/20 absolute right-[-80px] bottom-[-80px] z-0 h-[220px] w-[220px] rounded-full blur-sm"></div>
     <div class="absolute top-8 right-8 z-0 grid grid-cols-3 gap-2">
@@ -26,61 +26,53 @@
           PTM di Kabupaten Malang
         </h2>
         <p class="text-text-secondary z-10 max-w-xl text-sm leading-relaxed lg:text-lg">
-          Platform digital untuk deteksi dini dan monitoring faktor risiko Penyakit Tidak Menular (PTM),
-          mendukung upaya pencegahan PTM bagi masyarakat Kabupaten Malang
+          Platform digital untuk deteksi dini dan monitoring faktor risiko
+          Penyakit Tidak Menular (PTM), mendukung upaya pencegahan PTM bagi
+          masyarakat Kabupaten Malang
         </p>
-        <a routerLink="/daftar"
-          class="bg-primary hover:bg-primary/90 group mt-4 flex items-center justify-center gap-3 rounded-lg px-5 py-3 text-xs font-semibold text-white transition-all duration-300 lg:mt-0 lg:px-8 lg:py-4 lg:text-base">
+        <a routerLink="/daftar" class="bg-primary hover:bg-primary/90 group mt-4 flex items-center justify-center gap-3 rounded-lg px-5 py-3 text-xs font-semibold text-white transition-all duration-300 lg:mt-0 lg:px-8 lg:py-4 lg:text-base">
           <h5>Daftar Sekarang</h5>
           <h5 class="mb-0.5 transition-transform duration-300 lg:group-hover:translate-x-1">
             →
           </h5>
         </a>
       </figcaption>
-      <figcaption
-        class="relative hidden min-h-[400px] max-w-2xl flex-1 items-end justify-end overflow-visible lg:min-h-[500px] xl:flex">
-        <span
-          class="pointer-events-none absolute bottom-[-500px] left-1/2 w-[500px] -translate-x-1/2 overflow-hidden lg:w-[900px]">
-          <div
-            class="h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#E6F6FB] to-[#F0F9FF] lg:h-[900px] lg:w-[900px]">
-          </div>
+      <figcaption class="relative hidden min-h-[400px] max-w-2xl flex-1 items-end justify-end overflow-visible lg:min-h-[500px] xl:flex">
+        <span class="pointer-events-none absolute bottom-[-500px] left-1/2 w-[500px] -translate-x-1/2 overflow-hidden lg:w-[900px]">
+          <div class="h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#E6F6FB] to-[#F0F9FF] lg:h-[900px] lg:w-[900px]"></div>
         </span>
         <div class="bg-accent absolute top-10 right-10 h-4 w-4 rounded-full opacity-60"></div>
         <div class="bg-primary absolute top-24 right-32 h-3 w-3 rounded-full opacity-40"></div>
         <div class="bg-accent/30 absolute bottom-32 left-8 h-5 w-5 animate-ping rounded-full"></div>
-        <img src="/images/dokter.svg" alt="Ilustrasi dokter SEHATIN"
-          class="mt-30 h-auto w-[600px] object-contain drop-shadow-2xl filter" loading="lazy" />
+        <img src="/images/dokter.svg" alt="Ilustrasi dokter SEHATIN" class="mt-30 h-auto w-[600px] object-contain drop-shadow-2xl filter" loading="lazy" />
       </figcaption>
     </figure>
   </article>
 </section>
 
 <!-- Fitur -->
-<section class="flex min-h-screen items-center bg-gradient-to-b from-white to-gray-50 py-16" id="fitur">
-  <div class="mx-auto w-[92%] text-center pt-16">
-    <div
-      class="mx-auto mb-8 flex w-fit items-center justify-center gap-3 rounded-full border border-blue-200 bg-gradient-to-r from-blue-400/80 to-cyan-400/80 px-6 py-3 shadow-md">
-      <span class="h-2 w-2 animate-pulse rounded-full bg-white"></span>
-      <h5 class="text-left text-sm font-semibold text-white lg:text-center lg:text-sm">
-        Sistem terintegrasi untuk pencegahan dan monitoring PTM
-      </h5>
-    </div>
-    <h2 class="mb-2 text-xl font-bold text-gray-900 lg:mb-4 lg:text-4xl">
-      Fitur
-      <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-        Unggulan SEHATIN
-      </span>
-    </h2>
-    <p class="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-gray-600 lg:mb-16 lg:text-lg">
-      Eksplorasi berbagai fitur inovatif yang membantu deteksi dini, pemantauan,
-      dan pengelolaan risiko PTM secara efektif untuk warga Kabupaten Malang
-    </p>
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-      @for (feature of features; track $index) {
-      <figure
-        class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
-        <span
-          class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg lg:h-16 lg:w-16">
+<!-- prettier-ignore -->
+<section class="mx-auto flex min-h-screen w-[92%] flex-col items-center bg-gradient-to-b from-white to-gray-50 py-16 pt-16 text-center">
+  <div class="mx-auto mb-8 flex w-fit items-center justify-center gap-3 rounded-full border border-blue-200 bg-gradient-to-r from-blue-400/80 to-cyan-400/80 px-6 py-3 shadow-md">
+    <span class="h-2 w-2 animate-pulse rounded-full bg-white"></span>
+    <h5 class="text-left text-sm font-semibold text-white lg:text-center lg:text-sm">
+      Sistem terintegrasi untuk pencegahan dan monitoring PTM
+    </h5>
+  </div>
+  <h2 class="mb-2 text-xl font-bold text-gray-900 lg:mb-4 lg:text-4xl">
+    Fitur
+    <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+      Unggulan SEHATIN
+    </span>
+  </h2>
+  <p class="mx-auto mb-8 max-w-2xl text-sm leading-relaxed text-gray-600 lg:mb-16 lg:text-lg">
+    Eksplorasi berbagai fitur inovatif yang membantu deteksi dini, pemantauan,
+    dan pengelolaan risiko PTM secara efektif untuk warga Kabupaten Malang
+  </p>
+  <article class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+    @for (feature of features; track $index) {
+      <figure class="group relative cursor-pointer overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+        <span class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg lg:h-16 lg:w-16">
           <i [class]="feature.icon + ' text-lg text-white lg:text-2xl'"></i>
         </span>
         <figcaption class="space-y-2 lg:space-y-3">
@@ -91,131 +83,122 @@
             {{ feature.description }}
           </h6>
         </figcaption>
-        <span
-          class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></span>
+        <span class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></span>
       </figure>
-      }
-    </div>
-  </div>
+    }
+  </article>
 </section>
 
 <!-- Tutorial Skrining -->
-<section class="mx-auto w-[92%] pt-32 pb-20" id="tutorial">
+<!-- prettier-ignore -->
+<main class="mx-auto w-[92%] pt-32 pb-20">
   <h2 class="mb-4 text-center text-xl font-bold text-gray-900 lg:text-4xl">
     Tutorial
     <span class="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
       Skrining PTM
     </span>
   </h2>
-  <p class="mx-auto mb-12 max-w-2xl text-center text-sm leading-relaxed text-gray-600 lg:text-lg">
+  <h5 class="mx-auto mb-12 max-w-2xl text-center text-sm leading-relaxed text-gray-600 lg:text-lg">
     Panduan praktis skrining PTM dan monitoring kesehatan harian Anda.
-  </p>
+  </h5>
+  <section class="mx-auto flex max-w-6xl flex-col items-center gap-12 lg:flex-row lg:items-start">
+    <!-- Ilustrasi Section -->
+    <aside class="hidden w-full max-w-sm lg:sticky lg:top-32 lg:block">
+      <figure class="relative rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-8">
+        <!-- Background decoration -->
+        <div class="absolute top-4 right-4 h-20 w-20 rounded-full bg-blue-200/30 blur-2xl"></div>
+        <div class="absolute bottom-4 left-4 h-16 w-16 rounded-full bg-cyan-200/30 blur-xl"></div>
 
-  <div class="mx-auto max-w-6xl">
-    <div class="flex flex-col items-center gap-12 lg:flex-row lg:items-start">
-      <!-- Ilustrasi Section -->
-      <div class="hidden w-full max-w-sm lg:block lg:sticky lg:top-32">
-        <div class="relative rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 p-8">
-          <!-- Background decoration -->
-          <div class="absolute top-4 right-4 h-20 w-20 rounded-full bg-blue-200/30 blur-2xl"></div>
-          <div class="absolute bottom-4 left-4 h-16 w-16 rounded-full bg-cyan-200/30 blur-xl"></div>
-
-          <!-- Main Icon Container -->
-          <div class="relative z-10 flex flex-col items-center">
-            <!-- Medical Icons -->
-            <div class="mb-6 flex items-center justify-center">
-              <div class="relative">
-                <div
-                  class="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 shadow-2xl">
-                  <i class="fas fa-heartbeat text-5xl text-white"></i>
-                </div>
-                <!-- Floating icons -->
-                <div
-                  class="absolute -top-2 -right-2 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-                  <i class="fas fa-check text-green-500"></i>
-                </div>
-                <div
-                  class="absolute -bottom-2 -left-2 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg">
-                  <i class="fas fa-chart-line text-blue-500"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Text -->
-            <h3 class="mb-2 text-center text-lg font-bold text-gray-800">Deteksi Dini PTM</h3>
-            <p class="text-center text-sm text-gray-600">Monitoring kesehatan untuk hidup lebih sehat</p>
-
-            <!-- Feature badges -->
-            <div class="mt-6 flex flex-wrap justify-center gap-2">
-              <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
-                <i class="fas fa-shield-alt mr-1"></i> Aman
-              </span>
-              <span class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
-                <i class="fas fa-clock mr-1"></i> Cepat
-              </span>
-              <span class="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
-                <i class="fas fa-user-check mr-1"></i> Mudah
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Additional Info Card -->
-        <div class="mt-6 space-y-3">
-          <div class="rounded-xl border border-blue-200 bg-blue-50/50 p-4">
-            <div class="flex items-start gap-3">
-              <i class="fas fa-info-circle mt-0.5 text-blue-500"></i>
-              <div>
-                <h4 class="mb-1 text-sm font-semibold text-gray-800">Informasi Penting</h4>
-                <p class="text-xs text-gray-600">Skrining ini sebagai penyaring awal risiko PTM. Untuk pemeriksaan lebih
-                  akurat,
-                  kunjungi Posbindu terdekat</p>
-              </div>
-            </div>
+        <!-- Main Icon Container -->
+        <article class="relative z-10 flex flex-col items-center">
+          <!-- Medical Icons -->
+          <div class="relative mb-6 flex items-center justify-center">
+            <i class="fas fa-heartbeat inline-flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 p-8 text-5xl text-white shadow-2xl"></i>
+            <i class="fas fa-check absolute -top-2 -right-2 inline-flex items-center justify-center rounded-full bg-white p-2 text-green-500 shadow-lg"></i>
+            <i class="fas fa-chart-line absolute -bottom-2 -left-2 inline-flex items-center justify-center rounded-full bg-white p-2 text-blue-500 shadow-lg"></i>
           </div>
 
-          <!-- Posbindu Info -->
-          <div class="rounded-xl border border-green-200 bg-green-50/50 p-4">
-            <div class="flex items-start gap-3">
-              <i class="fas fa-hospital-alt mt-0.5 text-green-500"></i>
-              <div>
-                <h4 class="mb-1 text-sm font-semibold text-gray-800">Posbindu PTM</h4>
-                <p class="text-xs text-gray-600">Pos Pembinaan Terpadu untuk pemeriksaan kesehatan komprehensif di
-                  wilayah Anda</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <!-- Text -->
+          <h3 class="mb-2 text-center text-lg font-bold text-gray-800">
+            Deteksi Dini PTM
+          </h3>
+          <p class="text-center text-sm text-gray-600">
+            Monitoring kesehatan untuk hidup lebih sehat
+          </p>
 
-      <!-- Tutorial Steps -->
-      <div class="flex-1">
-        @for (step of tutorialSteps; track $index) {
-        <div class="mb-8 flex gap-6">
-          <div
-            class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-white shadow-lg">
-            <span class="text-lg font-bold">{{ $index + 1 }}</span>
-          </div>
-          <div class="flex-1">
-            <h3 class="mb-2 text-lg font-bold text-gray-900 lg:text-xl">{{ step.title }}</h3>
+          <!-- Feature badges -->
+          <figcaption class="mt-6 flex flex-wrap justify-center gap-2">
+            <h6 class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+              <i class="fas fa-shield-alt mr-1"></i> Aman
+            </h6>
+            <h6 class="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700">
+              <i class="fas fa-clock mr-1"></i> Cepat
+            </h6>
+            <h6 class="rounded-full bg-purple-100 px-3 py-1 text-xs font-medium text-purple-700">
+              <i class="fas fa-user-check mr-1"></i> Mudah
+            </h6>
+          </figcaption>
+        </article>
+      </figure>
+
+      <!-- Additional Info Card -->
+      <figure class="mt-6 mb-3 flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50/50 p-4">
+        <i class="fas fa-info-circle mt-0.5 text-blue-500"></i>
+        <figcaption>
+          <h4 class="mb-1 text-sm font-semibold text-gray-800">
+            Informasi Penting
+          </h4>
+          <p class="text-xs text-gray-600">
+            Skrining ini sebagai penyaring awal risiko PTM. Untuk pemeriksaan
+            lebih akurat, kunjungi Posbindu terdekat
+          </p>
+        </figcaption>
+      </figure>
+
+      <!-- Posbindu Info -->
+      <figure class="flex items-start gap-3 rounded-xl border border-green-200 bg-green-50/50 p-4">
+        <i class="fas fa-hospital-alt mt-0.5 text-green-500"></i>
+        <figcaption>
+          <h4 class="mb-1 text-sm font-semibold text-gray-800">Posbindu PTM</h4>
+          <p class="text-xs text-gray-600">
+            Pos Pembinaan Terpadu untuk pemeriksaan kesehatan komprehensif di
+            wilayah Anda
+          </p>
+        </figcaption>
+      </figure>
+    </aside>
+
+    <!-- Tutorial Steps -->
+    <aside class="flex-1">
+      @for (step of tutorialSteps; track $index) {
+        <figure class="mb-8 flex gap-6">
+          <h5 class="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 text-lg font-bold text-white shadow-lg">
+            {{ $index + 1 }}
+          </h5>
+          <figcaption class="flex-1">
+            <h3 class="mb-2 text-lg font-bold text-gray-900 lg:text-xl">
+              {{ step.title }}
+            </h3>
             <p class="text-sm leading-relaxed text-gray-600 lg:text-base">
               {{ step.description }}
             </p>
-          </div>
-        </div>
-        }
+          </figcaption>
+        </figure>
+      }
 
-        <!-- CTA Button -->
-        <div class="mt-12 flex flex-col items-center gap-3">
-          <a routerLink="/masuk"
-            class="inline-flex items-center gap-2 rounded-lg bg-primary hover:bg-primary/90 px-8 py-4 text-white font-semibold transition-all duration-300">
-            <span>Mulai Skrining Sekarang</span>
-            <i class="fas fa-arrow-right transition-transform duration-300"></i>
+      <!-- CTA Button -->
+      <div class="mt-12 flex flex-col items-center gap-3">
+        <a routerLink="/masuk" class="bg-primary hover:bg-primary/90 inline-flex items-center gap-2 rounded-lg px-8 py-4 font-semibold text-white transition-all duration-300">
+          <h5>Mulai Skrining Sekarang</h5>
+          <i class="fas fa-arrow-right transition-transform duration-300"></i>
+        </a>
+        <p class="text-xs text-gray-500">
+          Belum punya akun?
+          <a routerLink="/daftar" class="text-primary hover:underline">
+            Daftar di sini
           </a>
-          <p class="text-xs text-gray-500">Belum punya akun? <a routerLink="/daftar"
-              class="text-primary hover:underline">Daftar di sini</a></p>
-        </div>
+        </p>
       </div>
-    </div>
-  </div>
-</section>
+    </aside>
+  </section>
+</main>

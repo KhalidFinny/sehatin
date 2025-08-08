@@ -2,6 +2,8 @@ import { Routes } from "@angular/router";
 import { AuthGuard } from "@guards/auth.guard";
 import { Error404 } from "@errors/404.component";
 import { Beranda } from "@views/unregistered/beranda/beranda.component";
+import { Artikel } from "@views/unregistered/artikel/artikel.component";
+import { DetailArtikel } from "@views/unregistered/detail-artikel/detail-artikel.component";
 import { TentangKami } from "@views/unregistered/tentang-kami/tentang-kami.component";
 import { Kontak } from "@views/unregistered/kontak/kontak.component";
 import { Masuk } from "@views/unregistered/masuk/masuk.component";
@@ -23,6 +25,8 @@ export const routes: Routes = [
    * Perutean untuk pengguna yang belum terautentikasi.
    */
   { path: "", component: Beranda },
+  { path: "artikel", component: Artikel },
+  { path: "artikel/:slug", component: DetailArtikel },
   { path: "tentang-kami", component: TentangKami },
   { path: "kontak", component: Kontak },
   { path: "masuk", component: Masuk },
