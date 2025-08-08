@@ -1,6 +1,7 @@
 <!-- Hero -->
 <section class="bg-background pt-40 pb-5">
-  <article class="relative mx-auto flex w-[92%] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white px-8 py-20 transition-transform duration-800 ease-out hover:scale-[1.01] lg:px-12 xl:py-0">
+  <article
+    class="relative mx-auto flex w-[92%] flex-col items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white px-8 py-20 transition-transform duration-800 ease-out hover:scale-[1.01] lg:px-12 xl:py-0">
     <div class="bg-primary/10 absolute top-[-60px] left-[-60px] z-0 h-[180px] w-[180px] rounded-full"></div>
     <div class="bg-accent/20 absolute right-[-80px] bottom-[-80px] z-0 h-[220px] w-[220px] rounded-full blur-sm"></div>
     <div class="absolute top-8 right-8 z-0 grid grid-cols-3 gap-2">
@@ -20,29 +21,35 @@
           SEHATIN
         </h1>
         <h2 class="text-base leading-snug font-semibold text-gray-800 md:text-2xl lg:text-3xl">
-          Sistem Edukasi dan Pemantauan
+          Media Skrining dan Sistem Pemantauan
           <br />
-          Kesehatan Terintegrasi Nasional
+          PTM di Kabupaten Malang
         </h2>
-        <p class="text-text-secondary z-10 max-w-md text-sm leading-relaxed lg:text-lg">
-          SEHATIN merupakan sistem pintar untuk memantau kesehatan warga Malang
-          dengan teknologi terdepan.
+        <p class="text-text-secondary z-10 max-w-xl text-sm leading-relaxed lg:text-lg">
+          Platform digital untuk deteksi dini dan monitoring faktor risiko Penyakit Tidak Menular (PTM),
+          mendukung upaya pencegahan PTM bagi masyarakat Kabupaten Malang.
         </p>
-        <a routerLink="/daftar" class="bg-primary hover:bg-hov-blue group mt-4 flex items-center justify-center gap-3 rounded-lg px-5 py-3 text-xs font-semibold text-white duration-300 lg:mt-0 lg:px-8 lg:py-4 lg:text-base">
+        <a routerLink="/daftar"
+          class="bg-primary hover:bg-hov-blue group mt-4 flex items-center justify-center gap-3 rounded-lg px-5 py-3 text-xs font-semibold text-white duration-300 lg:mt-0 lg:px-8 lg:py-4 lg:text-base">
           <h5>Daftar Sekarang</h5>
           <h5 class="mb-0.5 transition-transform duration-300 lg:group-hover:translate-x-1">
             →
           </h5>
         </a>
       </figcaption>
-      <figcaption class="relative hidden min-h-[400px] max-w-2xl flex-1 items-end justify-end overflow-visible lg:min-h-[500px] xl:flex">
-        <span class="pointer-events-none absolute bottom-[-500px] left-1/2 w-[500px] -translate-x-1/2 overflow-hidden lg:w-[900px]">
-          <div class="h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#E6F6FB] to-[#F0F9FF] lg:h-[900px] lg:w-[900px]"></div>
+      <figcaption
+        class="relative hidden min-h-[400px] max-w-2xl flex-1 items-end justify-end overflow-visible lg:min-h-[500px] xl:flex">
+        <span
+          class="pointer-events-none absolute bottom-[-500px] left-1/2 w-[500px] -translate-x-1/2 overflow-hidden lg:w-[900px]">
+          <div
+            class="h-[500px] w-[500px] rounded-full bg-gradient-to-br from-[#E6F6FB] to-[#F0F9FF] lg:h-[900px] lg:w-[900px]">
+          </div>
         </span>
         <div class="bg-accent absolute top-10 right-10 h-4 w-4 rounded-full opacity-60"></div>
         <div class="bg-primary absolute top-24 right-32 h-3 w-3 rounded-full opacity-40"></div>
         <div class="bg-accent/30 absolute bottom-32 left-8 h-5 w-5 animate-ping rounded-full"></div>
-        <img src="/images/dokter.svg" alt="Ilustrasi dokter SEHATIN" class="mt-30 h-auto w-[600px] object-contain drop-shadow-2xl filter" loading="lazy" />
+        <img src="/images/dokter.svg" alt="Ilustrasi dokter SEHATIN"
+          class="mt-30 h-auto w-[600px] object-contain drop-shadow-2xl filter" loading="lazy" />
       </figcaption>
     </figure>
   </article>
@@ -62,26 +69,30 @@
   </p>
   <div class="mb-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
     @for (stats of statistics; track $index) {
-      <figure class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
-        <span class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg lg:h-16 lg:w-16">
-          <i [class]="stats.icon + ' text-lg text-white lg:text-2xl'"></i>
-        </span>
-        <figcaption class="space-y-1 lg:space-y-2">
-          <h3 class="text-xl font-bold text-gray-900 lg:text-4xl">
-            {{ animatedStats[$index] }}{{ stats.title === "Tingkat Kepuasan" ? "%" : "+" }}
-          </h3>
-          <h5 class="text-sm font-semibold text-gray-800 lg:text-lg">
-            {{ stats.title }}
-          </h5>
-          <h6 class="text-xs leading-relaxed text-gray-600 lg:text-sm">
-            {{ stats.description }}
-          </h6>
-        </figcaption>
-        <span class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></span>
-      </figure>
+    <figure
+      class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      <span
+        class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-cyan-400 shadow-lg lg:h-16 lg:w-16">
+        <i [class]="stats.icon + ' text-lg text-white lg:text-2xl'"></i>
+      </span>
+      <figcaption class="space-y-1 lg:space-y-2">
+        <h3 class="text-xl font-bold text-gray-900 lg:text-4xl">
+          {{ animatedStats[$index] }}{{ stats.title === "Tingkat Kepuasan" ? "%" : "+" }}
+        </h3>
+        <h5 class="text-sm font-semibold text-gray-800 lg:text-lg">
+          {{ stats.title }}
+        </h5>
+        <h6 class="text-xs leading-relaxed text-gray-600 lg:text-sm">
+          {{ stats.description }}
+        </h6>
+      </figcaption>
+      <span
+        class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></span>
+    </figure>
     }
   </div>
-  <div class="mx-auto flex w-fit items-center justify-center gap-3 rounded-full border border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-3">
+  <div
+    class="mx-auto flex w-fit items-center justify-center gap-3 rounded-full border border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 px-6 py-3">
     <span class="h-2 w-2 animate-pulse rounded-full bg-green-500"></span>
     <h5 class="text-left text-sm font-medium text-gray-700 lg:text-center lg:text-sm">
       Platform terus berkembang dengan pengguna baru setiap hari
@@ -103,57 +114,54 @@
   </p>
   <article class="grid w-full grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
     @for (doctor of doctors; track $index) {
-      <figure class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
-        <div class="relative overflow-hidden rounded-t-2xl">
-          <img
-            [src]="doctor.image"
-            [alt]="doctor.name"
-            class="h-[270px] w-full object-cover object-top transition-transform duration-500 group-hover:scale-105 lg:h-[300px] lg:object-center"
-          />
-          <span class="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+    <figure
+      class="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      <div class="relative overflow-hidden rounded-t-2xl">
+        <img [src]="doctor.image" [alt]="doctor.name"
+          class="h-[270px] w-full object-cover object-top transition-transform duration-500 group-hover:scale-105 lg:h-[300px] lg:object-center" />
+        <span
+          class="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></span>
+      </div>
+      <figcaption class="space-y-4 p-4 text-left">
+        <div>
+          <h4 class="text-base font-bold text-gray-900 lg:text-xl">
+            {{ doctor.name }}
+          </h4>
+          <h5 class="text-xs font-semibold text-blue-600 lg:text-sm">
+            {{ doctor.specialist }}
+          </h5>
         </div>
-        <figcaption class="space-y-4 p-4 text-left">
-          <div>
-            <h4 class="text-base font-bold text-gray-900 lg:text-xl">
-              {{ doctor.name }}
-            </h4>
-            <h5 class="text-xs font-semibold text-blue-600 lg:text-sm">
-              {{ doctor.specialist }}
+        <div class="flex items-center gap-3">
+          <span class="flex items-center gap-1">
+            <i class="fas fa-star text-sm text-yellow-400"></i>
+            <h5 class="text-xs font-semibold text-gray-900 lg:text-sm">
+              {{ doctor.star }}.0
             </h5>
-          </div>
-          <div class="flex items-center gap-3">
-            <span class="flex items-center gap-1">
-              <i class="fas fa-star text-sm text-yellow-400"></i>
-              <h5 class="text-xs font-semibold text-gray-900 lg:text-sm">
-                {{ doctor.star }}.0
-              </h5>
-            </span>
-            <h5 class="text-xs text-gray-600 lg:text-sm">
-              ({{ doctor.feedback }} ulasan)
-            </h5>
-          </div>
-          <div class="space-y-2 text-xs text-gray-600 lg:text-sm">
-            <span class="flex items-center gap-2">
-              <i class="fas fa-briefcase w-4 text-gray-400"></i>
-              <h5>{{ doctor.experience }}</h5>
-            </span>
-            <span class="flex items-center gap-2">
-              <i class="fas fa-map-marker-alt w-4 text-gray-400"></i>
-              <h5>{{ doctor.place }}</h5>
-            </span>
-          </div>
-          <a
-            class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
-            [href]="doctor.link"
-            target="_blank"
-          >
-            <i class="fab fa-whatsapp text-sm lg:text-lg"></i>
-            <span>Konsultasi Sekarang</span>
-            <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover/btn:translate-x-1"></i>
-          </a>
-        </figcaption>
-        <span class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></span>
-      </figure>
+          </span>
+          <h5 class="text-xs text-gray-600 lg:text-sm">
+            ({{ doctor.feedback }} ulasan)
+          </h5>
+        </div>
+        <div class="space-y-2 text-xs text-gray-600 lg:text-sm">
+          <span class="flex items-center gap-2">
+            <i class="fas fa-briefcase w-4 text-gray-400"></i>
+            <h5>{{ doctor.experience }}</h5>
+          </span>
+          <span class="flex items-center gap-2">
+            <i class="fas fa-map-marker-alt w-4 text-gray-400"></i>
+            <h5>{{ doctor.place }}</h5>
+          </span>
+        </div>
+        <a class="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 py-3 text-sm font-semibold text-white transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
+          [href]="doctor.link" target="_blank">
+          <i class="fab fa-whatsapp text-sm lg:text-lg"></i>
+          <span>Konsultasi Sekarang</span>
+          <i class="fas fa-arrow-right text-sm transition-transform duration-300 group-hover/btn:translate-x-1"></i>
+        </a>
+      </figcaption>
+      <span
+        class="absolute bottom-0 left-0 h-1 w-full origin-left scale-x-0 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100"></span>
+    </figure>
     }
   </article>
 </section>
