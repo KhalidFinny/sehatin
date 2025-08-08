@@ -4,23 +4,17 @@ import { Meta, Title } from "@angular/platform-browser";
 import { RouterModule } from "@angular/router";
 import { BasePage } from "@helpers/base-page";
 
-type Doctors = {
-  image: string;
-  name: string;
-  specialist: string;
-  star: number;
-  feedback: number;
-  experience: string;
-  place: string;
-  link: string | URL;
-};
-
 type Feature = {
   color: string;
   icon: string;
   title: string;
   description: string;
   link?: string;
+};
+
+type TutorialStep = {
+  title: string;
+  description: string;
 };
 
 @Component({
@@ -69,37 +63,31 @@ export class Beranda {
     },
   ];
 
-  public doctors: Doctors[] = [
+  public tutorialSteps: TutorialStep[] = [
     {
-      image: "/images/rafi.svg",
-      name: "Dr. Rafi Abiyyu Airlangga",
-      specialist: "Spesialis Gigi",
-      star: 5,
-      feedback: 127,
-      experience: "8+ tahun pengalaman",
-      place: "RSIA Dr. Munir",
-      link: "https://wa.me/+6282143494259",
+      title: "Login atau Daftar Akun",
+      description: "Login ke akun SEHATIN Anda. Jika belum memiliki akun, silakan daftar terlebih dahulu dengan mengisi data diri yang valid."
     },
     {
-      image: "/images/khalid.png",
-      name: "Dr. Muhammad Khalid Atthoriq",
-      specialist: "Spesialis Penyakit Dalam",
-      star: 5,
-      feedback: 203,
-      experience: "12+ tahun pengalaman",
-      place: "RSIA Dr. Munir",
-      link: "https://wa.me/+6281230400332",
+      title: "Lengkapi Profil Kesehatan",
+      description: "Setelah login, wajib melengkapi profil untuk kebutuhan data kesehatan lebih lanjut. Data ini penting untuk analisis yang akurat."
     },
     {
-      image: "/images/yonanda.svg",
-      name: "Dr. Yonanda Mayla Rusdiaty",
-      specialist: "Dokter Ibu dan Anak",
-      star: 5,
-      feedback: 156,
-      experience: "10+ tahun pengalaman",
-      place: "RSIA Dr. Munir",
-      link: "https://wa.me/+6282139631334",
+      title: "Akses Menu Skrining PTM",
+      description: "Navigasi ke menu 'Skrining PTM' yang tersedia di dashboard pengguna untuk memulai proses skrining."
     },
+    {
+      title: "Menjawab Pertanyaan Skrining",
+      description: "Jawab pertanyaan dengan 'Ya' atau 'Tidak' sesuai kondisi Anda. Pertanyaan dirancang untuk mendeteksi faktor risiko PTM."
+    },
+    {
+      title: "Terima Hasil Skrining",
+      description: "Sistem akan mengakumulasi jawaban Anda dan menampilkan hasil indikasi risiko PTM yang didapatkan."
+    },
+    {
+      title: "Pantau Kesehatan Harian",
+      description: "Kunjungi menu 'Rekap Kesehatan' untuk memasukkan data keseharian seperti makanan dan aktivitas fisik untuk pemantauan yang dipersonalisasi."
+    }
   ];
 
 
